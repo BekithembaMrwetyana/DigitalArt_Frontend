@@ -44,10 +44,10 @@
           class="filter-select"
         >
           <option value="">Any Price</option>
-          <option value="0-500">$0 - $500</option>
-          <option value="500-1000">$500 - $1,000</option>
-          <option value="1000-2500">$1,000 - $2,500</option>
-          <option value="2500+">$2,500+</option>
+          <option value="0-500">R0 - R500</option>
+          <option value="500-1000">R500 - R1,000</option>
+          <option value="1000-2500">R1,000 - R2,500</option>
+          <option value="2500+">R2,500+</option>
         </select>
       </div>
 

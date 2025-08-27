@@ -1,87 +1,72 @@
+import axios from 'axios'
+
+const BACKEND_URL = 'http://localhost:8080/products'
+
 const state = {
-  artworks: [
-    {
-      id: 1,
-      title: 'Neon Dreams',
-      artist: 'Alex Chen',
-      category: 'digital',
-      price: 299,
-      type: 'featured',
-      gradient: 'linear-gradient(45deg, #FF6B6B, #4ECDC4)',
-      description: 'A stunning digital artwork exploring the intersection of dreams and reality.'
-    },
-    {
-      id: 2,
-      title: 'Ocean Depths',
-      artist: 'Maria Rodriguez',
-      category: 'abstract',
-      price: 450,
-      type: 'new',
-      gradient: 'linear-gradient(45deg, #667eea, #764ba2)',
-      description: 'Abstract representation of the mysterious ocean depths.'
-    },
-    {
-      id: 3,
-      title: 'Urban Pulse',
-      artist: 'David Kim',
-      category: 'photography',
-      price: 199,
-      type: 'trending',
-      gradient: 'linear-gradient(45deg, #f093fb, #f5576c)',
-      description: 'Capturing the vibrant energy of city life through digital manipulation.'
-    },
-    {
-      id: 4,
-      title: 'Digital Flora',
-      artist: 'Sarah Johnson',
-      category: 'digital',
-      price: 350,
-      type: 'featured',
-      gradient: 'linear-gradient(45deg, #4facfe, #00f2fe)',
-      description: 'Reimagining nature through a digital lens with vibrant colors.'
-    },
-    {
-      id: 5,
-      title: 'Cosmic Journey',
-      artist: 'Alex Chen',
-      category: 'abstract',
-      price: 599,
-      type: 'new',
-      gradient: 'linear-gradient(45deg, #43e97b, #38f9d7)',
-      description: 'An exploration of space and time through abstract digital art.'
-    },
-    {
-      id: 6,
-      title: 'Portrait Study',
-      artist: 'Maria Rodriguez',
-      category: 'portrait',
-      price: 275,
-      type: 'trending',
-      gradient: 'linear-gradient(45deg, #fa709a, #fee140)',
-      description: 'Contemporary digital portrait with surreal elements.'
-    }
-  ],
+  artworks: [],
   filters: {
     category: '',
     artist: '',
     priceRange: '',
-    date: ''
-  }
+    size: '',
+    availability: '',
+    sortBy: 'newest'
+  },
+  loading: false,
+  error: null
 }
 
 const mutations = {
+  SET_ARTWORKS(state, artworks) {
+    state.artworks = artworks
+  },
   SET_FILTERS(state, filters) {
     state.filters = { ...state.filters, ...filters }
   },
   RESET_FILTERS(state) {
-    state.filters = { category: '', artist: '', priceRange: '', date: '' }
+    state.filters = {
+      category: '',
+      artist: '',
+      priceRange: '',
+      size: '',
+      availability: '',
+      sortBy: 'newest'
+    }
+  },
+  SET_LOADING(state, value) {
+    state.loading = value
+  },
+  SET_ERROR(state, value) {
+    state.error = value
   }
 }
 
 const actions = {
+  async fetchArtworks({ commit }) {
+    commit('SET_LOADING', true)
+    commit('SET_ERROR', null)
+    try {
+      const response = await axios.get(`${BACKEND_URL}/getAll`)
+      const artworks = response.data.map(product => ({
+        id: product.productID,
+        title: product.title,
+        description: product.description,
+        price: product.price,
+        category: product.category?.name || 'Unknown',
+        image: product.imageUrl ? `http://localhost:8080/${product.imageUrl}` : '/placeholder-art.jpg'
+      }))
+      commit('SET_ARTWORKS', artworks)
+    } catch (err) {
+      commit('SET_ERROR', err.message)
+    } finally {
+      commit('SET_LOADING', false)
+    }
+  },
+
   updateFilters({ commit }, filters) {
     commit('SET_FILTERS', filters)
   },
+
   resetFilters({ commit }) {
     commit('RESET_FILTERS')
   }
@@ -89,10 +74,48 @@ const actions = {
 
 const getters = {
   allArtworks: state => state.artworks,
-  filteredArtworks: state => type => {
-    return state.artworks.filter(art => art.type === type)
+
+  filteredArtworks: state => {
+    const { category, priceRange, sortBy } = state.filters
+    let filtered = state.artworks
+
+    // Filter by category
+    if (category) {
+      filtered = filtered.filter(a => a.category.toLowerCase() === category.toLowerCase())
+    }
+
+    // Filter by price
+    if (priceRange) {
+      let min, max
+      if (priceRange.includes('+')) {
+        min = Number(priceRange.replace('+',''))
+        max = Infinity
+      } else {
+        [min, max] = priceRange.split('-').map(Number)
+      }
+      filtered = filtered.filter(a => a.price >= min && a.price <= max)
+    }
+
+    // Sorting
+    switch(sortBy) {
+      case 'price-low': filtered.sort((a,b) => a.price - b.price); break
+      case 'price-high': filtered.sort((a,b) => b.price - a.price); break
+      case 'title': filtered.sort((a,b) => a.title.localeCompare(b.title)); break
+      default: break
+    }
+
+    return filtered
   },
-  searchFilters: state => state.filters
+
+  loading: state => state.loading,
+  error: state => state.error,
+  filters: state => state.filters
 }
 
-export default { namespaced: true, state, mutations, actions, getters }
+export default {
+  namespaced: true,
+  state,
+  mutations,
+  actions,
+  getters
+}
