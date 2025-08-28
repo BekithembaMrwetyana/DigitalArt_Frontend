@@ -9,7 +9,7 @@ import Events from '@/views/Events.vue'
 import Exhibitions from '@/views/Exhibitions.vue'
 import Gallery from '@/views/Gallery.vue'
 import Home from '@/views/Home.vue'
-import Cart from '@/views/Cart.vue'
+import Cart from '@/views/cart/Cart.vue'
 
 // Import admin components
 import AdminCategories from '@/components/admin/AdminCategories.vue'
@@ -25,7 +25,7 @@ const routes = [
   { path: '/events', name: 'Events', component: Events },
   { path: '/commission', name: 'Commission', component: Commission },
   { path: '/contact', name: 'Contact', component: Contact },
-  {path: '/cart',name: 'Cart',component: Cart}
+  {path: '/cart',name: 'Cart',component: Cart},
   
   // Admin routes with nested layout
   {

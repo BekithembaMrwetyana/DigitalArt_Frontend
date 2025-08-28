@@ -36,6 +36,12 @@
           <button @click="showRegister" class="auth-btn register-btn">
             Register
           </button>
+          <!-- Cart icon -->
+          <router-link to="/cart" class="cart-button" title="View cart">
+            🛒
+            <span class="badge" v-if="cartCount">{{ cartCount }}</span>
+          </router-link>
+          
         </div>
         
         <div v-else class="user-menu">
