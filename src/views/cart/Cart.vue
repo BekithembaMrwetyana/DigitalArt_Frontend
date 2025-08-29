@@ -11,8 +11,6 @@
           v-for="it in cartItems"
           :key="it.cartItem_id"
           :item="it"
-          @updateQty="onUpdateQty"
-          @remove="removeItem"
         />
       </div>
 
@@ -43,94 +41,27 @@
 </template>
 
 <script>
-import { getCartItemsByUserId, deleteCartItem, updateCartItem } from "@/services/CartItemService";
+
 import CartItemRow from "@/components/cart/CartItemRow.vue";
 
 export default {
   components: { CartItemRow },
-
-  data() {
-    return {
-      cartItems: [],
-      error: null,
-      loading: false,
-    };
-  },
-
-  mounted() {
-    if (this.isLoggedIn()) {
-      this.fetchCart();
-    }
-  },
-
   computed: {
-    cartCount() {
-      return this.cartItems.reduce((sum, it) => sum + (it.quantity || 0), 0);
-    },
-    cartSubtotal() {
-      return this.cartItems.reduce((sum, it) => {
-        const qty = it.quantity || 0;
-        const price = it.price ?? it.product?.price ?? 0;
-        return sum + qty * price;
-      }, 0);
-    },
+    cartItems() { return this.$store.getters["Cart/cartItems"]; },
+    cartCount() { return this.$store.getters["Cart/cartCount"]; },
+    cartSubtotal() { return this.$store.getters["Cart/cartSubtotal"]; },
+    loading() { return this.$store.state.Cart.loading; },
   },
-
+  mounted() {
+    this.$store.dispatch("Cart/fetchUserCart");
+  },
   methods: {
-    isLoggedIn() {
-      const user = localStorage.getItem("user");
-      return user !== null;
-    },
-
-    async fetchCart() {
-      try {
-        this.loading = true;
-        const user = JSON.parse(localStorage.getItem("user"));
-        if (user) {
-          const cartData = await getCartItemsByUserId(user.userId);
-          this.cartItems = cartData.map((item) => ({
-            ...item,
-            product: item.product || {},
-            productName: item.product?.productName || "Unnamed Product",
-          }));
-        }
-      } catch (error) {
-        this.error = "Failed to load cart.";
-      } finally {
-        this.loading = false;
-      }
-    },
-
-    async removeItem(id) {
-      try {
-        await deleteCartItem(id);
-        this.cartItems = this.cartItems.filter((item) => item.cartItem_id !== id);
-      } catch (error) {
-        alert("Failed to remove item from cart.");
-      }
-    },
-
-    async onUpdateQty({ id, quantity, price, product, user }) {
-      try {
-        const updatedItem = { cartItem_id: id, quantity, price, product, user };
-        await updateCartItem(updatedItem);
-        this.fetchCart();
-      } catch (error) {
-        alert("Failed to update quantity.");
-      }
-    },
-
     proceedToCheckout() {
-      if (!this.isLoggedIn()) {
-        alert("Please log in to proceed to checkout.");
-        return;
-      }
+      const user = localStorage.getItem("user");
+      if (!user) { alert("Please log in to proceed to checkout."); return; }
       this.$router.push({ name: "Checkout" });
     },
-
-    goToHome() {
-      this.$router.go(-1);
-    },
+    goToHome() { this.$router.go(-1); },
   },
 };
 </script>

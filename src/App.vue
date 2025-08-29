@@ -8,14 +8,23 @@
 </template>
 
 <script>
-import Footer from '@/components/common/Footer.vue';
-import Header from '@/components/common/Header.vue';
+import Footer from '@/components/common/Footer.vue'
+import Header from '@/components/common/Header.vue'
+import { useStore } from 'vuex'
 
 export default {
   name: 'App',
-  components: {
-    Header,
-    Footer
+  components: { Header, Footer },
+  setup() {
+    const store = useStore()
+
+    // Load cart if user is already logged in
+    const userRaw = localStorage.getItem('user')
+    if (userRaw) {
+      store.dispatch('cart/fetchUserCart')
+    }
+
+    return {}
   },
   computed: {
     isAdminRoute() {
@@ -24,6 +33,7 @@ export default {
   }
 }
 </script>
+
 
 <style>
 /* Global App Styles */

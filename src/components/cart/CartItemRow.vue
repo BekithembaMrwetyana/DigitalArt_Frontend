@@ -13,10 +13,8 @@
       />
     </td>
 
-    <!-- Total Price for this row -->
     <td>{{ (item.product.price * localQuantity).toFixed(2) }}</td>
 
-    <!-- Remove Button -->
     <td>
       <button @click="removeItem" class="bg-red-500 text-white px-2 py-1 rounded">
         Remove
@@ -26,42 +24,26 @@
 </template>
 
 <script>
-import cartService from "../services/cartitemservice"; 
-import { useCartStore } from "../store/cart";
+import { updateCartItem, deleteCartItem } from "@/services/CartItemService";
 
 export default {
   name: "CartItemRow",
-  props: {
-    item: {
-      type: Object,
-      required: true,
-    },
-  },
+  props: { item: { type: Object, required: true } },
   data() {
-    return {
-      localQuantity: this.item.quantity, 
-    };
-  },
-  setup() {
-    const cartStore = useCartStore();
-    return { cartStore };
+    return { localQuantity: this.item.quantity };
   },
   methods: {
     async updateQuantity() {
       try {
-        await cartService.updateCartItem(this.item.id, this.localQuantity);
-        this.cartStore.updateItemQuantity(this.item.id, this.localQuantity);
-      } catch (err) {
-        console.error("Error updating cart item:", err);
-      }
+        await updateCartItem({ id: this.item.id, quantity: this.localQuantity });
+        this.$store.dispatch("Cart/updateItemQuantity", { item: this.item, quantity: this.localQuantity });
+      } catch (err) { console.error("Error updating cart item:", err); }
     },
     async removeItem() {
       try {
-        await cartService.removeCartItem(this.item.id);
-        this.cartStore.removeItem(this.item.id);
-      } catch (err) {
-        console.error("Error removing cart item:", err);
-      }
+        await deleteCartItem(this.item.id);
+        this.$store.dispatch("Cart/removeItem", this.item.id);
+      } catch (err) { console.error("Error removing cart item:", err); }
     },
   },
 };
