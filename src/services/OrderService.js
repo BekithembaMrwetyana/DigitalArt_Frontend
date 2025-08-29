@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:8080/orders";
+// Updated to match backend @RequestMapping("/api/orders")
+const BASE_URL =  "http://localhost:8080/digital_artDB/api/orders";
+
 
 export default {
   // Get all orders (Admin)

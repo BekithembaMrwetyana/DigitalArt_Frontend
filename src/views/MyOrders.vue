@@ -24,6 +24,8 @@
             </div>
           </div>
         </div>
+
+        <div v-if="error" class="error-message">{{ error }}</div>
       </div>
 
       <ArtworkFilter />
@@ -48,6 +50,7 @@ export default {
   setup() {
     const orders = ref([])
     const loading = ref(true)
+    const error = ref(null)
 
     const formatDate = (dateStr) => {
       const date = new Date(dateStr)
@@ -55,18 +58,58 @@ export default {
     }
 
     onMounted(async () => {
+      loading.value = true
+      error.value = null
+
       try {
-        const data = await OrderService.getOrdersByUserId(10)
+        const user = JSON.parse(localStorage.getItem('user'))
+        if (!user || !user.userId) throw new Error("No user logged in")
+
+        const data = await OrderService.getOrdersByUserId(user.userId)
         orders.value = data
-      } catch (error) {
-        console.error('Error fetching orders:', error)
+      } catch (err) {
+        console.error('Error fetching orders:', err)
+        error.value = 'Failed to load orders. Please try again later.'
       } finally {
         loading.value = false
       }
     })
 
-    return { orders, loading, formatDate }
+    return { orders, loading, error, formatDate }
   }
 }
-
 </script>
+
+<style scoped>
+.no-orders {
+  margin-top: 20px;
+  font-size: 1.2em;
+  color: #555;
+}
+.orders-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 20px;
+}
+.order-card {
+  border: 1px solid #ddd;
+  padding: 1rem;
+  border-radius: 8px;
+  width: 250px;
+  background-color: #f9f9f9;
+}
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+.status.pending { color: orange; }
+.status.shipped { color: blue; }
+.status.delivered { color: green; }
+.error-message {
+  margin-top: 20px;
+  color: red;
+}
+</style>
