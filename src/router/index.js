@@ -3,11 +3,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 // Public views
 import Home from '@/views/Home.vue'
 import Gallery from '@/views/Gallery.vue'
-import Artists from '@/views/Artists.vue'
-import Collections from '@/views/Collections.vue'
-import Exhibitions from '@/views/Exhibitions.vue'
-import Events from '@/views/Events.vue'
-import Commission from '@/views/Commission.vue'
+
+
 import Contact from '@/views/Contact.vue'
 import Cart from '@/views/cart/Cart.vue'
 import MyOrders from '@/views/MyOrders.vue'  // Customer orders
