@@ -4,8 +4,13 @@
       <ArtworkFilter />
       
       <div class="main-content">
-        <HeroSlider />
+        <HeroSlider :slides = "slidesData" />
         <ArtworkGrid />
+
+        <!-- My Orders link -->
+        <div class="guest-orders">
+          <router-link to="/myorders">View My Orders</router-link>
+        </div>
       </div>
       
       <Sidebar />
@@ -21,6 +26,8 @@ import ArtworkGrid from '@/components/artwork/ArtworkGrid.vue'
 import HeroSlider from '@/components/hero/HeroSlider.vue'
 import Modal from '@/components/common/Modal.vue'
 
+
+
 export default {
   name: 'Home',
   components: {
@@ -28,6 +35,20 @@ export default {
     ArtworkGrid,
     HeroSlider,
     Modal
+  },
+  data() {
+    return {
+      slidesData: [
+        { image: 'slide1.jpg', title: 'Slide 1' },
+        { image: 'slide2.jpg', title: 'Slide 2' },
+        { image: 'slide3.jpg', title: 'Slide 3' }
+      ]
+    }
+  },
+  mounted() {
+    // Simulate a logged-in user for testing MyOrders page
+    const testUser = { userId: 10, firstName: 'Test', lastName: 'User' }
+    localStorage.setItem('user', JSON.stringify(testUser))
   }
 }
 </script>
@@ -35,7 +56,7 @@ export default {
 <style scoped>
 .home {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  min-height: calc(100vh - 200px); /* Adjust for header height */
+  min-height: calc(100vh - 200px);
   padding: 2rem 0;
 }
 
@@ -56,6 +77,23 @@ export default {
   box-shadow: 0 8px 32px rgba(0,0,0,0.1);
 }
 
+.guest-orders {
+  margin: 2rem 0;
+  text-align: center;
+}
+
+.guest-orders a {
+  background-color: #667eea;
+  color: white;
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  text-decoration: none;
+}
+
+.guest-orders a:hover {
+  background-color: #764ba2;
+}
+
 @media (max-width: 768px) {
   .main-container {
     grid-template-columns: 1fr;
@@ -68,3 +106,4 @@ export default {
   }
 }
 </style>
+
