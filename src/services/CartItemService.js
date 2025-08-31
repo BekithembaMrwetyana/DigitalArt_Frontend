@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:8080/ADP_Capstone_Project";
+const BASE_URL = "http://localhost:8080//ADP3_Capstone_Project/cart_Item";
 
 // Get all cart items
 export const getAllCartItems = async () => {

@@ -109,7 +109,7 @@ export default {
     const isAuthenticated = computed(() => store.getters['auth/isAuthenticated'])
     const user = computed(() => store.getters['auth/user'])
     
-    // ✅ Cart info
+    // Cart info
     const cartCount = computed(() => store.getters['cart/cartCount'])
 
     const performSearch = () => {
