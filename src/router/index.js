@@ -14,16 +14,16 @@ import MyOrders from '@/views/MyOrders.vue'  // Customer orders
 
 
 // Admin components
-import Events from '@/views/Events.vue'
-import Exhibitions from '@/views/Exhibitions.vue'
-import Gallery from '@/views/Gallery.vue'
-import Home from '@/views/Home.vue'
+//import Events from '@/views/Events.vue'
+//import Exhibitions from '@/views/Exhibitions.vue'
+//import Gallery from '@/views/Gallery.vue'
+//import Home from '@/views/Home.vue'
 
 // Admin views
 import ArtBrand from '@/views/ArtBrand.vue'
 import AdminCategories from '@/components/admin/AdminCategories.vue'
 import AdminLayout from '@/components/layout/AdminLayout.vue'
-import AdminCategories from '@/components/admin/AdminCategories.vue'
+//import AdminCategories from '@/components/admin/AdminCategories.vue'
  import Orders from '@/components/admin/Orders.vue'
  import Inventory from '@/components/admin/Inventory.vue'
       // Admin orders

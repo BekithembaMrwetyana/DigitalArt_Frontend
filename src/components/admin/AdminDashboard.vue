@@ -5,6 +5,7 @@
       <p>Manage your digital art gallery from here.</p>
     </div>
 
+    
     <!-- Quick Stats -->
     <div class="stats-grid">
       <div class="stat-card">

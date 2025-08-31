@@ -5,6 +5,7 @@
     <div v-if="loading" class="loading">Loading orders...</div>
     <div v-else-if="orders.length === 0" class="no-orders">No orders found.</div>
 
+    
     <table v-else class="orders-table">
       <thead>
         <tr>
