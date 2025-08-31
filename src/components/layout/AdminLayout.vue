@@ -1,10 +1,13 @@
 <template>
   <div class="admin-layout">
+    <!-- Sidebar -->
     <div :class="['sidebar', { collapsed: isCollapsed }]">
       <h2 v-if="!isCollapsed" class="sidebar-title">Admin Panel</h2>
       <button class="collapse-btn" @click="toggleSidebar">
         <i :class="isCollapsed ? 'fa fa-chevron-right' : 'fa fa-chevron-left'"></i>
       </button>
+
+      <!-- Sidebar links -->
       <router-link 
         :to="'/admin/dashboard'" 
         :class="['sidebar-button', { 'active': $route.path === '/admin/dashboard' }]"
@@ -12,6 +15,7 @@
         <i class="fa fa-dashboard"></i> 
         <span v-if="!isCollapsed">Dashboard</span>
       </router-link>
+
       <router-link 
         :to="'/admin/users'" 
         :class="['sidebar-button', { 'active': $route.path === '/admin/users' }]"
@@ -19,6 +23,7 @@
         <i class="fa fa-user"></i> 
         <span v-if="!isCollapsed">Users</span>
       </router-link>
+
       <router-link 
         :to="'/admin/orders'" 
         :class="['sidebar-button', { 'active': $route.path === '/admin/orders' }]"
@@ -26,6 +31,7 @@
         <i class="fa fa-shopping-cart"></i>
         <span v-if="!isCollapsed">Orders</span>
       </router-link>
+
       <router-link 
         :to="'/admin/brands'" 
         :class="['sidebar-button', { 'active': $route.path === '/admin/brands' }]"
@@ -33,6 +39,7 @@
         <i class="fa fa-tags"></i> 
         <span v-if="!isCollapsed">Art Brands</span>
       </router-link>
+
       <router-link 
         :to="'/admin/shoes'" 
         :class="['sidebar-button', { 'active': $route.path === '/admin/shoes' }]"
@@ -40,6 +47,7 @@
         <i class="fa fa-shopping-bag"></i> 
         <span v-if="!isCollapsed">Arts</span>
       </router-link>
+
       <router-link 
         :to="'/admin/categories'" 
         :class="['sidebar-button', { 'active': $route.path === '/admin/categories' }]"
@@ -47,6 +55,7 @@
         <i class="fa fa-list"></i> 
         <span v-if="!isCollapsed">Categories</span>
       </router-link>
+
       <router-link 
         :to="'/admin/notifications'" 
         :class="['sidebar-button', { 'active': $route.path === '/admin/notifications' }]"
@@ -56,11 +65,11 @@
       </router-link>
     </div>
 
+    <!-- Main content -->
     <div class="admin-content">
       <div class="admin-header">
         <h1>{{ pageTitle }}</h1>
       </div>
-      
       <div class="admin-main">
         <router-view />
       </div>
@@ -76,15 +85,10 @@ export default {
   name: 'AdminLayout',
   setup() {
     const route = useRoute()
-    const searchQuery = ref('')
     const isCollapsed = ref(false)
 
     const toggleSidebar = () => {
       isCollapsed.value = !isCollapsed.value
-    }
-
-    const search = () => {
-      console.log('Search:', searchQuery.value)
     }
 
     const pageTitle = computed(() => {
@@ -93,10 +97,8 @@ export default {
     })
 
     return {
-      searchQuery,
       isCollapsed,
       toggleSidebar,
-      search,
       pageTitle
     }
   }
@@ -182,47 +184,8 @@ export default {
 }
 
 @keyframes fadeInDown {
-  0% {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.search-bar {
-  display: flex;
-  align-items: center;
-}
-
-.search-bar input {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  flex-grow: 1;
-  margin-right: 10px;
-  transition: border-color 0.3s;
-}
-
-.search-bar input:focus {
-  border-color: #3498db;
-  outline: none;
-}
-
-.search-button {
-  background-color: #3498db;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.search-button:hover {
-  background-color: #2980b9;
+  0% { opacity: 0; transform: translateY(-20px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
 .collapse-btn {
