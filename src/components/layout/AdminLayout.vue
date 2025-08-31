@@ -27,6 +27,13 @@
         <span v-if="!isCollapsed">Orders</span>
       </router-link>
       <router-link 
+  :to="'/admin/inventory'" 
+  :class="['sidebar-button', { 'active': $route.path === '/admin/inventory' }]"
+>
+  <i class="fa fa-archive"></i> 
+  <span v-if="!isCollapsed">Inventory</span>
+</router-link>
+      <router-link 
         :to="'/admin/brands'" 
         :class="['sidebar-button', { 'active': $route.path === '/admin/brands' }]"
       >
@@ -54,6 +61,7 @@
         <i class="fa fa-bell"></i> 
         <span v-if="!isCollapsed">Notifications</span>
       </router-link>
+
     </div>
 
     <div class="admin-content">
