@@ -50,7 +50,7 @@
 
 <script>
 import inventoryService from "@/services/inventoryService";
-import productService from "@/services/productService"; // you need a service to fetch products
+//import productService from "@/services/productService"; // you need a service to fetch products
 
 export default {
   data() {
