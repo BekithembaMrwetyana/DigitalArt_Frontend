@@ -32,15 +32,8 @@ const routes = [
     path: '/admin',
     component: AdminLayout,
     children: [
-      {
-        path: '',
-        redirect: '/admin/categories'
-      },
-      {
-        path: 'categories',
-        name: 'AdminCategories',
-        component: AdminCategories
-      }
+      { path: '',redirect: '/admin/categories'},
+      { path: 'categories', name: 'AdminCategories', component: AdminCategories}
     ]
   }
 ]
