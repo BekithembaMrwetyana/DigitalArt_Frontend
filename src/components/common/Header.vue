@@ -36,6 +36,7 @@
           <button @click="showRegister" class="auth-btn register-btn">
             Register
           </button>
+          
         </div>
         
         <div v-else class="user-menu">
@@ -45,12 +46,14 @@
               <img :src="user.avatar || '/images/default-avatar.png'" alt="Profile" class="avatar" />
               <span class="dropdown-arrow">▼</span>
             </div>
+            <router-link to="/cart" class="cart-button" title="View cart">🛒<span class="badge" v-if="cartCount">{{ cartCount }}</span></router-link>
           </div>
           
           <div v-if="showUserMenu" class="dropdown-menu">
             <router-link to="/profile" class="dropdown-item">Profile</router-link>
             <router-link to="/orders" class="dropdown-item">My Orders</router-link>
             <router-link to="/favorites" class="dropdown-item">Favorites</router-link>
+            <!-- Add cart icon here too -->
             <div class="dropdown-divider"></div>
             <button @click="logout" class="dropdown-item logout-btn">Logout</button>
           </div>
@@ -106,6 +109,9 @@ export default {
     const isAuthenticated = computed(() => store.getters['auth/isAuthenticated'])
     const user = computed(() => store.getters['auth/user'])
     
+    // Cart info
+    const cartCount = computed(() => store.getters['cart/cartCount'])
+
     const performSearch = () => {
       if (searchQuery.value.trim()) {
         router.push({
@@ -144,6 +150,7 @@ export default {
       showUserMenu,
       isAuthenticated,
       user,
+      cartCount,
       performSearch,
       showSignIn,
       showRegister,

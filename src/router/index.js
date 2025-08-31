@@ -14,6 +14,14 @@ import MyOrders from '@/views/MyOrders.vue'  // Customer orders
 
 
 // Admin components
+import Events from '@/views/Events.vue'
+import Exhibitions from '@/views/Exhibitions.vue'
+import Gallery from '@/views/Gallery.vue'
+import Home from '@/views/Home.vue'
+
+// Admin views
+import ArtBrand from '@/views/ArtBrand.vue'
+import AdminCategories from '@/components/admin/AdminCategories.vue'
 import AdminLayout from '@/components/layout/AdminLayout.vue'
 import AdminCategories from '@/components/admin/AdminCategories.vue'
  import Orders from '@/components/admin/Orders.vue'
@@ -41,7 +49,8 @@ const routes = [
       { path: '', redirect: '/admin/categories' },
       { path: 'categories', name: 'AdminCategories', component: AdminCategories },
       { path: 'orders', name: 'AdminOrders', component: Orders }, // Admin orders
-      { path: 'inventory', name: 'AdminInventory', component: Inventory }
+      { path: 'inventory', name: 'AdminInventory', component: Inventory },
+      { path: 'brands', name: 'ArtBrand', component: ArtBrand } // <-- moved here
     ]
   },
 

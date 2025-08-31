@@ -1,18 +1,73 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:8080/api";
+const BASE_URL = "http://localhost:8080//ADP3_Capstone_Project/cart_Item";
 
-
-export default {
-  getCartItems(userId) {
-    return axios.get(`${BASE_URL}/cart-items/user/${userId}`);
-  },
-
-  addCartItem(cartItem) {
-    return axios.post(`${BASE_URL}/cart-items`, cartItem);
-  },
-
-  deleteCartItem(id) {
-    return axios.delete(`${BASE_URL}/cart-items/${id}`);
+// Get all cart items
+export const getAllCartItems = async () => {
+  const token = localStorage.getItem('token');
+  try {
+    const response = await axios.get(`${BASE_URL}/cartItem/getAll`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching cart items:", error);
+    throw error;
   }
 };
+
+// Get cart items by user
+export const getCartItemsByUserId = async (userId) => {
+  const token = localStorage.getItem('token');
+  try {
+    const response = await axios.get(`${BASE_URL}/cartItem/findByUser/${userId}`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching user's cart items:", error);
+    throw error;
+  }
+};
+
+// Save a new cart item
+export const saveCartItem = async (cartItem) => {
+  const token = localStorage.getItem('token');
+  try {
+    const response = await axios.post(`${BASE_URL}/cartItem/save`, cartItem, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error saving cartItem:", error);
+    throw error;
+  }
+};
+
+// Update cart item
+export const updateCartItem = async (cartItem) => {
+  const token = localStorage.getItem('token');
+  try {
+    const response = await axios.put(`${BASE_URL}/cartItem/update`, cartItem, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error updating cart item:", error);
+    throw error;
+  }
+};
+
+// Delete cart item
+export const deleteCartItem = async (id) => {
+  const token = localStorage.getItem('token');
+  try {
+    await axios.delete(`${BASE_URL}/cartItem/delete/${id}`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+  } catch (error) {
+    console.error(`Error deleting cart item with ID ${id}:`, error);
+    throw error;
+  }
+};
+
