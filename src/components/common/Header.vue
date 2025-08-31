@@ -70,21 +70,6 @@
         <router-link to="/gallery" class="nav-link" active-class="active">
           GALLERY
         </router-link>
-        <router-link to="/artists" class="nav-link" active-class="active">
-          ARTISTS
-        </router-link>
-        <router-link to="/collections" class="nav-link" active-class="active">
-          COLLECTIONS
-        </router-link>
-        <router-link to="/exhibitions" class="nav-link" active-class="active">
-          EXHIBITIONS
-        </router-link>
-        <router-link to="/events" class="nav-link events-nav" active-class="active">
-          EVENTS & SALES
-        </router-link>
-        <router-link to="/commission" class="nav-link" active-class="active">
-          COMMISSION
-        </router-link>
         <router-link to="/contact" class="nav-link contact-btn" active-class="active">
           CONTACT US
         </router-link>

@@ -3,11 +3,6 @@
     <div class="nav-content">
       <router-link to="/" class="nav-item" :class="{ active: $route.name === 'Home' }">HOME</router-link>
       <router-link to="/gallery" class="nav-item" :class="{ active: $route.name === 'Gallery' }">GALLERY</router-link>
-      <router-link to="/artists" class="nav-item" :class="{ active: $route.name === 'Artists' }">ARTISTS</router-link>
-      <router-link to="/collections" class="nav-item" :class="{ active: $route.name === 'Collections' }">COLLECTIONS</router-link>
-      <router-link to="/exhibitions" class="nav-item" :class="{ active: $route.name === 'Exhibitions' }">EXHIBITIONS</router-link>
-      <router-link to="/events" class="nav-item" :class="{ active: $route.name === 'Events' }">EVENTS & SALES</router-link>
-      <router-link to="/commission" class="nav-item" :class="{ active: $route.name === 'Commission' }">COMMISSION</router-link>
       <router-link to="/contact" class="nav-item" :class="{ active: $route.name === 'Contact' }">CONTACT US</router-link>
     </div>
   </nav>

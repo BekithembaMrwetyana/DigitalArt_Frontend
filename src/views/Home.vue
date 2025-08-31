@@ -24,7 +24,6 @@
 import ArtworkFilter from '@/components/artwork/ArtworkFilter.vue'
 import ArtworkGrid from '@/components/artwork/ArtworkGrid.vue'
 import HeroSlider from '@/components/hero/HeroSlider.vue'
-import Sidebar from '@/components/layout/Sidebar.vue'
 import Modal from '@/components/common/Modal.vue'
 
 
@@ -35,7 +34,6 @@ export default {
     ArtworkFilter,
     ArtworkGrid,
     HeroSlider,
-    Sidebar,
     Modal
   },
   data() {
