@@ -11,9 +11,11 @@ import Gallery from '@/views/Gallery.vue'
 import Home from '@/views/Home.vue'
 
 // Admin views
-import ArtBrand from '@/views/ArtBrand.vue'
 import AdminCategories from '@/components/admin/AdminCategories.vue'
+import AdminDashboard from '@/components/admin/AdminDashboard.vue'
+import NotificationPage from '@/components/admin/NotificationPage.vue'
 import AdminLayout from '@/components/layout/AdminLayout.vue'
+import ArtBrand from '@/views/ArtBrand.vue'
 
 const routes = [
   // Public routes
@@ -31,9 +33,13 @@ const routes = [
     path: '/admin',
     component: AdminLayout,
     children: [
+
+      { path: 'dashboard',name: 'AdminDashboard', component: AdminDashboard},
       { path: '', redirect: '/admin/categories' },
       { path: 'categories', name: 'AdminCategories', component: AdminCategories },
-      { path: 'brands', name: 'ArtBrand', component: ArtBrand } // <-- moved here
+      { path: 'brands', name: 'ArtBrand', component: ArtBrand }, // <-- moved here
+       {path: "notifications", name: "AdminNotifications",component: NotificationPage}
+
     ]
   }
 ]

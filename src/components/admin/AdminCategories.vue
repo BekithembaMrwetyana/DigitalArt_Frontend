@@ -23,16 +23,7 @@
 
       <!-- Controls Row -->
       <div class="controls-row">
-        <div class="entries-control">
-          <span>Show</span>
-          <select v-model="entriesPerPage" class="entries-select">
-            <option value="10">10</option>
-            <option value="25">25</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
-          </select>
-          <span>entries</span>
-        </div>
+        
         
         <div class="search-control">
           <span>Search:</span>
@@ -110,13 +101,7 @@
           Showing {{ startEntry }} to {{ endEntry }} of {{ filteredCategories.length }} entries
         </div>
         <div class="pagination-controls">
-          <button 
-            class="pagination-btn" 
-            @click="goToPage(currentPage - 1)"
-            :disabled="currentPage === 1"
-          >
-            Previous
-          </button>
+          
           <button 
             v-for="page in visiblePages" 
             :key="page"
@@ -125,13 +110,8 @@
           >
             {{ page }}
           </button>
-          <button 
-            class="pagination-btn" 
-            @click="goToPage(currentPage + 1)"
-            :disabled="currentPage === totalPages"
-          >
-            Next
-          </button>
+         
+            
         </div>
       </div>
     </div>
@@ -200,37 +180,30 @@
 </template>
 
 <script>
+import {
+  deleteCategory,
+  saveCategory,
+} from "@/services/categoryService";
+
 export default {
   name: 'AdminCategories',
   data() {
     return {
-      categories: [
-        {
-          id: 1,
-          name: 'Digital Art',
-          description: 'Digital paintings, illustrations, and graphic designs',
-          createdAt: new Date('2024-01-15') 
-          //need to add the image url and status
+        categories: [],
+        newCategory: {
+
+        categoryId: null,
+
+        categoryName: '',
+
+        categoryDescription: '',
+
+        categoryImage: null,
+
         },
-        {
-          id: 2,
-          name: '3D Models',
-          description: '3D sculptures, models, and rendered artworks',
-          createdAt: new Date('2024-01-20')
-        },
-        {
-          id: 3,
-          name: 'Photography',
-          description: 'Professional and artistic photography',
-          createdAt: new Date('2024-02-01')
-        },
-        {
-          id: 4,
-          name: 'Abstract',
-          description: 'Abstract and conceptual artworks',
-          createdAt: new Date('2024-02-10')
-        }
-      ],
+    
+     
+
       filteredCategories: [],
       searchQuery: '',
       entriesPerPage: '10',

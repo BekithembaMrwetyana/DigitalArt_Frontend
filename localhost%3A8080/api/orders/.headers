@@ -1,0 +1,65 @@
+[
+  {
+    "applyTo": "getAll",
+    "headers": [
+      {
+        "name": "header-name-1",
+        "value": "header value"
+      }
+    ]
+  },
+  {
+    "applyTo": "*",
+    "headers": [
+      {
+        "name": "header-name-1",
+        "value": "header value"
+      }
+    ]
+  },
+  {
+    "applyTo": "*",
+    "headers": [
+      {
+        "name": "header-name-1",
+        "value": "header value"
+      }
+    ]
+  },
+  {
+    "applyTo": "getAll",
+    "headers": [
+      {
+        "name": "access-control-allow-origin",
+        "value": "*"
+      }
+    ]
+  },
+  {
+    "applyTo": "*",
+    "headers": [
+      {
+        "name": "header-name-1",
+        "value": "header value"
+      }
+    ]
+  },
+  {
+    "applyTo": "*",
+    "headers": [
+      {
+        "name": "header-name-1",
+        "value": "header value"
+      }
+    ]
+  },
+  {
+    "applyTo": "*",
+    "headers": [
+      {
+        "name": "header-name-1",
+        "value": "header value"
+      }
+    ]
+  }
+]

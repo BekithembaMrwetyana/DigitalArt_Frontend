@@ -22,15 +22,6 @@
         </ul>
       </div>
 
-      <!-- Artists Section (adapted from Theaters) -->
-      <div class="footer-section">
-        <h3>Artists</h3>
-        <ul>
-          <li><router-link to="/artists">Find Artists</router-link></li>
-          <li><router-link to="/commission">Commission</router-link></li>
-        </ul>
-      </div>
-
       <!-- Help Section -->
       <div class="footer-section">
         <h3>Help</h3>

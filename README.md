@@ -7,9 +7,6 @@ A modern, responsive digital art gallery built with Vue.js 3, featuring artwork 
 - **Modern Vue.js 3** with Composition API
 - **Responsive Design** - Works on all devices
 - **Artwork Gallery** with filtering and search
-- **Artist Profiles** and portfolios
-- **Commission System** for custom artwork
-- **Event Management** for exhibitions and workshops
 - **Contact System** with inquiry forms
 - **State Management** with Vuex
 - **Routing** with Vue Router
@@ -57,11 +54,6 @@ src/
 ### Pages
 - **Home** - Hero slider with featured artworks
 - **Gallery** - Browse all artworks with filters
-- **Artists** - Featured artist profiles
-- **Collections** - Curated artwork collections  
-- **Exhibitions** - Current and upcoming exhibitions
-- **Events** - Art events and workshops
-- **Commission** - Custom artwork requests
 - **Contact** - Contact form and information
 
 ### Components

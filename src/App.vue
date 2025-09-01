@@ -2,7 +2,8 @@
   <div id="app">
     <!-- Show Header/Footer only for non-admin routes -->
     <Header v-if="!isAdminRoute" />
-    <router-view />
+    <router-view class="router-view" />
+
     <Footer v-if="!isAdminRoute" />
   </div>
 </template>
