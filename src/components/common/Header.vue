@@ -67,6 +67,9 @@
         <router-link to="/" class="nav-link" exact-active-class="active">
           HOME
         </router-link>
+        <router-link to="/about" class="nav-link" active-class="active">
+          ABOUT US
+        </router-link>
         <router-link to="/gallery" class="nav-link" active-class="active">
           GALLERY
         </router-link>
@@ -106,19 +109,27 @@ export default {
       }
     }
     
-    const showSignIn = () => {
-      store.dispatch('ui/openModal', {
-        type: 'auth',
-        mode: 'signin'
-      })
-    }
+    // const showSignIn = () => {
+    //   store.dispatch('ui/openModal', {
+    //     type: 'auth',
+    //     mode: 'signin'
+    //   })
+    // }
     
-    const showRegister = () => {
-      store.dispatch('ui/openModal', {
-        type: 'auth',
-        mode: 'register'
-      })
+    // const showRegister = () => {
+    //   store.dispatch('ui/openModal', {
+    //     type: 'auth',
+    //     mode: 'register'
+    //   })
+    // }
+    const showSignIn = () => {
+      router.push({ name: 'Signin' })
     }
+
+    const showRegister = () => {
+      router.push({ name: 'Register' })
+    }
+
     
     const toggleUserMenu = () => {
       showUserMenu.value = !showUserMenu.value

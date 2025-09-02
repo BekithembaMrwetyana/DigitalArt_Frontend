@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:8080/api/users";
+const BASE_URL = "http://localhost:8080/users";
 
 // Helper function for consistent error logging
 function handleError(action, err) {

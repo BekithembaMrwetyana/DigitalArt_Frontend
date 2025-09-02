@@ -3,7 +3,7 @@
     <td>{{ item.product.name }}</td>
     <td>{{ item.product.price.toFixed(2) }}</td>
 
-    <td>
+    <td><s></s>
       <input
         type="number"
         min="1"

@@ -1,12 +1,12 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:8080//ADP3_Capstone_Project/cart_Item";
+const BASE_URL = "http://localhost:8080/cart_item";
 
 // Get all cart items
 export const getAllCartItems = async () => {
   const token = localStorage.getItem('token');
   try {
-    const response = await axios.get(`${BASE_URL}/cartItem/getAll`, {
+    const response = await axios.get(`${BASE_URL}/getAll`, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
     return response.data;
@@ -16,25 +16,11 @@ export const getAllCartItems = async () => {
   }
 };
 
-// Get cart items by user
-export const getCartItemsByUserId = async (userId) => {
-  const token = localStorage.getItem('token');
-  try {
-    const response = await axios.get(`${BASE_URL}/cartItem/findByUser/${userId}`, {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching user's cart items:", error);
-    throw error;
-  }
-};
-
 // Save a new cart item
 export const saveCartItem = async (cartItem) => {
   const token = localStorage.getItem('token');
   try {
-    const response = await axios.post(`${BASE_URL}/cartItem/save`, cartItem, {
+    const response = await axios.post(`${BASE_URL}/create`, cartItem, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
     return response.data;
@@ -44,11 +30,25 @@ export const saveCartItem = async (cartItem) => {
   }
 };
 
+// Get cart items by user
+export const getCartItemsByUserId = async (userId) => {
+  const token = localStorage.getItem('token');
+  try {
+    const response = await axios.get(`${BASE_URL}/findByUser/${userId}`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching user's cart items:", error);
+    throw error;
+  }
+};
+
 // Update cart item
 export const updateCartItem = async (cartItem) => {
   const token = localStorage.getItem('token');
   try {
-    const response = await axios.put(`${BASE_URL}/cartItem/update`, cartItem, {
+    const response = await axios.put(`${BASE_URL}/update`, cartItem, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
     return response.data;
@@ -62,7 +62,7 @@ export const updateCartItem = async (cartItem) => {
 export const deleteCartItem = async (id) => {
   const token = localStorage.getItem('token');
   try {
-    await axios.delete(`${BASE_URL}/cartItem/delete/${id}`, {
+    await axios.delete(`${BASE_URL}/delete/${id}`, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
   } catch (error) {

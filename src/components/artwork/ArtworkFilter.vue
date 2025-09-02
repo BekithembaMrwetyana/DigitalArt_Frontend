@@ -20,20 +20,7 @@
         </select>
       </div>
 
-      <!-- Artist Filter -->
-      <div class="filter-group">
-        <label class="filter-label">Artist</label>
-        <select 
-          v-model="filters.artist" 
-          @change="updateFilters"
-          class="filter-select"
-        >
-          <option value="">All Artists</option>
-          <option v-for="artist in artists" :key="artist.id" :value="artist.id">
-            {{ artist.name }}
-          </option>
-        </select>
-      </div>
+    
 
       <!-- Price Range Filter -->
       <div class="filter-group">
@@ -44,10 +31,10 @@
           class="filter-select"
         >
           <option value="">Any Price</option>
-          <option value="0-500">$0 - $500</option>
-          <option value="500-1000">$500 - $1,000</option>
-          <option value="1000-2500">$1,000 - $2,500</option>
-          <option value="2500+">$2,500+</option>
+          <option value="0-200">R0 - R200</option>
+          <option value="200-400">R200 - R400</option>
+          <option value="400-800">R400- R800</option>
+          <option value="800+">R800+</option>
         </select>
       </div>
 
@@ -137,7 +124,7 @@
 </template>
 
 <script>
-import { ref, computed, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 
 export default {

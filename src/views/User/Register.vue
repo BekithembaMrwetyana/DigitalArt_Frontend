@@ -135,7 +135,7 @@ export default {
       };
 
       try {
-        const response = await fetch('/api/users/create', {
+        const response = await fetch('http://localhost:8080/users/create', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

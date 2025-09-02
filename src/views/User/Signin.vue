@@ -1,13 +1,29 @@
 <template>
-  <div class="signin">
-    <h1>Sign In</h1>
-    <form @submit.prevent="signin">
-      <input type="email" v-model="email" placeholder="Email" required />
-      <input type="password" v-model="password" placeholder="Password" required />
-      <button type="submit">Sign In</button>
-    </form>
+  <div class="signin-container">
+    <div class="signin-card">
+      <h2>Sign In</h2>
+      <form @submit.prevent="signin">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input id="email" type="email" v-model="email" placeholder="Enter your email" required />
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input id="password" type="password" v-model="password" placeholder="Enter your password" required />
+        </div>
+
+        <button type="submit" class="signin-btn">Sign In</button>
+      </form>
+
+      <p class="register-link">
+        Don't have an account?
+        <router-link :to="{ name: 'Register' }">Register</router-link>
+      </p>
+    </div>
   </div>
 </template>
+
 
 <script>
 import axios from "axios";
@@ -23,7 +39,7 @@ export default {
   methods: {
     async signin() {
       try {
-        const response = await axios.post("http://localhost:8080/digital_artDB/api/users", {
+        const response = await axios.post("http://localhost:8080/users", {
           contact: { email: this.email },
           password: this.password
         });

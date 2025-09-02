@@ -42,7 +42,7 @@ export default {
   methods: {
     async fetchUsers() {
       try {
-        const response = await axios.get("http://localhost:8080/api/users/getAll");
+        const response = await axios.get("http://localhost:8080/users/getAll");
         this.users = response.data || [];
       } catch (error) {
         console.error("Error fetching users:", error);
