@@ -28,7 +28,7 @@
         <div v-if="error" class="error-message">{{ error }}</div>
       </div>
 
-      <ArtworkFilter />
+      <ProductFilter />
     </div>
     <Modal />
   </div>
@@ -38,14 +38,14 @@
 import { ref, onMounted } from 'vue'
 //import Sidebar from '@/components/layout/Sidebar.vue'
 import Modal from '@/components/common/Modal.vue'
-import ArtworkFilter from '@/components/artwork/ArtworkFilter.vue'
+import ProductFilter from '@/components/product/ProductFilter.vue'
 import OrderService from '@/services/OrderService.js'
 
 export default {
   components: {
     
     Modal,
-    ArtworkFilter
+    ProductFilter
   },
   setup() {
     const orders = ref([])

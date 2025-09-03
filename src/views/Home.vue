@@ -1,11 +1,11 @@
 <template>
   <div class="home">
     <div class="main-container">
-      <ArtworkFilter />
+      <ProductFilter />
       
       <div class="main-content">
         <HeroSlider :slides = "slidesData" />
-        <ArtworkGrid />
+        <ProductGrid :artworks="products" />
 
         <!-- My Orders link -->
         <div class="guest-orders">
@@ -21,18 +21,16 @@
 </template>
 
 <script>
-import ArtworkFilter from '@/components/artwork/ArtworkFilter.vue'
-import ArtworkGrid from '@/components/artwork/ArtworkGrid.vue'
+import ProductFilter from '@/components/product/ProductFilter.vue'
+import ProductGrid from '@/components/product/ProductGrid.vue'
 import HeroSlider from '@/components/hero/HeroSlider.vue'
 import Modal from '@/components/common/Modal.vue'
-
-
 
 export default {
   name: 'Home',
   components: {
-    ArtworkFilter,
-    ArtworkGrid,
+    ProductFilter,
+    ProductGrid,
     HeroSlider,
     Modal
   },
@@ -45,10 +43,18 @@ export default {
       ]
     }
   },
+  computed: {
+    products() {
+      return this.$store.getters['products/allProducts'] || []
+    }
+  },
   mounted() {
     // Simulate a logged-in user for testing MyOrders page
     const testUser = { userId: 10, firstName: 'Test', lastName: 'User' }
     localStorage.setItem('user', JSON.stringify(testUser))
+
+    // Fetch products from backend
+    this.$store.dispatch('products/fetchProducts')
   }
 }
 </script>

@@ -1,7 +1,6 @@
 <template>
   <header class="header">
     <div class="header-container">
-      <!-- Logo Section -->
       <div class="logo-section">
         <router-link to="/" class="logo-link">
           <h1 class="logo">ArtSpace</h1>
@@ -9,7 +8,6 @@
         </router-link>
       </div>
       
-      <!-- Search Section -->
       <div class="search-section">
         <div class="search-container">
           <input 
@@ -25,7 +23,6 @@
         </div>
       </div>
       
-      <!-- Auth Section -->
       <div class="auth-section">
         <div v-if="!isAuthenticated" class="auth-buttons">
           <span class="greeting">Hi Guest,</span>
@@ -53,7 +50,7 @@
             <router-link to="/profile" class="dropdown-item">Profile</router-link>
             <router-link to="/orders" class="dropdown-item">My Orders</router-link>
             <router-link to="/favorites" class="dropdown-item">Favorites</router-link>
-            <!-- Add cart icon here too -->
+          
             <div class="dropdown-divider"></div>
             <button @click="logout" class="dropdown-item logout-btn">Logout</button>
           </div>
@@ -61,11 +58,13 @@
       </div>
     </div>
     
-    <!-- Navigation Bar -->
     <nav class="navigation">
       <div class="nav-container">
         <router-link to="/" class="nav-link" exact-active-class="active">
           HOME
+        </router-link>
+        <router-link to="/about" class="nav-link" active-class="active">
+          ABOUT US
         </router-link>
         <router-link to="/gallery" class="nav-link" active-class="active">
           GALLERY
@@ -94,7 +93,6 @@ export default {
     const isAuthenticated = computed(() => store.getters['auth/isAuthenticated'])
     const user = computed(() => store.getters['auth/user'])
     
-    // Cart info
     const cartCount = computed(() => store.getters['cart/cartCount'])
 
     const performSearch = () => {
@@ -106,19 +104,27 @@ export default {
       }
     }
     
-    const showSignIn = () => {
-      store.dispatch('ui/openModal', {
-        type: 'auth',
-        mode: 'signin'
-      })
-    }
+    // const showSignIn = () => {
+    //   store.dispatch('ui/openModal', {
+    //     type: 'auth',
+    //     mode: 'signin'
+    //   })
+    // }
     
-    const showRegister = () => {
-      store.dispatch('ui/openModal', {
-        type: 'auth',
-        mode: 'register'
-      })
+    // const showRegister = () => {
+    //   store.dispatch('ui/openModal', {
+    //     type: 'auth',
+    //     mode: 'register'
+    //   })
+    // }
+    const showSignIn = () => {
+      router.push({ name: 'Signin' })
     }
+
+    const showRegister = () => {
+      router.push({ name: 'Register' })
+    }
+
     
     const toggleUserMenu = () => {
       showUserMenu.value = !showUserMenu.value
@@ -147,7 +153,6 @@ export default {
 </script>
 
 <style scoped>
-/* Prevent any duplication issues */
 .header {
   background: #4285f4;
   color: white;
@@ -156,7 +161,6 @@ export default {
   z-index: 1000;
 }
 
-/* Hide any duplicate navigation elements */
 .header + .header,
 .navigation + .navigation {
   display: none !important;
@@ -353,7 +357,6 @@ export default {
   margin: 0.5rem 0;
 }
 
-/* Single Navigation Bar */
 .navigation {
   background: #333;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -390,7 +393,6 @@ export default {
   border-bottom-color: #4285f4;
 }
 
-/* Special styling for CONTACT US button */
 .contact-btn {
   background: #4285f4;
   color: white;
@@ -409,7 +411,6 @@ export default {
   color: #4285f4;
 }
 
-/* Prevent any pseudo-element duplications */
 .navigation::before,
 .navigation::after,
 .nav-container::before,
@@ -417,7 +418,6 @@ export default {
   display: none !important;
 }
 
-/* Responsive Design */
 @media (max-width: 1200px) {
   .nav-link {
     padding: 1rem 1rem;

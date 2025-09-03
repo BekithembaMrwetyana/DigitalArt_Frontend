@@ -19,7 +19,6 @@
           ]"
           @click.stop
         >
-          <!-- Modal Header -->
           <div class="modal-header" v-if="showHeader">
             <h2 :id="titleId" class="modal-title" v-if="title">
               {{ title }}
@@ -35,12 +34,10 @@
             </button>
           </div>
           
-          <!-- Modal Body -->
           <div class="modal-body" :class="{ 'no-padding': noPadding }">
             <slot></slot>
           </div>
           
-          <!-- Modal Footer -->
           <div class="modal-footer" v-if="$slots.footer || showDefaultFooter">
             <slot name="footer">
               <div v-if="showDefaultFooter" class="default-footer">
@@ -172,7 +169,6 @@ export default {
       }
     }
     
-    // Watch for visibility changes
     watch(isVisible, async (newValue) => {
       if (newValue) {
         document.body.style.overflow = 'hidden'
@@ -184,7 +180,6 @@ export default {
       }
     })
     
-    // Cleanup on unmount
     onUnmounted(() => {
       document.body.style.overflow = ''
       document.removeEventListener('keydown', handleEscapeKey)
@@ -365,7 +360,6 @@ export default {
   }
 }
 
-/* Transition Classes */
 .modal-enter-active,
 .modal-leave-active {
   transition: opacity 0.3s ease;
@@ -386,7 +380,6 @@ export default {
   transform: scale(0.9) translateY(-50px);
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
   .modal-container {
     margin: 1rem;

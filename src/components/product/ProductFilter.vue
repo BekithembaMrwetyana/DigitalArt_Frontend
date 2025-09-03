@@ -1,7 +1,7 @@
 <template>
-  <div class="artwork-filter">
+  <div class="product-filter">
     <div class="filter-section">
-      <h3 class="filter-title">Filter Artworks</h3>
+      <h3 class="filter-title">Filter Products</h3>
       
       <!-- Category Filter -->
       <div class="filter-group">
@@ -128,7 +128,7 @@ import { computed, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
-  name: 'ArtworkFilter',
+  name: 'ProductFilter',
   emits: ['filtersChanged'],
   setup(props, { emit }) {
     const store = useStore()
@@ -220,7 +220,7 @@ export default {
 </script>
 
 <style scoped>
-.artwork-filter {
+.product-filter {
   background: white;
   border-radius: 8px;
   padding: 1.5rem;
