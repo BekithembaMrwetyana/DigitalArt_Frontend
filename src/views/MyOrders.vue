@@ -36,14 +36,14 @@
 
 <script>
 import { ref, onMounted } from 'vue'
-import Sidebar from '@/components/layout/Sidebar.vue'
+//import Sidebar from '@/components/layout/Sidebar.vue'
 import Modal from '@/components/common/Modal.vue'
 import ProductFilter from '@/components/product/ProductFilter.vue'
 import OrderService from '@/services/OrderService.js'
 
 export default {
   components: {
-    Sidebar,
+    //Sidebar,
     Modal,
     ProductFilter
   },

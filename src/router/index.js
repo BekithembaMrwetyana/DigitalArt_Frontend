@@ -7,6 +7,7 @@ import Gallery from '@/views/Gallery.vue'
 import About from '@/views/About.vue' // import About page
 import Home from '@/views/Home.vue'
 import Wishlist from '@/views/Wishlist.vue'
+import MyOrders from '@/views/MyOrders.vue'
 
 // Admin views
 import AdminCategories from '@/components/admin/AdminCategories.vue'
@@ -14,7 +15,7 @@ import AdminDashboard from '@/components/admin/AdminDashboard.vue'
 //import NotificationPage from '@/components/admin/NotificationPage.vue'
 import AdminLayout from '@/components/layout/AdminLayout.vue'
 import ArtBrand from '@/views/ArtBrand.vue'
-
+import Orders from '@/admin layout component/admin/Orders.vue'
 const routes = [
   // Public routes
   { path: '/', name: 'Home', component: Home },
@@ -22,6 +23,7 @@ const routes = [
   { path: '/gallery', name: 'Gallery', component: Gallery },
   { path: '/contact', name: 'Contact', component: Contact },
   { path: '/wishlist', name: 'Wishlist', component: Wishlist },
+  { path: '/myorders', name: 'MyOrders', component: MyOrders },
 
   //User routes
 
@@ -48,6 +50,7 @@ const routes = [
       { path: 'categories', name: 'AdminCategories', component: AdminCategories },
       { path: 'brands', name: 'ArtBrand', component: ArtBrand }, // <-- moved here
       //{path: "notifications", name: "AdminNotifications",component: NotificationPage}
+      {path: 'orders', name: 'Orders', component: Orders}
 
     ]
   }
