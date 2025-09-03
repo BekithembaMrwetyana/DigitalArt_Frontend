@@ -25,17 +25,15 @@
       
       <div class="auth-section">
         <div v-if="!isAuthenticated" class="auth-buttons">
-          
-          <router-link to="/wishlist" class="wishlist-button" title="View wishlist">❤️<span class="badge" v-if="wishlistCount">{{ wishlistCount }}</span></router-link>
+          <router-link to="/wishlist" class="wishlist-button" title="View wishlist">💖<span class="badge" v-if="wishlistCount">{{ wishlistCount }}</span></router-link>
           <span class="greeting">Hi Guest,</span>
-          <button @click="showSignIn" class="auth-btn sign-in-btn">
+         <button @click="showSignIn" class="auth-btn sign-in-btn">
             Sign in
           </button>
           <span class="separator">|</span>
           <button @click="showRegister" class="auth-btn register-btn">
             Register
           </button>
-          
         </div>
         
         <div v-else class="user-menu">
