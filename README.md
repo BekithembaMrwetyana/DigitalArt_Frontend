@@ -1,12 +1,12 @@
 # Digital Art Gallery - Vue.js Application
 
-A modern, responsive digital art gallery built with Vue.js 3, featuring artwork browsing, artist profiles, commission system, and more.
+A modern, responsive digital art gallery built with Vue.js 3, featuring product browsing, artist profiles, commission system, and more.
 
 ## 🚀 Features
 
 - **Modern Vue.js 3** with Composition API
 - **Responsive Design** - Works on all devices
-- **Artwork Gallery** with filtering and search
+- **Product Gallery** with filtering and search
 - **Contact System** with inquiry forms
 - **State Management** with Vuex
 - **Routing** with Vue Router
@@ -52,16 +52,16 @@ src/
 ## 🎨 Features Overview
 
 ### Pages
-- **Home** - Hero slider with featured artworks
-- **Gallery** - Browse all artworks with filters
+- **Home** - Hero slider with featured products
+- **Gallery** - Browse all products with filters
 - **Contact** - Contact form and information
 
 ### Components
-- **ArtworkCard** - Individual artwork display
-- **ArtworkGrid** - Grid layout for artworks
-- **ArtworkFilter** - Search and filter controls
+- **ProductCard** - Individual product display
+- **ProductGrid** - Grid layout for products
+- **ProductFilter** - Search and filter controls
 - **HeroSlider** - Rotating hero banners
-- **Modal** - Popup for artwork details
+- **Modal** - Popup for product details
 - **Navigation** - Site navigation
 - **Header** - Site header with search
 

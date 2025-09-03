@@ -1,15 +1,16 @@
 import { createStore } from 'vuex'
-import artworks from './modules/artworks'
+import products from './modules/products'
 import ui from './modules/ui'
-// import cart from './modules/cart' 
+// import cart from './modules/cart'
 import cart from './modules/Cart'
+import wishlist from './modules/wishlist'
 
 export default createStore({
   modules: {
-    artworks,
+    products,
     ui,
-    // cart,
-    cart,
     
+    cart,
+    wishlist
   }
 })

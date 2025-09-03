@@ -6,7 +6,7 @@
     </div>
     
     <div class="gallery-container">
-      <ArtworkFilter @filtersChanged="handleFiltersChanged" />
+      <ProductFilter @filtersChanged="handleFiltersChanged" />
       
       <div class="gallery-content">
         <div class="gallery-controls">
@@ -24,19 +24,19 @@
           </div>
         </div>
         
-        <div :class="['artwork-display', viewMode]">
-          <ArtworkCard 
-            v-for="art in filteredAndSortedArtworks" 
-            :key="art.id" 
-            :artwork="art"
-            @view="viewArtwork"
+        <div :class="['product-display', viewMode]">
+          <ProductCard
+            v-for="product in filteredAndSortedProducts"
+            :key="product.id"
+            :product="product"
+            @view="viewProduct"
           />
         </div>
         
         <!-- No results message -->
-        <div v-if="!filteredAndSortedArtworks.length" class="no-results">
+        <div v-if="!filteredAndSortedProducts.length" class="no-results">
           <div class="no-results-icon">🎨</div>
-          <h3>No artworks found</h3>
+          <h3>No products found</h3>
           <p>Try adjusting your filters or search criteria.</p>
         </div>
       </div>
@@ -47,17 +47,17 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
-import ArtworkFilter from '../components/artwork/ArtworkFilter.vue'
-import ArtworkCard from '../components/artwork/ArtworkCard.vue'
+import ProductFilter from '../components/product/ProductFilter.vue'
+import ProductCard from '../components/product/ProductCard.vue'
 import Modal from '../components/common/Modal.vue'
 
 export default {
   name: 'Gallery',
   components: {
-    ArtworkFilter,
-    ArtworkCard,
+    ProductFilter,
+    ProductCard,
     Modal
   },
   setup() {
@@ -65,60 +65,64 @@ export default {
     const sortBy = ref('newest')
     const viewMode = ref('grid')
     const activeFilters = ref({})
+
+    onMounted(() => {
+      store.dispatch('products/fetchProducts')
+    })
     
-    const allArtworks = computed(() => store.getters['artworks/allArtworks'] || [])
-    
-    const filteredArtworks = computed(() => {
-      let filtered = [...allArtworks.value]
-      
+    const allProducts = computed(() => store.getters['products/allProducts'] || [])
+
+    const filteredProducts = computed(() => {
+      let filtered = [...allProducts.value]
+
       // Apply filters
       if (activeFilters.value.category) {
-        filtered = filtered.filter(art => art.category === activeFilters.value.category)
+        filtered = filtered.filter(product => product.category === activeFilters.value.category)
       }
-      
+
       if (activeFilters.value.artist) {
-        filtered = filtered.filter(art => art.artistId === activeFilters.value.artist)
+        filtered = filtered.filter(product => product.artistId === activeFilters.value.artist)
       }
-      
+
       if (activeFilters.value.priceRange) {
         const [min, max] = activeFilters.value.priceRange.split('-').map(Number)
         if (max) {
-          filtered = filtered.filter(art => art.price >= min && art.price <= max)
+          filtered = filtered.filter(product => product.price >= min && product.price <= max)
         } else {
           // Handle "2500+" case
-          filtered = filtered.filter(art => art.price >= min)
+          filtered = filtered.filter(product => product.price >= min)
         }
       }
-      
+
       if (activeFilters.value.size) {
-        filtered = filtered.filter(art => art.size === activeFilters.value.size)
+        filtered = filtered.filter(product => product.size === activeFilters.value.size)
       }
-      
+
       if (activeFilters.value.availability) {
-        filtered = filtered.filter(art => 
-          activeFilters.value.availability === 'available' ? art.available : !art.available
+        filtered = filtered.filter(product =>
+          activeFilters.value.availability === 'available' ? product.available : !product.available
         )
       }
-      
+
       return filtered
     })
-    
-    const filteredAndSortedArtworks = computed(() => {
-      const artworks = [...filteredArtworks.value]
-      
+
+    const filteredAndSortedProducts = computed(() => {
+      const products = [...filteredProducts.value]
+
       switch (sortBy.value) {
         case 'price-low':
-          return artworks.sort((a, b) => (a.price || 0) - (b.price || 0))
+          return products.sort((a, b) => (a.price || 0) - (b.price || 0))
         case 'price-high':
-          return artworks.sort((a, b) => (b.price || 0) - (a.price || 0))
+          return products.sort((a, b) => (b.price || 0) - (a.price || 0))
         case 'oldest':
-          return artworks.sort((a, b) => new Date(a.createdAt || 0) - new Date(b.createdAt || 0))
+          return products.sort((a, b) => new Date(a.createdAt || 0) - new Date(b.createdAt || 0))
         case 'newest':
-          return artworks.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))
+          return products.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))
         case 'popular':
-          return artworks.sort((a, b) => (b.views || 0) - (a.views || 0))
+          return products.sort((a, b) => (b.views || 0) - (a.views || 0))
         default:
-          return artworks
+          return products
       }
     })
     
@@ -126,15 +130,15 @@ export default {
       activeFilters.value = filters
     }
     
-    const viewArtwork = (artwork) => {
-      store.dispatch('ui/selectArtwork', artwork)
+    const viewProduct = (product) => {
+      store.dispatch('ui/selectProduct', product)
     }
-    
+
     return {
       sortBy,
       viewMode,
-      filteredAndSortedArtworks,
-      viewArtwork,
+      filteredAndSortedProducts,
+      viewProduct,
       handleFiltersChanged
     }
   }
@@ -238,18 +242,18 @@ export default {
   color: #007bff;
 }
 
-.artwork-display {
+.product-display {
   padding: 2rem;
   min-height: 400px;
 }
 
-.artwork-display.grid {
+.product-display.grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 2rem;
 }
 
-.artwork-display.list {
+.product-display.list {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -283,8 +287,8 @@ export default {
     grid-template-columns: 280px 1fr;
     gap: 1.5rem;
   }
-  
-  .artwork-display.grid {
+
+  .product-display.grid {
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   }
 }
@@ -310,34 +314,34 @@ export default {
   .gallery-container {
     padding: 0 1rem;
   }
-  
+
   .gallery-header h1 {
     font-size: 2.5rem;
   }
-  
-  .artwork-display {
+
+  .product-display {
     padding: 1rem;
   }
-  
-  .artwork-display.grid {
+
+  .product-display.grid {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1rem;
   }
-  
+
   .gallery-controls {
     padding: 1rem;
   }
 }
 
 @media (max-width: 480px) {
-  .artwork-display.grid {
+  .product-display.grid {
     grid-template-columns: 1fr;
   }
-  
+
   .gallery-header h1 {
     font-size: 2rem;
   }
-  
+
   .view-toggle button {
     padding: 0.5rem 1rem;
     font-size: 0.9rem;
