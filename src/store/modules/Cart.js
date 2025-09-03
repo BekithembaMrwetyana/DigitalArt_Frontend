@@ -1,4 +1,4 @@
-import { getCartItemsByUserId, saveCartItem, updateCartItem, deleteCartItem } from "@/services/CartItemService";
+import { saveCartItem, updateCartItem, deleteCartItem } from "@/services/CartItemService";
 
 const state = () => ({
   items: [],
