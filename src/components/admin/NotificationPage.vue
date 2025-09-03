@@ -165,7 +165,7 @@
 </template>
 
 <script>
-import { getAllNotifications, markNotificationAsRead } from '@/services/NotificationService';
+//import { getAllNotifications, markNotificationAsRead } from '@/services/NotificationService';
 
 export default {
   name: 'NotificationsList',
