@@ -6,6 +6,7 @@ import Contact from '@/views/Contact.vue'
 import Gallery from '@/views/Gallery.vue'
 import About from '@/views/About.vue' // import About page
 import Home from '@/views/Home.vue'
+import Wishlist from '@/views/Wishlist.vue'
 
 // Admin views
 import AdminCategories from '@/components/admin/AdminCategories.vue'
@@ -20,6 +21,7 @@ const routes = [
   { path: '/about', name: 'About', component: About }, // new About route
   { path: '/gallery', name: 'Gallery', component: Gallery },
   { path: '/contact', name: 'Contact', component: Contact },
+  { path: '/wishlist', name: 'Wishlist', component: Wishlist },
 
   //User routes
 

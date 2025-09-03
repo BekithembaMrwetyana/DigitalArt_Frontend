@@ -28,6 +28,8 @@
       <!-- Auth Section -->
       <div class="auth-section">
         <div v-if="!isAuthenticated" class="auth-buttons">
+          
+          <router-link to="/wishlist" class="wishlist-button" title="View wishlist">❤️<span class="badge" v-if="wishlistCount">{{ wishlistCount }}</span></router-link>
           <span class="greeting">Hi Guest,</span>
           <button @click="showSignIn" class="auth-btn sign-in-btn">
             Sign in
@@ -42,6 +44,7 @@
         <div v-else class="user-menu">
           <div class="user-info">
             <span class="welcome">Hi {{ user.name }},</span>
+            <router-link to="/wishlist" class="wishlist-button" title="View wishlist">💖<span class="badge" v-if="wishlistCount">{{ wishlistCount }}</span></router-link>
             <div class="user-dropdown" @click="toggleUserMenu">
               <img :src="user.avatar || '/images/default-avatar.png'" alt="Profile" class="avatar" />
               <span class="dropdown-arrow">▼</span>
@@ -99,6 +102,7 @@ export default {
     
     // Cart info
     const cartCount = computed(() => store.getters['cart/cartCount'])
+    const wishlistCount = computed(() => store.getters['wishlist/itemCount'])
 
     const performSearch = () => {
       if (searchQuery.value.trim()) {
@@ -147,6 +151,7 @@ export default {
       isAuthenticated,
       user,
       cartCount,
+      wishlistCount,
       performSearch,
       showSignIn,
       showRegister,
@@ -362,6 +367,30 @@ export default {
   height: 1px;
   background: #e5e5e5;
   margin: 0.5rem 0;
+}
+
+.wishlist-button, .cart-button {
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  font-size: 1.2rem;
+  margin-left: 0.5rem;
+}
+
+.badge {
+  position: absolute;
+  top: -5px;
+  right: -10px;
+  background: #ff4444;
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: bold;
 }
 
 /* Single Navigation Bar */
