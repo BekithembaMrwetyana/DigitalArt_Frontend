@@ -8,7 +8,6 @@
           <li><router-link to="/">Home</router-link></li>
           <li><router-link to="/about">About Us</router-link></li>
           <li><router-link to="/contact">Contact</router-link></li>
-          <li><router-link to="/privacy">Privacy Policy</router-link></li>
         </ul>
       </div>
 
@@ -22,15 +21,6 @@
         </ul>
       </div>
 
-      <!-- Help Section -->
-      <div class="footer-section">
-        <h3>Help</h3>
-        <ul>
-          <li><router-link to="/faq">FAQ</router-link></li>
-          <li><router-link to="/support">Support</router-link></li>
-          <li><router-link to="/terms">Terms of Service</router-link></li>
-        </ul>
-      </div>
     </div>
 
     <!-- Copyright Section -->

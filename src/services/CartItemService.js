@@ -31,18 +31,18 @@ export const saveCartItem = async (cartItem) => {
 };
 
 // Get cart items by user
-export const getCartItemsByUserId = async (userId) => {
-  const token = localStorage.getItem('token');
-  try {
-    const response = await axios.get(`${BASE_URL}/findByUser/${userId}`, {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching user's cart items:", error);
-    throw error;
-  }
-};
+// export const getCartItemsByUserId = async (userId) => {
+//   const token = localStorage.getItem('token');
+//   try {
+//     const response = await axios.get(`${BASE_URL}/findByUser/${userId}`, {
+//       headers: { 'Authorization': `Bearer ${token}` }
+//     });
+//     return response.data;
+//   } catch (error) {
+//     console.error("Error fetching user's cart items:", error);
+//     throw error;
+//   }
+// };
 
 // Update cart item
 export const updateCartItem = async (cartItem) => {
