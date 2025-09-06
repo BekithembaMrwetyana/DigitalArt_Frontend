@@ -34,6 +34,7 @@
           <button @click="showRegister" class="auth-btn register-btn">
             Register
           </button>
+          <router-link to="/cart" class="cart-button" title="View cart">🛒<span class="badge" v-if="cartCount">{{ cartCount }}</span></router-link>
         </div>
         
         <div v-else class="user-menu">
@@ -44,7 +45,6 @@
               <img :src="user.avatar || '/images/default-avatar.png'" alt="Profile" class="avatar" />
               <span class="dropdown-arrow">▼</span>
             </div>
-            <router-link to="/cart" class="cart-button" title="View cart">🛒<span class="badge" v-if="cartCount">{{ cartCount }}</span></router-link>
           </div>
           
           <div v-if="showUserMenu" class="dropdown-menu">
@@ -360,34 +360,6 @@ export default {
   margin: 0.5rem 0;
 }
 
-<<<<<<< HEAD
-.wishlist-button, .cart-button {
-  text-decoration: none;
-  color: inherit;
-  position: relative;
-  font-size: 1.2rem;
-  margin-left: 0.5rem;
-}
-
-.badge {
-  position: absolute;
-  top: -5px;
-  right: -10px;
-  background: #ff4444;
-  color: white;
-  border-radius: 50%;
-  width: 18px;
-  height: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.7rem;
-  font-weight: bold;
-}
-
-/* Single Navigation Bar */
-=======
->>>>>>> d8047a75d79bfe5e269a6545be62b13646338118
 .navigation {
   background: #333;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
