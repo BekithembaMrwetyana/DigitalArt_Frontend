@@ -6,11 +6,11 @@ import Contact from '@/views/Contact.vue'
 import Gallery from '@/views/Gallery.vue'
 import About from '@/views/About.vue' // import About page
 import Home from '@/views/Home.vue'
-import Gallery from '@/views/Gallery.vue'
+//import Gallery from '@/views/Gallery.vue'
 import MyOrders from '@/views/MyOrders.vue'
 
 
-import Contact from '@/views/Contact.vue'
+//import Contact from '@/views/Contact.vue'
 //import Events from '@/views/Events.vue'
 //import Exhibitions from '@/views/Exhibitions.vue'
 //import Gallery from '@/views/Gallery.vue'
@@ -30,6 +30,7 @@ const routes = [
   { path: '/about', name: 'About', component: About }, // new About route
   { path: '/gallery', name: 'Gallery', component: Gallery },
   { path: '/contact', name: 'Contact', component: Contact },
+  {path: '/myorders', name: 'MyOrders', component: MyOrders},
 
   //User routes
 
@@ -56,6 +57,7 @@ const routes = [
       { path: 'categories', name: 'AdminCategories', component: AdminCategories },
       { path: 'brands', name: 'ArtBrand', component: ArtBrand }, // <-- moved here
       //{path: "notifications", name: "AdminNotifications",component: NotificationPage}
+      {path: 'orders', name:'Orders', component: Orders},
 
     ]
   }

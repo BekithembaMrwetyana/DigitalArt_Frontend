@@ -119,7 +119,7 @@ export default {
 </script>
 
 <style scoped>
-/* Optional: simple styling */
+
 form {
   margin-bottom: 20px;
 }
