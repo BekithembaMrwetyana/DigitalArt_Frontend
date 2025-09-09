@@ -6,15 +6,8 @@ import Contact from '@/views/Contact.vue'
 import Gallery from '@/views/Gallery.vue'
 import About from '@/views/About.vue' // import About page
 import Home from '@/views/Home.vue'
-//import Gallery from '@/views/Gallery.vue'
+import Wishlist from '@/views/Wishlist.vue'
 import MyOrders from '@/views/MyOrders.vue'
-
-
-//import Contact from '@/views/Contact.vue'
-//import Events from '@/views/Events.vue'
-//import Exhibitions from '@/views/Exhibitions.vue'
-//import Gallery from '@/views/Gallery.vue'
-//import Home from '@/views/Home.vue'
 
 // Admin views
 import AdminCategories from '@/components/admin/AdminCategories.vue'
@@ -23,14 +16,14 @@ import AdminDashboard from '@/components/admin/AdminDashboard.vue'
 import AdminLayout from '@/components/layout/AdminLayout.vue'
 import ArtBrand from '@/views/ArtBrand.vue'
 import Orders from '@/admin layout component/admin/Orders.vue'
-
 const routes = [
   // Public routes
   { path: '/', name: 'Home', component: Home },
   { path: '/about', name: 'About', component: About }, // new About route
   { path: '/gallery', name: 'Gallery', component: Gallery },
   { path: '/contact', name: 'Contact', component: Contact },
-  {path: '/myorders', name: 'MyOrders', component: MyOrders},
+  { path: '/wishlist', name: 'Wishlist', component: Wishlist },
+  { path: '/myorders', name: 'MyOrders', component: MyOrders },
 
   //User routes
 
@@ -57,7 +50,7 @@ const routes = [
       { path: 'categories', name: 'AdminCategories', component: AdminCategories },
       { path: 'brands', name: 'ArtBrand', component: ArtBrand }, // <-- moved here
       //{path: "notifications", name: "AdminNotifications",component: NotificationPage}
-      {path: 'orders', name:'Orders', component: Orders},
+      {path: 'orders', name: 'Orders', component: Orders}
 
     ]
   }

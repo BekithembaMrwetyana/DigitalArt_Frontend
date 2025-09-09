@@ -25,25 +25,26 @@
       
       <div class="auth-section">
         <div v-if="!isAuthenticated" class="auth-buttons">
+          <router-link to="/wishlist" class="wishlist-button" title="View wishlist">💖<span class="badge" v-if="wishlistCount">{{ wishlistCount }}</span></router-link>
           <span class="greeting">Hi Guest,</span>
-          <button @click="showSignIn" class="auth-btn sign-in-btn">
+         <button @click="showSignIn" class="auth-btn sign-in-btn">
             Sign in
           </button>
           <span class="separator">|</span>
           <button @click="showRegister" class="auth-btn register-btn">
             Register
           </button>
-          
+          <router-link to="/cart" class="cart-button" title="View cart">🛒<span class="badge" v-if="cartCount">{{ cartCount }}</span></router-link>
         </div>
         
         <div v-else class="user-menu">
           <div class="user-info">
             <span class="welcome">Hi {{ user.name }},</span>
+            <router-link to="/wishlist" class="wishlist-button" title="View wishlist">💖<span class="badge" v-if="wishlistCount">{{ wishlistCount }}</span></router-link>
             <div class="user-dropdown" @click="toggleUserMenu">
               <img :src="user.avatar || '/images/default-avatar.png'" alt="Profile" class="avatar" />
               <span class="dropdown-arrow">▼</span>
             </div>
-            <router-link to="/cart" class="cart-button" title="View cart">🛒<span class="badge" v-if="cartCount">{{ cartCount }}</span></router-link>
           </div>
           
           <div v-if="showUserMenu" class="dropdown-menu">
@@ -94,6 +95,7 @@ export default {
     const user = computed(() => store.getters['auth/user'])
     
     const cartCount = computed(() => store.getters['cart/cartCount'])
+    const wishlistCount = computed(() => store.getters['wishlist/itemCount'])
 
     const performSearch = () => {
       if (searchQuery.value.trim()) {
@@ -142,6 +144,7 @@ export default {
       isAuthenticated,
       user,
       cartCount,
+      wishlistCount,
       performSearch,
       showSignIn,
       showRegister,

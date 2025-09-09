@@ -43,7 +43,7 @@ import OrderService from '@/services/OrderService.js'
 
 export default {
   components: {
-    
+    //Sidebar,
     Modal,
     ProductFilter
   },

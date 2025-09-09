@@ -81,7 +81,7 @@ export default {
     })
 
     const isInCart = computed(() => {
-      const cart = store.getters['cart/items'] || []
+      const cart = store.getters['cart/cartItems'] || []
       return cart.some(item => item.id === props.product.id)
     })
 
