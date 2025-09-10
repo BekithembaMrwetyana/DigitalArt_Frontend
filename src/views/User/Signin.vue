@@ -37,21 +37,54 @@ export default {
     };
   },
   methods: {
-    async signin() {
-      try {
-        const response = await axios.post("http://localhost:8080/users", {
-          contact: { email: this.email },
-          password: this.password
-        });
-        if (response.data) {
-          alert("Welcome " + response.data.firstName + " " + response.data.lastName);
-        } else {
-          alert("Invalid credentials");
-        }
-      } catch (error) {
-        alert("Error during signin");
-      }
+    // async signin() {
+    //   try {
+    //     const response = await axios.post("http://localhost:8080/digital_artDB/api/users/login", {
+    //       email: this.email,
+    //       password: this.password
+    //     });
+    //     if (response.data) {
+    //       alert("Welcome " + response.data.firstName + " " + response.data.lastName);
+    //     } else {
+    //       alert("Invalid credentials");
+    //     }
+    //   } catch (error) {
+    //     if (error.response && error.response.status === 401) {
+    //       alert("Invalid email or password");
+    //     } else {
+    //       alert("Error during signin");
+    //     }
+    //   }
+    // }
+       async signin() {
+  try {
+    const response = await axios.post("http://localhost:8080/digital_artDB/api/users/login", {
+      email: this.email,
+      password: this.password
+    });
+
+    if (response.data) {
+      // ✅ Update Vuex store
+      this.$store.dispatch("auth/loginSuccess", response.data);
+
+      alert("Welcome " + response.data.firstName + " " + response.data.lastName);
+
+      // redirect home
+      this.$router.push("/");
+    } else {
+      alert("Invalid credentials");
     }
+  } catch (error) {
+    if (error.response && error.response.status === 401) {
+      alert("Invalid email or password");
+    } else {
+      alert("Error during signin");
+    }
+  }
+}
+
+
+
   }
 };
 </script>

@@ -39,7 +39,7 @@
     </div>
   </div>
 </template>
-
+ 
 <script>
 
 import CartItemRow from "@/components/cart/CartItemRow.vue";

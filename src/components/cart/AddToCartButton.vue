@@ -20,7 +20,7 @@ export default {
       if (!user) { alert('Please sign in to add items to cart.'); return }
       try {
         busy.value = true
-        await store.dispatch('cart/addToCart', { product: props.product, quantity: 1 })
+        await store.dispatch('Cart/addToCart', { product: props.product, quantity: 1 })
         alert('Added to cart!')
       } catch (e) {
         alert('Failed to add to cart.')
@@ -28,7 +28,7 @@ export default {
         busy.value = false
       }
     }
-
+ 
     return { add, busy }
   }
 }
