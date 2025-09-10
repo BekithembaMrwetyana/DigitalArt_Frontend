@@ -48,25 +48,26 @@
         ❤️<span class="badge" v-if="wishlistCount">{{ wishlistCount }}</span>
       </router-link>
 
-      <!-- Cart -->
+      
       <router-link to="/cart" class="cart-button" title="View cart">
         🛒<span class="badge" v-if="cartCount">{{ cartCount }}</span>
       </router-link>
 
-      <!-- User dropdown -->
-      <div class="user-dropdown" @click="toggleUserMenu">
-        <img :src="user.avatar || '/images/default-avatar.png'" alt="Profile" class="avatar" />
-        <span class="dropdown-arrow">▼</span>
-      </div>
+     
+   <div class="user-dropdown" @click="toggleUserMenu">
+ <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#000000" viewBox="0 0 256 256"><path d="M172,120a44,44,0,1,1-44-44A44.05,44.05,0,0,1,172,120Zm60,8A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88.09,88.09,0,0,0-91.47-87.93C77.43,41.89,39.87,81.12,40,128.25a87.65,87.65,0,0,0,22.24,58.16A79.71,79.71,0,0,1,84,165.1a4,4,0,0,1,4.83.32,59.83,59.83,0,0,0,78.28,0,4,4,0,0,1,4.83-.32,79.71,79.71,0,0,1,21.79,21.31A87.62,87.62,0,0,0,216,128Z"></path></svg>
+  <span class="dropdown-arrow"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="22" fill="#000000" viewBox="0 0 256 256"><path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"></path></svg></span>
+</div>
+
     </div>
 
     <div v-if="showUserMenu" class="dropdown-menu">
-      <router-link to="/profile" class="dropdown-item">Profile</router-link>
-      <router-link to="/orders" class="dropdown-item">My Orders</router-link>
-      <router-link to="/favorites" class="dropdown-item">Favorites</router-link>
+      <router-link to="/profile" class="dropdown-item"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="15" fill="#000000" viewBox="0 0 256 256"><path d="M230.92,212c-15.23-26.33-38.7-45.21-66.09-54.16a72,72,0,1,0-73.66,0C63.78,166.78,40.31,185.66,25.08,212a8,8,0,1,0,13.85,8c18.84-32.56,52.14-52,89.07-52s70.23,19.44,89.07,52a8,8,0,1,0,13.85-8ZM72,96a56,56,0,1,1,56,56A56.06,56.06,0,0,1,72,96Z"></path></svg>Profile</router-link>
+      <router-link to="/myorders" class="dropdown-item"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="15" fill="#000000" viewBox="0 0 256 256"><path d="M223.68,66.15,135.68,18a15.88,15.88,0,0,0-15.36,0l-88,48.17a16,16,0,0,0-8.32,14v95.64a16,16,0,0,0,8.32,14l88,48.17a15.88,15.88,0,0,0,15.36,0l88-48.17a16,16,0,0,0,8.32-14V80.18A16,16,0,0,0,223.68,66.15ZM128,32l80.34,44-29.77,16.3-80.35-44ZM128,120,47.66,76l33.9-18.56,80.34,44ZM40,90l80,43.78v85.79L40,175.82Zm176,85.78h0l-80,43.79V133.82l32-17.51V152a8,8,0,0,0,16,0V107.55L216,90v85.77Z"></path></svg> Orders</router-link>
+      <router-link to="/favorites" class="dropdown-item"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="15" fill="#000000" viewBox="0 0 256 256"><path d="M216,64H56a8,8,0,0,1,0-16H192a8,8,0,0,0,0-16H56A24,24,0,0,0,32,56V184a24,24,0,0,0,24,24H216a16,16,0,0,0,16-16V80A16,16,0,0,0,216,64Zm0,128H56a8,8,0,0,1-8-8V78.63A23.84,23.84,0,0,0,56,80H216Zm-48-60a12,12,0,1,1,12,12A12,12,0,0,1,168,132Z"></path></svg>Wallet</router-link>
 
       <div class="dropdown-divider"></div>
-      <button @click="logout" class="dropdown-item logout-btn">Logout</button>
+      <button @click="logout" class="dropdown-item logout-btn"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="15" fill="#000000" viewBox="0 0 256 256"><path d="M120,216a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V40a8,8,0,0,1,8-8h64a8,8,0,0,1,0,16H56V208h56A8,8,0,0,1,120,216Zm109.66-93.66-40-40a8,8,0,0,0-11.32,11.32L204.69,120H112a8,8,0,0,0,0,16h92.69l-26.35,26.34a8,8,0,0,0,11.32,11.32l40-40A8,8,0,0,0,229.66,122.34Z"></path></svg>Log out</button>
     </div>
   </div>
 </div>

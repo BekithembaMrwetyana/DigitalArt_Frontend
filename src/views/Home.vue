@@ -13,10 +13,7 @@
     </div>
   </div>
 
-  <div class="guest-orders">
-      <router-link to="/myorders">View My Orders</router-link>
-    </div>
-
+  
 </template>
 
 <script>
@@ -31,7 +28,6 @@ export default {
         { image: 'http://localhost:8080/digital_artDB/images/art18.jpeg' },
         { image: 'http://localhost:8080/digital_artDB/images/art19.jpeg' },
         { image: 'http://localhost:8080/digital_artDB/images/art21.jpeg' },
-        { image: 'http://localhost:8080/digital_artDB/images/art22.jpeg' },
         { image: 'http://localhost:8080/digital_artDB/images/art23.jpeg' }
       ]
     }
@@ -84,36 +80,20 @@ export default {
 .hero-slider {
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0);
   width: 100%;
-  height: 450px; /* fixed height for clarity */
+  height: 450px; 
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f9f9f9; /* fallback background */
+  background: #f9f9f9; 
 }
 
 .hero-slider img {
   max-width: 100%;
   max-height: 100%;
-  object-fit: contain; /* keeps images sharp without cropping */
+  object-fit: contain; 
   display: block;
 }
-/* Styles for the My Orders link */
-.guest-orders {
-  margin: 2rem 0;
-  text-align: center;
-}
 
-.guest-orders a {
-  background-color: #667eea;
-  color: white;
-  padding: 0.8rem 1.2rem;
-  border-radius: 8px;
-  text-decoration: none;
-}
-
-.guest-orders a:hover {
-  background-color: #764ba2;
-}
 </style>

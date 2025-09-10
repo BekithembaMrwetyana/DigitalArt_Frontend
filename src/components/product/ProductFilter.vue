@@ -12,11 +12,11 @@
           class="filter-select"
         >
           <option value="">All Categories</option>
-          <option value="digital-painting">Digital Painting</option>
-          <option value="3d-art">3D Art</option>
-          <option value="photography">Photography</option>
-          <option value="illustration">Illustration</option>
-          <option value="mixed-media">Mixed Media</option>
+          <option value="Digital Art">Digital Art</option>
+          <option value="Portraits">Portraits</option>
+          <option value="3D">3D</option>
+          <option value="Abstract">Abstract</option>
+          <option value="Landscape">Landscape</option>
         </select>
       </div>
 
@@ -175,11 +175,11 @@ export default {
 
     const getCategoryLabel = (category) => {
       const labels = {
-        'digital-painting': 'Digital Painting',
-        '3d-art': '3D Art',
-        'photography': 'Photography',
-        'illustration': 'Illustration',
-        'mixed-media': 'Mixed Media'
+        'Digital Art': 'Digital Art',
+        'Portraits': 'Portraits',
+        '3D': '3D',
+        'Abstract': 'Abstract',
+        'Landscape': 'Landscape'
       }
       return labels[category] || category
     }
@@ -191,15 +191,15 @@ export default {
 
     const getPriceRangeLabel = (range) => {
       const labels = {
-        '0-500': '$0 - $500',
-        '500-1000': '$500 - $1,000',
-        '1000-2500': '$1,000 - $2,500',
-        '2500+': '$2,500+'
+        '0-500': 'R0 - R500',
+        '500-1000': 'R500 - R1,000',
+        '1000-2500': 'R1,000 - R2,500',
+        '2500+': 'R2,500+'
       }
       return labels[range] || range
     }
 
-    // Watch for external filter changes
+    
     watch(filters, () => {
       updateFilters()
     }, { deep: true })
