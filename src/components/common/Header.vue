@@ -62,7 +62,7 @@
 
     <div v-if="showUserMenu" class="dropdown-menu">
       <router-link to="/profile" class="dropdown-item">Profile</router-link>
-      <router-link to="/orders" class="dropdown-item">My Orders</router-link>
+      <router-link to="/myorders" class="dropdown-item">My Orders</router-link>
       <router-link to="/favorites" class="dropdown-item">Favorites</router-link>
 
       <div class="dropdown-divider"></div>
