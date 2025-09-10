@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const BACKEND_URL = 'http://localhost:8080/digital_artDB/api'
+ const BACKEND_URL = 'http://localhost:8080/digital_artDB/api'
 
 const state = {
   products: [],

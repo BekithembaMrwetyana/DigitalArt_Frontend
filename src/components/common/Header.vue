@@ -31,7 +31,7 @@
     <span class="separator">|</span>
     <button @click="showRegister" class="auth-btn register-btn">Register</button>
     <router-link to="/wishlist" class="wishlist-button" title="View wishlist">
-      💖<span class="badge" v-if="wishlistCount">{{ wishlistCount }}</span>
+      ❤️<span class="badge" v-if="wishlistCount">{{ wishlistCount }}</span>
     </router-link>
   </div>
 
@@ -45,7 +45,7 @@
 
       <!-- Wishlist -->
       <router-link to="/wishlist" class="wishlist-button" title="View wishlist">
-        💖<span class="badge" v-if="wishlistCount">{{ wishlistCount }}</span>
+        ❤️<span class="badge" v-if="wishlistCount">{{ wishlistCount }}</span>
       </router-link>
 
       <!-- Cart -->
@@ -373,6 +373,32 @@ export default {
   margin: 0.5rem 0;
 }
 
+
+.wishlist-button, .cart-button {
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  font-size: 1.2rem;
+  margin-left: 0.5rem;
+}
+
+.badge {
+  position: absolute;
+  top: -10px;
+  right: -5px;
+  background: #ff4444;
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: bold;
+}
+
+/* Single Navigation Bar */
 .navigation {
   background: #333;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
