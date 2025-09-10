@@ -31,7 +31,7 @@
     <span class="separator">|</span>
     <button @click="showRegister" class="auth-btn register-btn">Register</button>
     <router-link to="/wishlist" class="wishlist-button" title="View wishlist">
-      💖<span class="badge" v-if="wishlistCount">{{ wishlistCount }}</span>
+      ❤️<span class="badge" v-if="wishlistCount">{{ wishlistCount }}</span>
     </router-link>
   </div>
 
@@ -45,7 +45,7 @@
 
       <!-- Wishlist -->
       <router-link to="/wishlist" class="wishlist-button" title="View wishlist">
-        💖<span class="badge" v-if="wishlistCount">{{ wishlistCount }}</span>
+        ❤️<span class="badge" v-if="wishlistCount">{{ wishlistCount }}</span>
       </router-link>
 
       <!-- Cart -->
