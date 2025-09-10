@@ -23,40 +23,53 @@
         </div>
       </div>
       
-      <div class="auth-section">
-        <div v-if="!isAuthenticated" class="auth-buttons">
-          <router-link to="/wishlist" class="wishlist-button" title="View wishlist">💖<span class="badge" v-if="wishlistCount">{{ wishlistCount }}</span></router-link>
-          <span class="greeting">Hi Guest,</span>
-         <button @click="showSignIn" class="auth-btn sign-in-btn">
-            Sign in
-          </button>
-          <span class="separator">|</span>
-          <button @click="showRegister" class="auth-btn register-btn">
-            Register
-          </button>
-        </div>
-        
-        <div v-else class="user-menu">
-          <div class="user-info">
-            <span class="welcome">Hi {{ user.name }},</span>
-            <router-link to="/wishlist" class="wishlist-button" title="View wishlist">💖<span class="badge" v-if="wishlistCount">{{ wishlistCount }}</span></router-link>
-            <div class="user-dropdown" @click="toggleUserMenu">
-              <img :src="user.avatar || '/images/default-avatar.png'" alt="Profile" class="avatar" />
-              <span class="dropdown-arrow">▼</span>
-            </div>
-            <router-link to="/cart" class="cart-button" title="View cart">🛒<span class="badge" v-if="cartCount">{{ cartCount }}</span></router-link>
-          </div>
-          
-          <div v-if="showUserMenu" class="dropdown-menu">
-            <router-link to="/profile" class="dropdown-item">Profile</router-link>
-            <router-link to="/orders" class="dropdown-item">My Orders</router-link>
-            <router-link to="/favorites" class="dropdown-item">Favorites</router-link>
-          
-            <div class="dropdown-divider"></div>
-            <button @click="logout" class="dropdown-item logout-btn">Logout</button>
-          </div>
-        </div>
+<div class="auth-section">
+  <!-- Guest view -->
+  <div v-if="!isAuthenticated" class="auth-buttons">
+    <span class="greeting">Hi Guest,</span>
+    <button @click="showSignIn" class="auth-btn sign-in-btn">Sign in</button>
+    <span class="separator">|</span>
+    <button @click="showRegister" class="auth-btn register-btn">Register</button>
+    <router-link to="/wishlist" class="wishlist-button" title="View wishlist">
+      💖<span class="badge" v-if="wishlistCount">{{ wishlistCount }}</span>
+    </router-link>
+  </div>
+
+  <!-- Logged-in user view -->
+  <div v-else class="user-menu">
+    <div class="user-info">
+      <span class="welcome">
+        Hi {{ (user?.firstName || '') + ' ' + (user?.lastName || '') || 'Guest' }},
+      </span>
+
+
+      <!-- Wishlist -->
+      <router-link to="/wishlist" class="wishlist-button" title="View wishlist">
+        💖<span class="badge" v-if="wishlistCount">{{ wishlistCount }}</span>
+      </router-link>
+
+      <!-- Cart -->
+      <router-link to="/cart" class="cart-button" title="View cart">
+        🛒<span class="badge" v-if="cartCount">{{ cartCount }}</span>
+      </router-link>
+
+      <!-- User dropdown -->
+      <div class="user-dropdown" @click="toggleUserMenu">
+        <img :src="user.avatar || '/images/default-avatar.png'" alt="Profile" class="avatar" />
+        <span class="dropdown-arrow">▼</span>
       </div>
+    </div>
+
+    <div v-if="showUserMenu" class="dropdown-menu">
+      <router-link to="/profile" class="dropdown-item">Profile</router-link>
+      <router-link to="/orders" class="dropdown-item">My Orders</router-link>
+      <router-link to="/favorites" class="dropdown-item">Favorites</router-link>
+
+      <div class="dropdown-divider"></div>
+      <button @click="logout" class="dropdown-item logout-btn">Logout</button>
+    </div>
+  </div>
+</div>
     </div>
     
     <nav class="navigation">

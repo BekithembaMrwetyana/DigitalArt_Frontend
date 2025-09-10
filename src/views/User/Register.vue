@@ -135,7 +135,7 @@ export default {
       };
 
       try {
-        const response = await fetch('http://localhost:8080/users/create', {
+        const response = await fetch('http://localhost:8080/digital_artDB/api/users/create', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

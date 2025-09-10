@@ -28,10 +28,10 @@ export default {
   data() {
     return {
       slidesData: [
-        { image: 'http://localhost:8080/digital_artDB/images/art21.jpeg' },
-        { image: 'http://localhost:8080/digital_artDB/images/art20.jpeg' },
-        { image: 'http://localhost:8080/digital_artDB/images/art19.jpeg' },
-        { image: 'http://localhost:8080/digital_artDB/images/art18.jpeg' }
+        { image: 'http://localhost:8080/digital_artDB/images/art15.jpeg' },
+        { image: 'http://localhost:8080/digital_artDB/images/art16.jpeg' },
+        { image: 'http://localhost:8080/digital_artDB/images/art15.jpeg' },
+        { image: 'http://localhost:8080/digital_artDB/images/art14.jpeg' }
       ]
     }
   }
