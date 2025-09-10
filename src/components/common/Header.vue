@@ -360,7 +360,7 @@ export default {
   margin: 0.5rem 0;
 }
 
-<<<<<<< HEAD
+
 .wishlist-button, .cart-button {
   text-decoration: none;
   color: inherit;
@@ -371,8 +371,8 @@ export default {
 
 .badge {
   position: absolute;
-  top: -5px;
-  right: -10px;
+  top: -10px;
+  right: -5px;
   background: #ff4444;
   color: white;
   border-radius: 50%;
@@ -386,8 +386,6 @@ export default {
 }
 
 /* Single Navigation Bar */
-=======
->>>>>>> d8047a75d79bfe5e269a6545be62b13646338118
 .navigation {
   background: #333;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
