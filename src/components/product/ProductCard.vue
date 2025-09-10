@@ -34,27 +34,7 @@
       @click.stop="toggleCart"
       :class="{ active: isInCart }"
     >
-      <svg
-        width="22"
-        height="22"
-        viewBox="0 0 24 24"
-        fill="currentColor"
-        class="cart-icon"
-      >
-        <path
-          d="M7 18c-1.1 0-2 .9-2 2s.9 2 
-             2 2 2-.9 2-2-.9-2-2-2zm10 
-             0c-1.1 0-2 .9-2 2s.9 2 
-             2 2 2-.9 2-2-.9-2-2-2zM7.16 
-             14h9.45c.75 0 1.41-.41 
-             1.75-1.03l3.58-6.49A1 
-             1 0 0 0 21 5H6.21l-.94-2H1v2h3l3.6 
-             7.59-1.35 2.44C5.52 15.37 
-             6.18 17 7.16 17H19v-2H7.42c-.14 
-             0-.25-.11-.25-.25l.03-.12L7.16 
-             14z"
-        />
-      </svg>
+      🛒
     </button>
   </div>
 </template>
@@ -161,7 +141,7 @@ export default {
   text-transform: capitalize;
 }
 
-/* Wishlist heart */
+
 .wishlist-btn {
   position: absolute;
   top: 10px;
@@ -169,15 +149,15 @@ export default {
   background: transparent;
   border: none;
   cursor: pointer;
-  color: black; /* default black heart */
+  color: black; 
   transition: color 0.3s ease;
 }
 
 .wishlist-btn.active {
-  color: #e74c3c; /* red when active */
+  color: #e74c3c; 
 }
 
-/* Floating cart button */
+
 .cart-btn {
   position: absolute;
   bottom: 12px;
@@ -185,17 +165,23 @@ export default {
   background: transparent;
   border: none;
   border-radius: 50%;
-  width: 46px;
-  height: 46px;
+  width: 60px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: black; /* default black */
+  color: black;
   cursor: pointer;
+  font-size: 24px;
   transition: all 0.3s ease;
 }
 
+.cart-btn:active {
+  transform: scale(0.9);
+}
+
 .cart-btn.active {
-  color: #2c5aa0; /* blue when pressed */
+  color: #2c5aa0;
+  background: #e3f2fd;
 }
 </style>
