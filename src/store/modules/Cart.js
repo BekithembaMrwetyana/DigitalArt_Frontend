@@ -1,4 +1,4 @@
-import { saveCartItem, updateCartItem, deleteCartItem } from "@/services/CartItemService";
+import { saveCartItem, updateCartItem, deleteCartItem, getCartItemsByUserId } from "@/services/CartItemService";
 
 const state = () => ({
   items: [],
@@ -36,7 +36,7 @@ const actions = {
       const normalized = list.map(it => ({
         ...it,
         product: it.product || {},
-        productName: it.product?.productName || it.product?.title || "Unnamed Product",
+        productName: it.product?.title || "Unnamed Product",
         price: it.price ?? it.product?.price ?? 0,
         quantity: it.quantity ?? 1,
       }));
@@ -56,7 +56,7 @@ const actions = {
   },
 
   async updateItemQuantity({ dispatch }, { item, quantity }) {
-    await updateCartItem({ ...item, quantity });
+    await updateCartItem({ ...item, cartItemID: item.cartItemID, quantity });
     dispatch("fetchUserCart");
   },
 

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:8080/users";
+const BASE_URL = "http://localhost:8080/digital_artDB/api/users";
 
 // Helper function for consistent error logging
 function handleError(action, err) {
