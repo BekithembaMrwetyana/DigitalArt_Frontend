@@ -84,9 +84,8 @@ export default {
     },
     async saveEdit() {
       try {
-        await OrderService.updateOrder(this.editingOrder.orderID, {
-          paymentStatus: this.editingOrder.paymentStatus
-        })
+        // Send the full order object to the backend
+        await OrderService.updateOrder(this.editingOrder.orderID, this.editingOrder)
 
         // Update local list
         const index = this.orders.findIndex(o => o.orderID === this.editingOrder.orderID)

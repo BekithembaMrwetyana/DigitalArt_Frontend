@@ -1,148 +1,130 @@
 <template>
-  <div>
-    <h2>Inventory Management</h2>
+  <div class="p-6 bg-gray-100 min-h-screen">
+    <h1 class="text-2xl font-bold mb-6 text-gray-800">📦 Inventory Management</h1>
 
-    <!-- Form for creating/updating -->
-    <form @submit.prevent="saveInventory">
-      <label>Product:</label>
-      <select v-model.number="inventory.product.productID" required>
-        <option value="" disabled>Select a product</option>
-        <option v-for="p in products" :key="p.productID" :value="p.productID">
-          {{ p.title }} (ID: {{ p.productID }})
-        </option>
-      </select>
+    <!-- Add New Inventory -->
+    <div class="bg-white shadow rounded-lg p-6 mb-6">
+      <h2 class="text-lg font-semibold mb-4 text-gray-700">Add New Inventory</h2>
+      <form @submit.prevent="addInventory" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-600">Product ID</label>
+          <input 
+            v-model.number="newInventory.product.productID"
+            type="number"
+            placeholder="Enter Product ID"
+            class="mt-1 w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            required
+          />
+        </div>
 
-      <label>Quantity:</label>
-      <input type="number" v-model.number="inventory.quantity" min="0" required />
+        <div>
+          <label class="block text-sm font-medium text-gray-600">Quantity</label>
+          <input 
+            v-model.number="newInventory.quantity"
+            type="number"
+            min="0"
+            placeholder="Enter Quantity"
+            class="mt-1 w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            required
+          />
+        </div>
 
-      <button type="submit">{{ isEdit ? 'Update' : 'Create' }}</button>
-      <button type="button" @click="resetForm">Cancel</button>
-    </form>
-
-    <hr />
+        <div class="flex items-end">
+          <button 
+            type="submit" 
+            class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+          >
+            ➕ Add Inventory
+          </button>
+        </div>
+      </form>
+    </div>
 
     <!-- Inventory Table -->
-    <table border="1">
-      <thead>
-        <tr>
-          <th>Inventory ID</th>
-          <th>Product ID</th>
-          <th>Product Name</th>
-          <th>Quantity</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="item in inventoryList" :key="item.inventoryID">
-          <td>{{ item.inventoryID }}</td>
-          <td>{{ item.product.productID }}</td>
-          <td>{{ item.product.title }}</td>
-          <td>{{ item.quantity }}</td>
-          <td>
-            <button @click="editInventory(item)">Edit</button>
-            <button @click="deleteInventory(item.inventoryID)">Delete</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="bg-white shadow rounded-lg p-6">
+      <h2 class="text-lg font-semibold mb-4 text-gray-700">Inventory List</h2>
+      <table class="w-full border-collapse rounded-lg overflow-hidden">
+        <thead>
+          <tr class="bg-gray-200 text-left text-gray-700">
+            <th class="py-2 px-4">ID</th>
+            <th class="py-2 px-4">Product Title</th>
+            <th class="py-2 px-4">Quantity</th>
+            <th class="py-2 px-4">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr 
+            v-for="item in inventoryList" 
+            :key="item.inventoryID" 
+            class="border-t hover:bg-gray-50"
+          >
+            <td class="py-2 px-4">{{ item.inventoryID }}</td>
+            <td class="py-2 px-4">{{ item.product?.title || 'Unknown Product' }}</td>
+            <td class="py-2 px-4">
+              <input 
+                type="number" 
+                v-model.number="item.quantity"
+                class="w-20 border rounded px-2 py-1 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+              />
+            </td>
+            <td class="py-2 px-4 space-x-2">
+              <button 
+                @click="updateInventory(item)" 
+                class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition"
+              >
+                💾 Update
+              </button>
+              <button 
+                @click="deleteInventory(item.inventoryID)" 
+                class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
+              >
+                🗑️ Delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
 <script>
-import inventoryService from "@/services/inventoryService";
-//import productService from "@/services/productService"; // you need a service to fetch products
+import InventoryService from "@/services/inventoryService";
 
 export default {
+  name: "Inventory",
   data() {
     return {
       inventoryList: [],
-      products: [],
-      inventory: { product: { productID: null }, quantity: null },
-      isEdit: false,
-      editId: null
+      newInventory: {
+        product: { productID: null },
+        quantity: 0
+      }
     };
   },
   methods: {
-    fetchInventory() {
-      inventoryService.getAllInventory()
-        .then(data => this.inventoryList = data)
-        .catch(err => console.error("Error fetching inventory:", err));
+    async loadInventory() {
+      this.inventoryList = await InventoryService.getAll();
     },
-    fetchProducts() {
-      productService.getAllProducts()
-        .then(data => this.products = data)
-        .catch(err => console.error("Error fetching products:", err));
+    async addInventory() {
+      await InventoryService.create(this.newInventory);
+      this.newInventory = { product: { productID: null }, quantity: 0 };
+      this.loadInventory();
     },
-    saveInventory() {
-      if (!this.inventory.product.productID) {
-        alert("Please select a valid product.");
-        return;
+    async updateInventory(item) {
+      await InventoryService.update(item.inventoryID, item);
+      this.loadInventory();
+    },
+    async deleteInventory(id) {
+      if (confirm("Are you sure you want to delete this inventory item?")) {
+        await InventoryService.delete(id);
+        this.loadInventory();
       }
-
-      if (this.isEdit) {
-        inventoryService.updateInventory(this.editId, this.inventory)
-          .then(() => {
-            this.fetchInventory();
-            this.resetForm();
-          })
-          .catch(err => console.error("Error updating inventory:", err));
-      } else {
-        inventoryService.createInventory(this.inventory)
-          .then(() => {
-            this.fetchInventory();
-            this.resetForm();
-          })
-          .catch(err => console.error("Error creating inventory:", err));
-      }
-    },
-    editInventory(item) {
-      this.inventory = { ...item, product: { ...item.product } };
-      this.isEdit = true;
-      this.editId = item.inventoryID;
-    },
-    deleteInventory(id) {
-      inventoryService.deleteInventory(id)
-        .then(() => this.fetchInventory())
-        .catch(err => console.error("Error deleting inventory:", err));
-    },
-    resetForm() {
-      this.inventory = { product: { productID: null }, quantity: null };
-      this.isEdit = false;
-      this.editId = null;
     }
   },
   mounted() {
-    this.fetchInventory();
-    this.fetchProducts();
+    this.loadInventory();
   }
 };
 </script>
-
-<style scoped>
-
-form {
-  margin-bottom: 20px;
-}
-label {
-  display: block;
-  margin-top: 10px;
-}
-input, select {
-  width: 200px;
-  padding: 5px;
-  margin-top: 5px;
-}
-button {
-  margin-top: 10px;
-  margin-right: 10px;
-  padding: 5px 10px;
-}
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-th, td {
-  padding: 8px;
-  text-align: left;
-}
-</style>
