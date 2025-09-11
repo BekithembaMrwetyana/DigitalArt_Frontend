@@ -6,11 +6,10 @@
     <div class="bg-white shadow rounded-lg p-6 mb-6">
       <h2 class="text-lg font-semibold mb-4 text-gray-700">Add New Inventory</h2>
       <form @submit.prevent="addInventory" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        
         <div>
           <label class="block text-sm font-medium text-gray-600">Product ID</label>
           <input 
-            v-model.number="newInventory.product.productID"
+            v-model.number="newInventory.productID"
             type="number"
             placeholder="Enter Product ID"
             class="mt-1 w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
@@ -98,28 +97,65 @@ export default {
     return {
       inventoryList: [],
       newInventory: {
-        product: { productID: null },
+        productID: null,
         quantity: 0
       }
     };
   },
   methods: {
+    // Load all inventory items from backend
     async loadInventory() {
-      this.inventoryList = await InventoryService.getAll();
+      try {
+        this.inventoryList = await InventoryService.getAll();
+      } catch (err) {
+        console.error("Failed to load inventories:", err);
+      }
     },
+
+    // Add a new inventory item
     async addInventory() {
-      await InventoryService.create(this.newInventory);
-      this.newInventory = { product: { productID: null }, quantity: 0 };
-      this.loadInventory();
+      try {
+        const payload = {
+          product: { productID: this.newInventory.productID },
+          quantity: this.newInventory.quantity
+        };
+
+        await InventoryService.create(payload);
+
+        // Reset form
+        this.newInventory = { productID: null, quantity: 0 };
+
+        // Reload inventory list
+        this.loadInventory();
+      } catch (err) {
+        console.error("Failed to add inventory:", err);
+      }
     },
+
+    // Update an existing inventory item
     async updateInventory(item) {
-      await InventoryService.update(item.inventoryID, item);
-      this.loadInventory();
+      try {
+        const payload = {
+          product: { productID: item.product?.productID || item.productID },
+          quantity: item.quantity
+        };
+
+        await InventoryService.update(item.inventoryID, payload);
+        this.loadInventory();
+      } catch (err) {
+        console.error(`Failed to update inventory ID ${item.inventoryID}:`, err);
+      }
     },
+
+    // Delete an inventory item
     async deleteInventory(id) {
       if (confirm("Are you sure you want to delete this inventory item?")) {
-        await InventoryService.delete(id);
-        this.loadInventory();
+        try {
+          await InventoryService.delete(id);
+          this.loadInventory();
+        } catch (err) {
+          console.error(`Failed to delete inventory ID ${id}:`, err);
+        }
       }
     }
   },
@@ -128,3 +164,5 @@ export default {
   }
 };
 </script>
+
+

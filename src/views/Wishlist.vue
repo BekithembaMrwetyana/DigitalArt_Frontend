@@ -1,6 +1,6 @@
 <template>
-  <div class="wishlist-page">
-    <h2>Your Wishlist</h2>
+  <div class="wishlist-page" :class="{ empty: items.length === 0 }">
+    <h2> Your Wishlist</h2>
     <div v-if="items.length === 0" class="empty-message">
       Your wishlist is empty.
     </div>
@@ -44,18 +44,39 @@ export default {
   max-width: 1200px;
   margin: 2rem auto;
   padding: 0 1rem;
+  min-height: 47vh;
 }
 
 .empty-message {
   font-size: 1.2rem;
-  color: #666;
+  color: #444;
   text-align: center;
   margin-top: 2rem;
+  font-weight: bold;
+}
+
+.wishlist-page.empty {
+  position: relative;
+}
+
+.wishlist-page.empty::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('http://localhost:8080/digital_artDB/images/empty_wishlist.jpeg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
+  opacity: 0.5;
+  z-index: -1;
 }
 
 .wishlist-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
   margin-top: 1rem;
 }
