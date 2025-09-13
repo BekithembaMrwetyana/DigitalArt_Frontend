@@ -12,6 +12,7 @@ import MyOrders from '@/views/MyOrders.vue'
 // Admin views
 import AdminCategories from '@/components/admin/AdminCategories.vue'
 import AdminDashboard from '@/components/admin/AdminDashboard.vue'
+import AdminProducts from '@/components/admin/AdminProducts.vue'
 //import NotificationPage from '@/components/admin/NotificationPage.vue'
 import AdminLayout from '@/components/layout/AdminLayout.vue'
 import ArtBrand from '@/views/ArtBrand.vue'
@@ -49,6 +50,7 @@ const routes = [
       { path: 'dashboard',name: 'AdminDashboard', component: AdminDashboard},
       { path: '', redirect: '/admin/categories' },
       { path: 'categories', name: 'AdminCategories', component: AdminCategories },
+      { path: 'products', name: 'AdminProducts', component: AdminProducts },
       { path: 'brands', name: 'ArtBrand', component: ArtBrand }, // <-- moved here
       //{path: "notifications", name: "AdminNotifications",component: NotificationPage}
       {path: 'orders', name: 'Orders', component: Orders},

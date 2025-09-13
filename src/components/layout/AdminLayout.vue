@@ -48,11 +48,11 @@
       </router-link>
 
       <router-link 
-        :to="'/admin/shoes'" 
-        :class="['sidebar-button', { 'active': $route.path === '/admin/shoes' }]"
+        :to="'/admin/products'" 
+        :class="['sidebar-button', { 'active': $route.path === '/admin/products' }]"
       >
         <i class="fa fa-shopping-bag"></i> 
-        <span v-if="!isCollapsed">Arts</span>
+        <span v-if="!isCollapsed">Products</span>
       </router-link>
 
       <router-link 

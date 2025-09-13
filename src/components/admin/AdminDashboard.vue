@@ -81,7 +81,7 @@ export default {
     handleCardClick(card) {
       // Navigate to the specific route
       console.log(`Navigating to ${card.route}`);
-      // this.$router.push(card.route);
+      this.$router.push(card.route);
     },
     
     getIconComponent(iconName) {
