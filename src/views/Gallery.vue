@@ -49,6 +49,7 @@
 <script>
 import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
+import { useRoute } from 'vue-router'
 import ProductFilter from '../components/product/ProductFilter.vue'
 import ProductCard from '../components/product/ProductCard.vue'
 import Modal from '../components/common/Modal.vue'
@@ -62,6 +63,7 @@ export default {
   },
   setup() {
     const store = useStore()
+    const route = useRoute()
     const sortBy = ref('newest')
     const viewMode = ref('grid')
     const activeFilters = ref({})
@@ -89,7 +91,7 @@ export default {
         if (max) {
           filtered = filtered.filter(product => product.price >= min && product.price <= max)
         } else {
-          // Handle "2500+" case
+          
           filtered = filtered.filter(product => product.price >= min)
         }
       }
@@ -101,6 +103,15 @@ export default {
       if (activeFilters.value.availability) {
         filtered = filtered.filter(product =>
           activeFilters.value.availability === 'available' ? product.available : !product.available
+        )
+      }
+
+      
+      const searchQuery = route.query.search ? route.query.search.toString().toLowerCase() : ''
+      if (searchQuery) {
+        filtered = filtered.filter(product =>
+          (product.title && product.title.toLowerCase().includes(searchQuery)) ||
+          (product.category && product.category.toLowerCase().includes(searchQuery))
         )
       }
 

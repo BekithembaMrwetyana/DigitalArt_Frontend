@@ -25,7 +25,7 @@
 
     <!-- Copyright Section -->
     <div class="footer-bottom">
-      <p>&copy; 2024 ArtSpace Digital Art Gallery. All rights reserved.</p>
+      <p>&copy; 2025 ArtSpace Digital Art Gallery. All rights reserved.</p>
     </div>
   </footer>
 </template>
