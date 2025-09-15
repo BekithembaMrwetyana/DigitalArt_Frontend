@@ -89,7 +89,7 @@
 </template>
 
 <script>
-import InventoryService from "@/services/inventoryService";
+import InventoryService from "@/services/InventoryService";
 
 export default {
   name: "Inventory",
