@@ -6,8 +6,6 @@
       <p>View, add, and manage artworks in your gallery.</p>
     </div>
 
-
-
     <!-- Quick Actions -->
     <div class="quick-actions">
       <h3>Quick Actions</h3>
@@ -20,7 +18,6 @@
           <i class="fa fa-list"></i>
           <span>Manage Categories</span>
         </router-link>
-       
       </div>
     </div>
 
@@ -43,7 +40,7 @@
             <td><img :src="product.imageUrl" alt="product.title" class="product-img" /></td>
             <td>{{ product.productID }}</td>
             <td>{{ product.title }}</td>
-            <td>{{ product.category.name }}</td>
+            <td>{{ product.categoryName }}</td>
             <td>{{ product.price }}</td>
             <td>
               <button class="action-btn edit-btn" @click="editProduct(product)" title="Edit">
@@ -79,7 +76,7 @@
             <label for="addCategory">Category:</label>
             <select id="addCategory" v-model="addForm.categoryId" required>
               <option value="">Select Category</option>
-              <option v-for="category in categories" :key="category.categoryID" :value="category.categoryID">
+              <option v-for="category in categories" :key="category.id" :value="category.id">
                 {{ category.name }}
               </option>
             </select>
@@ -115,9 +112,9 @@
           </div>
           <div class="form-group">
             <label for="categoryId">Category:</label>
-            <select id="categoryId" v-model="editForm.categoryId">
+            <select id="categoryId" v-model="editForm.categoryId" required>
               <option value="">Select Category</option>
-              <option v-for="category in categories" :key="category.categoryID" :value="category.categoryID">
+              <option v-for="category in categories" :key="category.id" :value="category.id">
                 {{ category.name }}
               </option>
             </select>
@@ -156,13 +153,12 @@
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
 <script>
-import productService from '@/services/productService'
 import { getAllCategories } from '@/services/categoryService'
+import productService from '@/services/productService'
 
 export default {
   name: 'ProductsDashboard',
@@ -192,116 +188,137 @@ export default {
     }
   },
   methods: {
-    async fetchProducts() {
-      try {
-        const data = await productService.getAllProducts()
-        // Also fetch categories to map category names
-        await this.fetchCategories()
+   async fetchProducts() {
+  try {
+    await this.fetchCategories()
+    const data = await productService.getAllProducts()
 
-        this.products = data.map(product => {
-          // Find category name by ID if category relationship is not populated
-          let categoryName = 'Unknown'
-          if (product.category?.name) {
-            categoryName = product.category.name
-          } else if (product.categoryId) {
-            const category = this.categories.find(cat => cat.categoryID === product.categoryId)
-            categoryName = category ? category.name : 'Unknown'
-          }
+    this.products = data.map(product => {
+      let categoryName = 'No Category'
+      let categoryId = null
 
-          return {
-            productID: product.productID,
-            title: product.title,
-            description: product.description,
-            price: product.price,
-            category: {
-              name: categoryName,
-              categoryID: product.categoryId || product.category?.categoryID
-            },
-            imageUrl: product.imageUrl ? `http://localhost:8080/digital_artDB${product.imageUrl}` : (product.image ? `data:image/jpeg;base64,${product.image}` : '/placeholder-art.jpg'),
-            orderItems: product.orderItems || []
-          }
-        })
-      } catch (err) {
-        console.error(err)
+      // ✅ Use the correct property name from backend
+      if (product.category) {
+        categoryName = product.category.name || 'No Category'
+        categoryId = product.category.categoryId || null
       }
-    },
-    async fetchCategories() {
-      try {
-        this.categories = await getAllCategories()
-      } catch (err) {
-        console.error(err)
+
+      console.log(
+        `Product: ${product.title}, Category loaded: ${product.category ? 'Yes' : 'No'}, ` +
+        `CategoryId: ${categoryId}, Final: ${categoryName}`
+      )
+
+      return {
+        productID: product.productID,
+        title: product.title,
+        description: product.description,
+        price: product.price,
+        categoryId: categoryId,        // ✅ now correct
+        categoryName: categoryName,    // ✅ store name
+        imageUrl: product.imageUrl
+          ? `http://localhost:8080/digital_artDB${product.imageUrl}`
+          : (product.image ? `data:image/jpeg;base64,${product.image}` : '/placeholder-art.jpg'),
+        orderItems: product.orderItems || []
       }
-    },
+    })
+  } catch (err) {
+    console.error('Error fetching products:', err)
+  }
+},
+
+async fetchCategories() {
+  try {
+    const categoriesData = await getAllCategories()
+    this.categories = categoriesData.map((category, index) => ({
+      // ✅ backend sends "categoryId"
+      id: category.categoryId,
+      name: category.name,
+      description: category.description
+    }))
+  } catch (err) {
+    console.error('Error fetching categories:', err)
+    this.categories = []
+  }
+},
+
+
     addProduct() {
       this.showAddModal = true
     },
+
     async saveAdd() {
       try {
-        // Convert full URL to relative path for backend
         const imageUrl = this.addForm.imageUrl.replace('http://localhost:8080/digital_artDB', '')
         const formData = {
           title: this.addForm.title,
           description: this.addForm.description,
           price: parseFloat(this.addForm.price),
-          categoryId: this.addForm.categoryId,
+          categoryId: parseInt(this.addForm.categoryId),
           imageUrl: imageUrl,
-          imageData: '' // Empty string for URL-based images
+          imageData: ''
         }
         await productService.addProduct(formData)
         this.showAddModal = false
         this.addForm = { title: '', price: '', description: '', categoryId: '', imageUrl: '' }
-        this.fetchProducts()
+        await this.fetchProducts()
         alert('Product added successfully!')
       } catch (err) {
         console.error(err)
         alert('Error adding product')
       }
     },
+
     cancelAdd() {
       this.showAddModal = false
       this.addForm = { title: '', price: '', description: '', categoryId: '', imageUrl: '' }
     },
+
     editProduct(product) {
       this.editingProduct = product
       this.editForm = {
         title: product.title,
         price: product.price,
         description: product.description || '',
-        categoryId: product.category?.categoryID || '',
+        categoryId: product.categoryId || '',
         imageUrl: product.imageUrl || ''
-
       }
+      console.log('Editing product - Category ID:', product.categoryId)
+      console.log('Available categories:', this.categories)
       this.showEditModal = true
     },
+
     async saveEdit() {
       try {
-        // Convert full URL to relative path for backend
         const imageUrl = this.editForm.imageUrl.replace('http://localhost:8080/digital_artDB', '')
         const updatedData = {
           title: this.editForm.title,
           price: parseFloat(this.editForm.price),
           description: this.editForm.description,
-          categoryId: this.editForm.categoryId,
+          categoryId: parseInt(this.editForm.categoryId),
           imageUrl: imageUrl
         }
+        console.log('Saving product with category ID:', updatedData.categoryId)
         await productService.updateProduct(this.editingProduct.productID, updatedData)
         this.showEditModal = false
-        this.fetchProducts()
+        await this.fetchProducts()
         alert('Product updated successfully!')
       } catch (err) {
-        console.error(err)
+        console.error('Update error:', err)
         alert('Error updating product')
       }
     },
+
     cancelEdit() {
       this.showEditModal = false
       this.editingProduct = null
       this.editForm = { title: '', price: '', description: '', categoryId: '', imageUrl: '' }
     },
+
     confirmDelete(product) {
       this.deletingProduct = product
       this.submitting = false
     },
+
     async handleDeleteProduct() {
       if (!this.deletingProduct) return
       this.submitting = true
@@ -309,20 +326,21 @@ export default {
         await productService.deleteProduct(this.deletingProduct.productID)
         this.deletingProduct = null
         this.submitting = false
-        this.fetchProducts()
+        await this.fetchProducts()
       } catch (err) {
         console.error(err)
         this.submitting = false
       }
     },
+
     cancelDelete() {
       this.deletingProduct = null
       this.submitting = false
     }
   },
-  mounted() {
-    this.fetchProducts()
-    this.fetchCategories()
+
+  async mounted() {
+    await this.fetchProducts()
   }
 }
 </script>
