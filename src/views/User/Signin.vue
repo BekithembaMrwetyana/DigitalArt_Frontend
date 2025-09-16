@@ -64,12 +64,10 @@ export default {
     });
 
     if (response.data) {
-      // ✅ Update Vuex store
-      this.$store.dispatch("auth/loginSuccess", response.data);
+      this.$store.dispatch("Auth/loginSuccess", response.data);
 
       alert("Welcome " + response.data.firstName + " " + response.data.lastName);
 
-      // redirect home
       this.$router.push("/");
     } else {
       alert("Invalid credentials");
