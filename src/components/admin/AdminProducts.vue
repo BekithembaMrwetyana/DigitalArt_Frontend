@@ -204,7 +204,7 @@ export default {
           if (product.category?.name) {
             categoryName = product.category.name
           } else if (product.categoryId) {
-            const category = this.categories.find(cat => cat.categoryID === product.categoryId)
+            const category = this.categories.find(cat => cat.categoryID == product.categoryId)
             categoryName = category ? category.name : 'Unknown'
           }
 
