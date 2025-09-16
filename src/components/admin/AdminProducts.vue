@@ -200,7 +200,38 @@ export default {
       // ✅ Use the correct property name from backend
       if (product.category) {
         categoryName = product.category.name || 'No Category'
-        categoryId = product.category.categoryId || null
+        categoryId = product.category.categoryId || nul
+    async fetchProducts() {
+      try {
+        const data = await productService.getAllProducts()
+        // Also fetch categories to map category names
+        await this.fetchCategories()
+
+        this.products = data.map(product => {
+          // Find category name by ID if category relationship is not populated
+          let categoryName = 'Unknown'
+          if (product.category?.name) {
+            categoryName = product.category.name
+          } else if (product.categoryId) {
+            const category = this.categories.find(cat => cat.categoryID == product.categoryId)
+            categoryName = category ? category.name : 'Unknown'
+          }
+
+          return {
+            productID: product.productID,
+            title: product.title,
+            description: product.description,
+            price: product.price,
+            category: {
+              name: categoryName,
+              categoryID: product.categoryId || product.category?.categoryID
+            },
+            imageUrl: product.imageUrl ? `http://localhost:8080/digital_artDB${product.imageUrl}` : (product.image ? `data:image/jpeg;base64,${product.image}` : '/placeholder-art.jpg'),
+            orderItems: product.orderItems || []
+          }
+        })
+      } catch (err) {
+        console.error(err)
       }
 
       console.log(

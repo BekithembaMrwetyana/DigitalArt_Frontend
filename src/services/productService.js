@@ -48,6 +48,10 @@ export default {
           'Content-Type': 'application/json'
         }
       })
+      // Ensure categoryId is included in the response for proper category mapping
+      if (!response.data.categoryId) {
+        response.data.categoryId = productData.categoryId
+      }
       return response.data
     } catch (error) {
       console.error('Error adding product:', error)
