@@ -20,6 +20,9 @@ const actions = {
   selectArtwork({ commit }, artwork) {
     commit('SET_SELECTED_ARTWORK', artwork)
   },
+  selectProduct({ commit }, product) {
+    commit('SET_SELECTED_ARTWORK', product)
+  },
   closeModal({ commit }) {
     commit('SET_SELECTED_ARTWORK', null)
   },
@@ -34,7 +37,8 @@ const actions = {
 const getters = {
   selectedArtwork: state => state.selectedArtwork,
   currentSlide: state => state.currentSlide,
-  contentTab: state => state.contentTab
+  contentTab: state => state.contentTab,
+  isModalOpen: state => !!state.selectedArtwork
 }
 
 export default { namespaced: true, state, mutations, actions, getters }
