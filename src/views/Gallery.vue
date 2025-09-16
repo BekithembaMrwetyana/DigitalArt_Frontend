@@ -43,6 +43,7 @@
     </div>
     
     <Modal />
+    <ProductModal />
   </div>
 </template>
 
@@ -53,13 +54,15 @@ import { useRoute } from 'vue-router'
 import ProductFilter from '../components/product/ProductFilter.vue'
 import ProductCard from '../components/product/ProductCard.vue'
 import Modal from '../components/common/Modal.vue'
+import ProductModal from '../components/product/ProductModal.vue'
 
 export default {
   name: 'Gallery',
   components: {
     ProductFilter,
     ProductCard,
-    Modal
+    Modal,
+    ProductModal
   },
   setup() {
     const store = useStore()
@@ -145,12 +148,15 @@ export default {
       store.dispatch('ui/selectProduct', product)
     }
 
+    const selectedProduct = computed(() => store.getters['ui/selectedArtwork'])
+
     return {
       sortBy,
       viewMode,
       filteredAndSortedProducts,
       viewProduct,
-      handleFiltersChanged
+      handleFiltersChanged,
+      selectedProduct
     }
   }
 }

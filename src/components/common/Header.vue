@@ -108,10 +108,10 @@ export default {
     const searchQuery = ref('')
     const showUserMenu = ref(false)
     
-    const isAuthenticated = computed(() => store.getters['auth/isAuthenticated'])
-    const user = computed(() => store.getters['auth/user'])
+    const isAuthenticated = computed(() => store.getters['Auth/isAuthenticated'])
+    const user = computed(() => store.getters['Auth/user'])
     
-    const cartCount = computed(() => store.getters['cart/cartCount'])
+    const cartCount = computed(() => store.getters['Cart/cartCount'])
     const wishlistCount = computed(() => store.getters['wishlist/itemCount'])
 
     const performSearch = () => {
@@ -150,7 +150,7 @@ export default {
     }
     
     const logout = async () => {
-      await store.dispatch('auth/logout')
+      await store.dispatch('Auth/logout')
       showUserMenu.value = false
       router.push('/')
     }

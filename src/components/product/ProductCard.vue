@@ -1,5 +1,5 @@
 <template>
-  <div class="product-card" @click="$emit('click', product)">
+  <div class="product-card" @click="$emit('view', product)">
     <div class="product-image">
       <img :src="product.image || '/placeholder-art.jpg'" :alt="product.title" />
       
@@ -28,14 +28,18 @@
       <p class="category">{{ product.category }}</p>
     </div>
 
-    <!-- Floating trolley button -->
-    <button
-      class="cart-btn"
-      @click.stop="toggleCart"
-      :class="{ active: isInCart }"
-    >
-      🛒
-    </button>
+  <!-- <button 
+    @click="$store.dispatch('Cart/addToCart', { 
+      productId: product.id, 
+      quantity: 1, 
+      userId: $store.state.auth.user.id
+    })"class="add-to-cart-btn">
+    Add to Cart
+  </button> -->
+
+<AddToCartButton :product="product" />
+
+
   </div>
 </template>
 
@@ -43,14 +47,12 @@
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 
+import AddToCartButton from '../cart/AddToCartButton.vue'; // path to your component
+
 export default {
   name: 'ProductCard',
-  props: {
-    product: {
-      type: Object,
-      required: true
-    }
-  },
+  components: { AddToCartButton },
+  props: { product: Object },
   emits: ['click'],
   setup(props) {
     const store = useStore()
@@ -61,7 +63,7 @@ export default {
     })
 
     const isInCart = computed(() => {
-      const cart = store.getters['cart/cartItems'] || []
+      const cart = store.getters['Cart/cartItems'] || []
       return cart.some(item => item.id === props.product.id)
     })
 
@@ -75,9 +77,9 @@ export default {
 
     const toggleCart = () => {
       if (isInCart.value) {
-        store.dispatch('cart/removeItem', props.product.id)
+        store.dispatch('Cart/removeItem', props.product.id)
       } else {
-        store.dispatch('cart/addItem', props.product)
+        store.dispatch('Cart/addItem', props.product)
       }
     }
 
@@ -174,6 +176,23 @@ export default {
   cursor: pointer;
   font-size: 24px;
   transition: all 0.3s ease;
+}
+
+.add-to-cart-btn {
+  background-color: #2563eb; /* blue */
+  color: white;
+  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: background 0.2s ease-in-out, transform 0.1s;
+}
+
+.add-to-cart-btn:hover {
+  background-color: #1e40af; /* darker blue */
+  transform: scale(1.05);
 }
 
 .cart-btn:active {

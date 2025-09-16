@@ -9,6 +9,7 @@ import About from '@/views/About.vue' // import About page
 import Home from '@/views/Home.vue'
 import Wishlist from '@/views/Wishlist.vue'
 import MyOrders from '@/views/MyOrders.vue'
+import Cart from '@/views/cart/Cart.vue'
 
 // Admin views
 import AdminCategories from '@/components/admin/AdminCategories.vue'
@@ -28,6 +29,7 @@ const routes = [
   { path: '/contact', name: 'Contact', component: Contact },
   { path: '/wishlist', name: 'Wishlist', component: Wishlist },
   { path: '/myorders', name: 'MyOrders', component: MyOrders },
+  {path: '/cart', name: 'Cart', component: Cart},
 
   //User routes
 

@@ -1,22 +1,22 @@
 <template>
-  <tr>
-    <td>{{ item.product.name }}</td>
-    <td>{{ item.product.price.toFixed(2) }}</td>
+  <tr class="cart-row">
+    <td class="cart-cell">{{ item.product.productName }}</td>
+    <td class="cart-cell">{{ item.price.toFixed(2) }}</td>
 
-    <td><s></s>
+    <td class="cart-cell">
       <input
         type="number"
         min="1"
         v-model.number="localQuantity"
         @change="updateQuantity"
-        class="w-16 border rounded text-center"
+        class="quantity-input"
       />
     </td>
 
-    <td>{{ (item.product.price * localQuantity).toFixed(2) }}</td>
+    <td class="cart-cell">{{ (item.price * localQuantity).toFixed(2) }}</td>
 
-    <td>
-      <button @click="removeItem" class="bg-red-500 text-white px-2 py-1 rounded">
+    <td class="cart-cell">
+      <button @click="removeItem" class="remove-btn">
         Remove
       </button>
     </td>
@@ -24,8 +24,6 @@
 </template>
 
 <script>
-import { updateCartItem, deleteCartItem } from "@/services/CartItemService";
-
 export default {
   name: "CartItemRow",
   props: { item: { type: Object, required: true } },
@@ -34,67 +32,47 @@ export default {
   },
   methods: {
     async updateQuantity() {
-      try {
-        await updateCartItem({ id: this.item.id, quantity: this.localQuantity });
-        this.$store.dispatch("Cart/updateItemQuantity", { item: this.item, quantity: this.localQuantity });
-      } catch (err) { console.error("Error updating cart item:", err); }
+      this.$store.dispatch("Cart/updateItemQuantity", {
+        item: this.item,
+        quantity: this.localQuantity,
+      });
     },
     async removeItem() {
-      try {
-        await deleteCartItem(this.item.id);
-        this.$store.dispatch("Cart/removeItem", this.item.id);
-      } catch (err) { console.error("Error removing cart item:", err); }
+      this.$store.dispatch("Cart/removeItem", this.item.cartItemID);
     },
   },
 };
 </script>
-<!-- 
-<template>
-  <tr>
-    <td>{{ item.product.title }}</td>
-    <td>{{ item.price.toFixed(2) }}</td>
 
-    <td>
-      <input
-        type="number"
-        min="1"
-        v-model.number="localQuantity"
-        @change="updateQuantity"
-        class="w-16 border rounded text-center"
-      />
-    </td>
+<style scoped>
+.cart-row {
+  border-bottom: 1px solid #ddd;
+}
 
-    <td>{{ (item.price * localQuantity).toFixed(2) }}</td>
- 
-    <td>
-      <button @click="removeItem" class="bg-red-500 text-white px-2 py-1 rounded">
-        Remove
-      </button>
-    </td>
-  </tr>
-</template>
+.cart-cell {
+  padding: 10px;
+  text-align: center;
+  vertical-align: middle;
+}
 
-<script>
-export default {
-  name: "CartItemRow",
-  props: { item: { type: Object, required: true } },
-  data() {
-    return { localQuantity: this.item.quantity };
-  },
-  methods: {
-    async updateQuantity() {
-      try {
-        await this.$store.dispatch("Cart/updateItemQuantity", {
-          item: this.item,
-          quantity: this.localQuantity,
-        });
-      } catch (err) { console.error("Error updating cart item:", err); }
-    },
-    async removeItem() {
-      try {
-        await this.$store.dispatch("Cart/removeItem", this.item.cartItemID);
-      } catch (err) { console.error("Error removing cart item:", err); }
-    },
-  },
-};
-</script> -->
+.quantity-input {
+  width: 60px;
+  padding: 5px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.remove-btn {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.remove-btn:hover {
+  background-color: #c0392b;
+}
+</style>

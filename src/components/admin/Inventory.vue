@@ -5,25 +5,13 @@
     <!-- Add New Inventory -->
     <div class="bg-white shadow rounded-lg p-6 mb-6">
       <h2 class="text-lg font-semibold mb-4 text-gray-700">Add New Inventory</h2>
-      <form @submit.prevent="addInventory" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <form @submit.prevent="addInventory" class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label class="block text-sm font-medium text-gray-600">Product ID</label>
           <input 
             v-model.number="newInventory.productID"
             type="number"
             placeholder="Enter Product ID"
-            class="mt-1 w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-            required
-          />
-        </div>
-
-        <div>
-          <label class="block text-sm font-medium text-gray-600">Quantity</label>
-          <input 
-            v-model.number="newInventory.quantity"
-            type="number"
-            min="0"
-            placeholder="Enter Quantity"
             class="mt-1 w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
             required
           />
@@ -48,7 +36,6 @@
           <tr class="bg-gray-200 text-left text-gray-700">
             <th class="py-2 px-4">ID</th>
             <th class="py-2 px-4">Product Title</th>
-            <th class="py-2 px-4">Quantity</th>
             <th class="py-2 px-4">Actions</th>
           </tr>
         </thead>
@@ -60,20 +47,7 @@
           >
             <td class="py-2 px-4">{{ item.inventoryID }}</td>
             <td class="py-2 px-4">{{ item.product?.title || 'Unknown Product' }}</td>
-            <td class="py-2 px-4">
-              <input 
-                type="number" 
-                v-model.number="item.quantity"
-                class="w-20 border rounded px-2 py-1 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-              />
-            </td>
             <td class="py-2 px-4 space-x-2">
-              <button 
-                @click="updateInventory(item)" 
-                class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition"
-              >
-                💾 Update
-              </button>
               <button 
                 @click="deleteInventory(item.inventoryID)" 
                 class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
@@ -89,7 +63,7 @@
 </template>
 
 <script>
-import InventoryService from "@/services/inventoryService";
+import InventoryService from "@/services/InventoryService";
 
 export default {
   name: "Inventory",
@@ -97,13 +71,11 @@ export default {
     return {
       inventoryList: [],
       newInventory: {
-        productID: null,
-        quantity: 0
+        productID: null
       }
     };
   },
   methods: {
-    // Load all inventory items from backend
     async loadInventory() {
       try {
         this.inventoryList = await InventoryService.getAll();
@@ -112,18 +84,16 @@ export default {
       }
     },
 
-    // Add a new inventory item
     async addInventory() {
       try {
         const payload = {
-          product: { productID: this.newInventory.productID },
-          quantity: this.newInventory.quantity
+          product: { productID: this.newInventory.productID }
         };
 
         await InventoryService.create(payload);
 
         // Reset form
-        this.newInventory = { productID: null, quantity: 0 };
+        this.newInventory = { productID: null };
 
         // Reload inventory list
         this.loadInventory();
@@ -132,22 +102,6 @@ export default {
       }
     },
 
-    // Update an existing inventory item
-    async updateInventory(item) {
-      try {
-        const payload = {
-          product: { productID: item.product?.productID || item.productID },
-          quantity: item.quantity
-        };
-
-        await InventoryService.update(item.inventoryID, payload);
-        this.loadInventory();
-      } catch (err) {
-        console.error(`Failed to update inventory ID ${item.inventoryID}:`, err);
-      }
-    },
-
-    // Delete an inventory item
     async deleteInventory(id) {
       if (confirm("Are you sure you want to delete this inventory item?")) {
         try {
@@ -164,5 +118,6 @@ export default {
   }
 };
 </script>
+
 
 
