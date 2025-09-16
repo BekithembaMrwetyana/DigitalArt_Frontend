@@ -35,48 +35,33 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
-//import Sidebar from '@/components/layout/Sidebar.vue'
-import Modal from '@/components/common/Modal.vue'
-import ProductFilter from '@/components/product/ProductFilter.vue'
-import OrderService from '@/services/OrderService.js'
+import { computed, onMounted } from "vue"
+import { useStore } from "vuex"
+//import Sidebar from "@/components/layout/Sidebar.vue"
+import Modal from "@/components/common/Modal.vue"
+import ProductFilter from "@/components/product/ProductFilter.vue"
 
 export default {
-  components: {
-    //Sidebar,
-    Modal,
-    ProductFilter
-  },
+  components: {  Modal, ProductFilter },
   setup() {
-    const orders = ref([])
-    const loading = ref(true)
-    const error = ref(null)
+    const store = useStore()
+
+    // map from Vuex Orders module
+    const orders = computed(() => store.state.Orders?.orders || []);
+const loading = computed(() => store.state.Orders?.loading || false);
+const error = computed(() => store.state.Orders?.error || null);
 
     const formatDate = (dateStr) => {
       const date = new Date(dateStr)
       return date.toLocaleDateString()
     }
 
-    onMounted(async () => {
-      loading.value = true
-      error.value = null
-
-      try {
-        const user = JSON.parse(localStorage.getItem('user'))
-        if (!user || !user.userId) throw new Error("No user logged in")
-
-        const data = await OrderService.getOrdersByUserId(user.userId)
-        orders.value = data
-      } catch (err) {
-        console.error('Error fetching orders:', err)
-        error.value = 'Failed to load orders. Please try again later.'
-      } finally {
-        loading.value = false
-      }
+    onMounted(() => {
+      store.dispatch("Orders/fetchUserOrders")
     })
 
     return { orders, loading, error, formatDate }
-  }
+  },
 }
 </script>
 
