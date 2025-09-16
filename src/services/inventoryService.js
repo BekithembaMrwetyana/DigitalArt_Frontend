@@ -2,7 +2,6 @@ import axios from "axios";
 
 const BASE_URL = "http://localhost:8080/digital_artDB/inventory";
 
-
 export default {
   /**
    * GET all inventory items
@@ -18,12 +17,11 @@ export default {
 
   /**
    * CREATE a new inventory item
-   * inventory format: { productID: 1, quantity: 10 } OR { product: { productID: 1 }, quantity: 10 }
+   * inventory format: { productID: 1 } OR { product: { productID: 1 } }
    */
   create(inventory) {
     const payload = {
-      product: { productID: inventory.productID || inventory.product?.productID },
-      quantity: inventory.quantity
+      product: { productID: inventory.productID || inventory.product?.productID }
     };
 
     return axios.post(`${BASE_URL}/create`, payload)
@@ -41,8 +39,7 @@ export default {
    */
   update(id, inventory) {
     const payload = {
-      product: { productID: inventory.productID || inventory.product?.productID },
-      quantity: inventory.quantity
+      product: { productID: inventory.productID || inventory.product?.productID }
     };
 
     return axios.put(`${BASE_URL}/update/${id}`, payload)

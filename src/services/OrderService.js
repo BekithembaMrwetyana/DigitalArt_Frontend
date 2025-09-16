@@ -16,20 +16,19 @@ export default {
   },
 
   // Update an order (Admin)
-  updateOrder(orderId, orderData) {
-  const payload = {
-    paymentStatus: orderData.paymentStatus,
-    orderDate: orderData.orderDate,
-    cartItems: orderData.cartItems
-  };
-
-  return axios.put(`${BASE_URL}/update/${orderId}`, payload)
+// Update only the status
+updateOrder(orderId, paymentStatus) {
+  return axios.put(`${BASE_URL}/updateStatus/${orderId}`, { paymentStatus })
     .then(res => res.data)
     .catch(err => {
       console.error("Error updating order:", err);
       throw err;
     });
 },
+
+
+
+
 
 
   // Delete an order (Admin)
