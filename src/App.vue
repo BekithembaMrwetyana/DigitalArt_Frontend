@@ -22,7 +22,7 @@ export default {
     // Load cart if user is already logged in
     const userRaw = localStorage.getItem('user')
     if (userRaw) {
-      store.dispatch('cart/fetchUserCart')
+      store.dispatch('Cart/fetchUserCart')
     }
 
     return {}

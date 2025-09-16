@@ -1,7 +1,7 @@
 <template>
-  <button class="add-btn" @click="add" :disabled="busy">
-    {{ busy ? 'Adding...' : 'Add to Cart' }}
-  </button>
+  <button class="add-btn" @click.stop="add" :disabled="busy">
+  {{ busy ? 'Adding...' : 'Add to Cart' }}
+</button>
 </template>
 
 <script>
@@ -16,18 +16,25 @@ export default {
     const busy = ref(false)
 
     const add = async () => {
-      const user = localStorage.getItem('user')
-      if (!user) { alert('Please sign in to add items to cart.'); return }
-      try {
-        busy.value = true
-        await store.dispatch('Cart/addToCart', { product: props.product, quantity: 1 })
-        alert('Added to cart!')
-      } catch (e) {
-        alert('Failed to add to cart.')
-      } finally {
-        busy.value = false
-      }
-    }
+  const user = JSON.parse(localStorage.getItem('user'))
+  if (!user || !user.userId) { 
+    alert('Please sign in to add items to cart.')
+    return 
+  }
+
+  try {
+    busy.value = true
+    await store.dispatch('Cart/addToCart', { product: props.product, quantity: 1 }) // ✅ only send product + quantity
+    alert('Added to cart!')
+  } catch (e) {
+    alert('Failed to add to cart.')
+    console.error(e)
+  } finally {
+    busy.value = false
+  }
+}
+
+
  
     return { add, busy }
   }
@@ -38,5 +45,7 @@ export default {
 .add-btn {
   background: #2196F3; color: #fff; border: none; padding: .6rem 1rem;
   border-radius: 8px; cursor: pointer; font-weight: 600;
+  display: block;
+  margin: 1rem auto 0 auto;
 }
 </style>
