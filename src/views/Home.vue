@@ -14,11 +14,7 @@
     </div>
 
    
-    <div class="guest-orders">
-      <router-link to="/myorders">View My Orders</router-link>
-    </div>
-
-   
+    
     <div class="latest-collection">
       <h3>OUR PICKS</h3>
       <p class="collection-subtitle">Recommended by us</p>
