@@ -35,9 +35,9 @@
         </form>
       </div>
 
-      <!-- Preview & List Section -->
+      
       <div class="preview-section">
-        <!-- Live Preview -->
+        
         <div class="live-preview">
           <h3>Live Preview</h3>
           <div class="preview-card">
