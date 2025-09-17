@@ -201,6 +201,7 @@ export default {
         this.products = data.map(product => {
           // Find category name by ID if category relationship is not populated
           let categoryName = 'Unknown'
+
           if (product.category?.name) {
             categoryName = product.category.name
           } else if (product.categoryId) {
@@ -214,11 +215,13 @@ export default {
             title: product.title,
             description: product.description,
             price: product.price,
-            category: {
-              name: categoryName,
-              categoryID: product.categoryId || product.category?.categoryID
-            },
-            imageUrl: product.imageUrl ? `http://localhost:8080/digital_artDB${product.imageUrl}` : (product.image ? `data:image/jpeg;base64,${product.image}` : '/placeholder-art.jpg'),
+            categoryId: product.categoryId || product.category?.categoryID,
+            categoryName: categoryName,
+            imageUrl: product.imageUrl
+              ? `http://localhost:8080/digital_artDB${product.imageUrl}`
+              : (product.image
+                  ? `data:image/jpeg;base64,${product.image}`
+                  : '/placeholder-art.jpg'),
             orderItems: product.orderItems || []
           }
         })
@@ -327,6 +330,7 @@ export default {
   }
 }
 </script>
+
 
 <style scoped>
 .products-dashboard {

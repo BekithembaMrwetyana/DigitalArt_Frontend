@@ -37,7 +37,7 @@ const actions = {
       }
 
       const user = JSON.parse(userRaw);
-      const userId = user?.userId || user?.id;   // ✅ normalize
+      const userId = user?.userId || user?.id;   
 
       const list = await getCartItemsByUserId(userId);
 
@@ -49,7 +49,7 @@ const actions = {
         price: it.price ?? it.product?.price ?? 0,
         product: {
           productID: it.product?.productID ?? it.product?.id,
-          productName: it.product?.productName || it.product?.title || it.product?.name || "Unnamed Product",
+          title: it.title || "Unnamed Product",
         },
 
       }));
@@ -67,11 +67,10 @@ const actions = {
   async addToCart({ dispatch }, { product, quantity = 1 }) {
     const raw = localStorage.getItem("user");
     const user = raw ? JSON.parse(raw) : {};
-    const userId = user?.userId || user?.id;  // ✅ normalize
+    const userId = user?.userId || user?.id; 
 
     if (!userId) throw new Error("Not logged in");
 
-    // ✅ normalize product price
     const price =
       product.price ??
       product.productPrice ??
