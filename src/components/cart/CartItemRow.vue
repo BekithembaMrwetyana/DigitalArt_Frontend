@@ -1,6 +1,6 @@
 <template>
   <tr class="cart-row">
-    <td class="cart-cell">{{ item.product.productName }}</td>
+    <td class="cart-cell">{{ item.product.title }}</td>
     <td class="cart-cell">{{ item.price.toFixed(2) }}</td>
 
     <td class="cart-cell">

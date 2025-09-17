@@ -188,32 +188,20 @@ export default {
     }
   },
   methods: {
-   async fetchProducts() {
-  try {
-    await this.fetchCategories()
-    const data = await productService.getAllProducts()
-
-    this.products = data.map(product => {
-      let categoryName = 'No Category'
-      let categoryId = null
-
-      // ✅ Use the correct property name from backend
-      if (product.category) {
-        categoryName = product.category.name || 'No Category'
-        categoryId = product.category.categoryId || nul
     async fetchProducts() {
       try {
-        const data = await productService.getAllProducts()
-        // Also fetch categories to map category names
         await this.fetchCategories()
+        const data = await productService.getAllProducts()
 
         this.products = data.map(product => {
-          // Find category name by ID if category relationship is not populated
           let categoryName = 'Unknown'
+
           if (product.category?.name) {
             categoryName = product.category.name
           } else if (product.categoryId) {
-            const category = this.categories.find(cat => cat.categoryID == product.categoryId)
+            const category = this.categories.find(
+              cat => cat.id === product.categoryId
+            )
             categoryName = category ? category.name : 'Unknown'
           }
 
@@ -222,56 +210,34 @@ export default {
             title: product.title,
             description: product.description,
             price: product.price,
-            category: {
-              name: categoryName,
-              categoryID: product.categoryId || product.category?.categoryID
-            },
-            imageUrl: product.imageUrl ? `http://localhost:8080/digital_artDB${product.imageUrl}` : (product.image ? `data:image/jpeg;base64,${product.image}` : '/placeholder-art.jpg'),
+            categoryId: product.categoryId || product.category?.categoryID,
+            categoryName: categoryName,
+            imageUrl: product.imageUrl
+              ? `http://localhost:8080/digital_artDB${product.imageUrl}`
+              : (product.image
+                  ? `data:image/jpeg;base64,${product.image}`
+                  : '/placeholder-art.jpg'),
             orderItems: product.orderItems || []
           }
         })
       } catch (err) {
-        console.error(err)
+        console.error('Error fetching products:', err)
       }
+    },
 
-      console.log(
-        `Product: ${product.title}, Category loaded: ${product.category ? 'Yes' : 'No'}, ` +
-        `CategoryId: ${categoryId}, Final: ${categoryName}`
-      )
-
-      return {
-        productID: product.productID,
-        title: product.title,
-        description: product.description,
-        price: product.price,
-        categoryId: categoryId,        // ✅ now correct
-        categoryName: categoryName,    // ✅ store name
-        imageUrl: product.imageUrl
-          ? `http://localhost:8080/digital_artDB${product.imageUrl}`
-          : (product.image ? `data:image/jpeg;base64,${product.image}` : '/placeholder-art.jpg'),
-        orderItems: product.orderItems || []
+    async fetchCategories() {
+      try {
+        const categoriesData = await getAllCategories()
+        this.categories = categoriesData.map(category => ({
+          id: category.categoryId, // ✅ match backend field
+          name: category.name,
+          description: category.description
+        }))
+      } catch (err) {
+        console.error('Error fetching categories:', err)
+        this.categories = []
       }
-    })
-  } catch (err) {
-    console.error('Error fetching products:', err)
-  }
-},
-
-async fetchCategories() {
-  try {
-    const categoriesData = await getAllCategories()
-    this.categories = categoriesData.map((category, index) => ({
-      // ✅ backend sends "categoryId"
-      id: category.categoryId,
-      name: category.name,
-      description: category.description
-    }))
-  } catch (err) {
-    console.error('Error fetching categories:', err)
-    this.categories = []
-  }
-},
-
+    },
 
     addProduct() {
       this.showAddModal = true
@@ -279,7 +245,10 @@ async fetchCategories() {
 
     async saveAdd() {
       try {
-        const imageUrl = this.addForm.imageUrl.replace('http://localhost:8080/digital_artDB', '')
+        const imageUrl = this.addForm.imageUrl.replace(
+          'http://localhost:8080/digital_artDB',
+          ''
+        )
         const formData = {
           title: this.addForm.title,
           description: this.addForm.description,
@@ -320,7 +289,10 @@ async fetchCategories() {
 
     async saveEdit() {
       try {
-        const imageUrl = this.editForm.imageUrl.replace('http://localhost:8080/digital_artDB', '')
+        const imageUrl = this.editForm.imageUrl.replace(
+          'http://localhost:8080/digital_artDB',
+          ''
+        )
         const updatedData = {
           title: this.editForm.title,
           price: parseFloat(this.editForm.price),
@@ -375,6 +347,7 @@ async fetchCategories() {
   }
 }
 </script>
+
 
 <style scoped>
 .products-dashboard {
