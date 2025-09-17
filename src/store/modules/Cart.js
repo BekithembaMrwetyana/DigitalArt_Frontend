@@ -49,7 +49,7 @@ const actions = {
         price: it.price ?? it.product?.price ?? 0,
         product: {
           productID: it.product?.productID ?? it.product?.id,
-          title: it.title || "Unnamed Product",
+          title: it.product?.title || "Unnamed Product",
         },
 
       }));
