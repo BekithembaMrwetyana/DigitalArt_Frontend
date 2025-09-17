@@ -26,7 +26,7 @@ const userService = {
       .then(res => res.data)
       .catch(err => handleError("Login failed", err))
   },
-
+ 
   getAllUsers() {
     return axios.get(`${BASE_URL}/getAll`)
       .then(res => res.data)
@@ -38,13 +38,13 @@ const userService = {
       .then(res => res.data)
       .catch(err => handleError(`Reading user ${id}`, err))
   },
-
+ 
   updateUser(id, userData) {
     return axios.put(`${BASE_URL}/update/${id}`, userData)
       .then(res => res.data)
       .catch(err => handleError(`Updating user ${id}`, err))
   },
-
+ 
   deleteUser(id) {
     return axios.delete(`${BASE_URL}/delete/${id}`)
       .then(res => res.data)
