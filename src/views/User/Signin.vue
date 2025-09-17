@@ -3,195 +3,63 @@
     <div class="signin-card">
       <h2>Sign In</h2>
       <form @submit.prevent="signin">
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input id="email" type="email" v-model="email" placeholder="Enter your email" required />
+        <input v-model="email" type="email" placeholder="Email" required />
+        <input v-model="password" type="password" placeholder="Password" required />
+        <div class="profile-row">
+          <span class="label">Login as:</span>
+          <select v-model="loginRole">
+            <option value="CUSTOMER">User</option>
+            <option value="ADMIN">Admin</option>
+          </select>
         </div>
-
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input id="password" type="password" v-model="password" placeholder="Enter your password" required />
-        </div>
-
-        <button type="submit" class="signin-btn">Sign In</button>
+        <button type="submit">Sign In</button>
       </form>
-
-      <p class="register-link">
-        Don't have an account?
-        <router-link :to="{ name: 'Register' }">Register</router-link>
-      </p>
     </div>
   </div>
 </template>
 
-
 <script>
-import axios from "axios";
+import { ref } from "vue"
+import { useStore } from "vuex"
+import { useRouter } from "vue-router"
 
 export default {
-  name: "Signin",
-  data() {
-    return {
-      email: "",
-      password: ""
-    };
-  },
-  methods: {
-    // async signin() {
-    //   try {
-    //     const response = await axios.post("http://localhost:8080/digital_artDB/api/users/login", {
-    //       email: this.email,
-    //       password: this.password
-    //     });
-    //     if (response.data) {
-    //       alert("Welcome " + response.data.firstName + " " + response.data.lastName);
-    //     } else {
-    //       alert("Invalid credentials");
-    //     }
-    //   } catch (error) {
-    //     if (error.response && error.response.status === 401) {
-    //       alert("Invalid email or password");
-    //     } else {
-    //       alert("Error during signin");
-    //     }
-    //   }
-    // }
-       async signin() {
-  try {
-    const response = await axios.post("http://localhost:8080/digital_artDB/api/users/login", {
-      email: this.email,
-      password: this.password
-    });
+  setup() {
+    const email = ref("")
+    const password = ref("")
+    const loginRole = ref("CUSTOMER")
+    const store = useStore()
+    const router = useRouter()
 
-    if (response.data) {
-      this.$store.dispatch("Auth/loginSuccess", response.data);
-
-      alert("Welcome " + response.data.firstName + " " + response.data.lastName);
-
-      this.$router.push("/");
-    } else {
-      alert("Invalid credentials");
+    const signin = async () => {
+      const user = await store.dispatch("Auth/login", {
+        email: email.value,
+        password: password.value,
+        role: loginRole.value
+      })
+      if (user && user.userId) {
+        if (user.role === "ADMIN") {
+          alert(`Welcome Admin ${user.firstName}`)
+          router.push("/admin/dashboard")
+        } else {
+          alert(`Login successful! Welcome ${user.firstName}`)
+          router.push("/dashboard")
+        }
+      }
     }
-  } catch (error) {
-    if (error.response && error.response.status === 401) {
-      alert("Invalid email or password");
-    } else {
-      alert("Error during signin");
-    }
+
+    return { email, password, loginRole, signin }
   }
 }
-
-
-
-  }
-};
 </script>
 
 <style scoped>
-.signin-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background: linear-gradient(to right, #6a5acd, #9370db);
-  padding: 20px;
-}
-
-.signin-card {
-  background: #fff;
-  padding: 40px;
-  border-radius: 15px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-  width: 100%;
-  max-width: 400px;
-  text-align: center;
-}
-
-.signin-card h2 {
-  margin-bottom: 20px;
-  color: #1e3c72;
-  font-weight: 700;
-}
-
-.form-group {
-  margin-bottom: 15px;
-  text-align: left;
-}
-
-label {
-  display: block;
-  font-weight: 600;
-  margin-bottom: 5px;
-  color: #333;
-}
-
-input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  outline: none;
-  font-size: 14px;
-  transition: border 0.3s ease;
-}
-
-input:focus {
-  border-color: #1e3c72;
-}
-
-.error-text {
-  color: red;
-  font-size: 12px;
-  margin-top: 5px;
-  display: block;
-}
-
-.password-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.password-wrapper input {
-  flex: 1;
-}
-
-.toggle-eye {
-  position: absolute;
-  right: 10px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.signin-btn {
-  width: 100%;
-  padding: 12px;
-  background: #1e90ff;
-  color: white;
-  font-weight: bold;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.signin-btn:hover {
-  background: #005bb5;
-}
-
-.register-link {
-  margin-top: 15px;
-  font-size: 0.9rem;
-  color: #666;
-}
-
-.register-link a {
-  color: #1e90ff;
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.register-link a:hover {
-  text-decoration: underline;
-}
+.signin-container { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+.signin-card { background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 8px 32px rgba(0,0,0,0.1); width: 300px; display: flex; flex-direction: column; }
+.signin-card h2 { text-align: center; margin-bottom: 1rem; }
+.signin-card input, .signin-card select { margin: 0.5rem 0; padding: 0.5rem; border-radius: 5px; border: 1px solid #ccc; }
+.signin-card button { margin-top: 1rem; padding: 0.5rem; background: #007BFF; color: white; border: none; border-radius: 5px; cursor: pointer; }
+.signin-card button:hover { background: #0056b3; }
+.profile-row { display: flex; justify-content: space-between; align-items: center; }
+.label { font-weight: bold; }
 </style>
