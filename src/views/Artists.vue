@@ -14,7 +14,7 @@
     </div>
 
     <div v-else class="no-brands">
-      No brands available at the moment.
+      
     </div>
   </div>
 </template>
