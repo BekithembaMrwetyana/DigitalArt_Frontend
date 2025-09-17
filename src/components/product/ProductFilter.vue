@@ -3,7 +3,7 @@
     <div class="filter-section">
       <h3 class="filter-title">Filter Products</h3>
       
-      <!-- Category Filter -->
+    
       <div class="filter-group">
         <label class="filter-label">Category</label>
         <select 
@@ -12,17 +12,36 @@
           class="filter-select"
         >
           <option value="">All Categories</option>
-          <option value="Digital Art">Digital Art</option>
-          <option value="Portraits">Portraits</option>
-          <option value="3D">3D</option>
-          <option value="Abstract">Abstract</option>
-          <option value="Landscape">Landscape</option>
+          <option 
+            v-for="category in categories" 
+            :key="category.categoryID" 
+            :value="category.name"
+          >
+            {{ category.name }}
+          </option>
         </select>
       </div>
 
-    
+      
+      <div class="filter-group">
+        <label class="filter-label">Artist</label>
+        <select 
+          v-model="filters.artist" 
+          @change="updateFilters"
+          class="filter-select"
+        >
+          <option value="">All Artists</option>
+          <option 
+            v-for="artist in artists" 
+            :key="artist.id" 
+            :value="artist.id"
+          >
+            {{ artist.name }}
+          </option>
+        </select>
+      </div>
 
-      <!-- Price Range Filter -->
+     
       <div class="filter-group">
         <label class="filter-label">Price Range</label>
         <select 
@@ -38,7 +57,7 @@
         </select>
       </div>
 
-      <!-- Size Filter -->
+    
       <div class="filter-group">
         <label class="filter-label">Size</label>
         <select 
@@ -53,7 +72,7 @@
         </select>
       </div>
 
-      <!-- Availability Filter -->
+     
       <div class="filter-group">
         <label class="filter-label">Availability</label>
         <select 
@@ -67,7 +86,7 @@
         </select>
       </div>
 
-      <!-- Sort Options -->
+      
       <div class="filter-group">
         <label class="filter-label">Sort By</label>
         <select 
@@ -84,7 +103,7 @@
         </select>
       </div>
 
-      <!-- Clear Filters Button -->
+    
       <button 
         @click="clearFilters" 
         class="clear-filters-btn"
@@ -94,12 +113,12 @@
       </button>
     </div>
 
-    <!-- Active Filters Display -->
+   
     <div v-if="hasActiveFilters" class="active-filters">
       <h4 class="active-filters-title">Active Filters:</h4>
       <div class="filter-tags">
         <span v-if="filters.category" class="filter-tag">
-          Category: {{ getCategoryLabel(filters.category) }}
+          Category: {{ filters.category }}
           <button @click="removeFilter('category')" class="remove-filter">×</button>
         </span>
         <span v-if="filters.artist" class="filter-tag">
@@ -124,7 +143,8 @@
 </template>
 
 <script>
-import { computed, ref, watch } from 'vue'
+import { getAllCategories } from '@/services/categoryService'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
@@ -142,11 +162,28 @@ export default {
       sortBy: 'newest'
     })
 
+    const categories = ref([])
+    const loading = ref(false)
+
     const artists = computed(() => store.getters['artists/allArtists'] || [])
     
     const hasActiveFilters = computed(() => {
       return Object.values(filters.value).some(value => value !== '' && value !== 'newest')
     })
+
+    
+    const fetchCategories = async () => {
+      loading.value = true
+      try {
+        const categoriesData = await getAllCategories()
+        categories.value = categoriesData || []
+      } catch (error) {
+        console.error('Error fetching categories:', error)
+        categories.value = []
+      } finally {
+        loading.value = false
+      }
+    }
 
     const updateFilters = () => {
       emit('filtersChanged', { ...filters.value })
@@ -173,17 +210,6 @@ export default {
       updateFilters()
     }
 
-    const getCategoryLabel = (category) => {
-      const labels = {
-        'Digital Art': 'Digital Art',
-        'Portraits': 'Portraits',
-        '3D': '3D',
-        'Abstract': 'Abstract',
-        'Landscape': 'Landscape'
-      }
-      return labels[category] || category
-    }
-
     const getArtistName = (artistId) => {
       const artist = artists.value.find(a => a.id === artistId)
       return artist ? artist.name : artistId
@@ -191,14 +217,18 @@ export default {
 
     const getPriceRangeLabel = (range) => {
       const labels = {
-        '0-500': 'R0 - R500',
-        '500-1000': 'R500 - R1,000',
-        '1000-2500': 'R1,000 - R2,500',
-        '2500+': 'R2,500+'
+        '0-200': 'R0 - R200',
+        '200-400': 'R200 - R400',
+        '400-800': 'R400 - R800',
+        '800+': 'R800+'
       }
       return labels[range] || range
     }
 
+    
+    onMounted(() => {
+      fetchCategories()
+    })
     
     watch(filters, () => {
       updateFilters()
@@ -206,12 +236,13 @@ export default {
 
     return {
       filters,
+      categories,
       artists,
       hasActiveFilters,
+      loading,
       updateFilters,
       clearFilters,
       removeFilter,
-      getCategoryLabel,
       getArtistName,
       getPriceRangeLabel
     }
@@ -260,6 +291,12 @@ export default {
   outline: none;
   border-color: #007bff;
   box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.filter-select:disabled {
+  background-color: #f8f9fa;
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .clear-filters-btn {
@@ -333,7 +370,7 @@ export default {
 }
 
 @media (max-width: 768px) {
-  .artwork-filter {
+  .product-filter {
     padding: 1rem;
   }
   

@@ -2,6 +2,10 @@ import userService from "@/services/UserService.js"
  
 const userFromStorage = JSON.parse(localStorage.getItem("user"))
  
+import userService from "@/services/UserService.js"
+
+const userFromStorage = JSON.parse(localStorage.getItem("user"))
+
 export default {
   namespaced: true,
   state: {
@@ -42,4 +46,4 @@ export default {
     }
   }
 }
- 
+

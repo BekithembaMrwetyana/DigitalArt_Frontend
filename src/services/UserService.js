@@ -1,7 +1,7 @@
 import axios from "axios"
- 
+
 const BASE_URL = "http://localhost:8080/digital_artDB/users"
- 
+
 function handleError(action, err) {
   if (err.response) {
     console.error(`❌ ${action} failed. Status: ${err.response.status}`)
@@ -13,14 +13,14 @@ function handleError(action, err) {
   }
   throw err
 }
- 
+
 const userService = {
   saveUser(user) {
     return axios.post(`${BASE_URL}/create`, user)
       .then(res => res.data)
       .catch(err => handleError("Saving user", err))
   },
- 
+
   loginUser(email, password, role) {
     return axios.post(`${BASE_URL}/login`, { email, password, role })
       .then(res => res.data)
@@ -32,7 +32,7 @@ const userService = {
       .then(res => res.data)
       .catch(err => handleError("Fetching all users", err))
   },
- 
+
   readUser(id) {
     return axios.get(`${BASE_URL}/read/${id}`)
       .then(res => res.data)
@@ -51,6 +51,5 @@ const userService = {
       .catch(err => handleError(`Deleting user ${id}`, err))
   }
 }
- 
+
 export default userService
- 

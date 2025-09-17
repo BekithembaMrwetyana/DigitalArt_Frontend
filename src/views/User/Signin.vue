@@ -17,12 +17,12 @@
     </div>
   </div>
 </template>
- 
+
 <script>
 import { ref } from "vue"
 import { useStore } from "vuex"
 import { useRouter } from "vue-router"
- 
+
 export default {
   setup() {
     const email = ref("")
@@ -30,9 +30,9 @@ export default {
     const loginRole = ref("CUSTOMER")
     const store = useStore()
     const router = useRouter()
- 
+
     const signin = async () => {
-      const user = await store.dispatch("auth/login", {
+      const user = await store.dispatch("Auth/login", {
         email: email.value,
         password: password.value,
         role: loginRole.value
@@ -47,7 +47,7 @@ export default {
         }
       }
     }
- 
+
     return { email, password, loginRole, signin }
   }
 }
