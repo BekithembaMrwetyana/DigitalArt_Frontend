@@ -44,8 +44,9 @@ export default {
 
 <style scoped>
 .add-btn {
-  background: #2196F3; color: #fff; border: none; padding: 0.4rem 0.8rem;
+  background: rgba(33, 150, 243, 0.9); color: #fff; border: none; padding: 0.4rem 0.8rem;
   border-radius: 18px; cursor: pointer; font-weight: 600; font-size: 0.9rem;
   display: inline-flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 </style>

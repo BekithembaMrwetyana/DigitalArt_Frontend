@@ -37,7 +37,9 @@
     Add to Cart
   </button> -->
 
-<AddToCartButton :product="product" />
+  <div class="add-to-cart-wrapper">
+    <AddToCartButton :product="product" />
+  </div>
 
 
   </div>
@@ -106,6 +108,13 @@ export default {
 
 .product-card:hover {
   transform: translateY(-5px);
+}
+
+.add-to-cart-wrapper {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  z-index: 10;
 }
 
 .product-image {
