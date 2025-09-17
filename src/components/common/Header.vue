@@ -84,6 +84,9 @@
         <router-link to="/gallery" class="nav-link" active-class="active">
           GALLERY
         </router-link>
+        <router-link to="/artists" class="nav-link" active-class="active">
+          Artists
+        </router-link>
         <router-link to="/contact" class="nav-link contact-btn" active-class="active">
           CONTACT US
         </router-link>
