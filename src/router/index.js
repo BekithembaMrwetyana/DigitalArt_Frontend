@@ -4,6 +4,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import Contact from '@/views/Contact.vue'
 import Gallery from '@/views/Gallery.vue'
+import Artists from '@/views/Artists.vue'
 import About from '@/views/About.vue' // import About page
 import Home from '@/views/Home.vue'
 import Wishlist from '@/views/Wishlist.vue'
@@ -19,11 +20,13 @@ import AdminLayout from '@/components/layout/AdminLayout.vue'
 import ArtBrand from '@/views/ArtBrand.vue'
 import Orders from '@/components/admin/Orders.vue'
 import Inventory from '@/components/admin/Inventory.vue'
+import User from '@/components/admin/User.vue'
 const routes = [
   // Public routes
   { path: '/', name: 'Home', component: Home },
   { path: '/about', name: 'About', component: About }, // new About route
   { path: '/gallery', name: 'Gallery', component: Gallery },
+  { path: '/artists', name: 'Artists', component: Artists },
   { path: '/contact', name: 'Contact', component: Contact },
   { path: '/wishlist', name: 'Wishlist', component: Wishlist },
   { path: '/myorders', name: 'MyOrders', component: MyOrders },
@@ -56,7 +59,8 @@ const routes = [
       { path: 'brands', name: 'ArtBrand', component: ArtBrand }, // <-- moved here
       //{path: "notifications", name: "AdminNotifications",component: NotificationPage}
       {path: 'orders', name: 'Orders', component: Orders},
-      {path: 'inventory', name: 'Inventory', component: Inventory}
+      {path: 'inventory', name: 'Inventory', component: Inventory},
+      {path: 'users', name:'User', componet: User }
 
     ]
   }

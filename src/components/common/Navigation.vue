@@ -3,6 +3,7 @@
     <div class="nav-content">
       <router-link to="/" class="nav-item" :class="{ active: $route.name === 'Home' }">HOME</router-link>
       <router-link to="/gallery" class="nav-item" :class="{ active: $route.name === 'Gallery' }">GALLERY</router-link>
+      <router-link to="/artists" class="nav-item" :class="{ active: $route.name === 'Artists' }">Artists</router-link>
       <router-link to="/contact" class="nav-item" :class="{ active: $route.name === 'Contact' }">CONTACT US</router-link>
     </div>
   </nav>
