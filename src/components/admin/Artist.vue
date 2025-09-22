@@ -1,18 +1,18 @@
 <template>
   <div class="container">
     <header>
-      <h1>Artist Managment</h1>
-      <p>Add, edit, and manage art.</p>
+      <h1>Artist Management</h1>
+      <p>Add, edit, and manage artists.</p>
     </header>
 
     <div class="main">
-      <!-- Form Section -->
+      
       <div class="form-section">
-        <h2>{{ isEditing ? "Edit Art Brand" : "Add New Art Brand" }}</h2>
+        <h2>{{ isEditing ? "Edit Artist" : "Add New Artist" }}</h2>
         <form @submit.prevent="handleSubmit">
           <div class="form-group">
-            <label>Brand Name</label>
-            <input v-model="brandName" type="text" placeholder="e.g. Digital Masters" required />
+            <label>Artist Name</label>
+            <input v-model="artistName" type="text" placeholder="e.g. SkynStudios" required />
           </div>
 
           <div class="form-group">
@@ -30,38 +30,36 @@
             <input v-model="imageUrl" type="url" placeholder="https://example.com/image.jpg" required />
           </div>
 
-          <button type="submit">{{ isEditing ? "Update Brand" : "Add Brand" }}</button>
+          <button type="submit">{{ isEditing ? "Update Artist" : "Add Artist" }}</button>
           <button type="button" v-if="isEditing" @click="cancelEdit">Cancel</button>
         </form>
       </div>
 
-      
+     
       <div class="preview-section">
-        
         <div class="live-preview">
           <h3>Live Preview</h3>
           <div class="preview-card">
             <img :src="imageUrl || placeholderImage" alt="Preview" />
-            <h4>{{ brandName || 'Brand Name' }}</h4>
-            <p>{{ description || 'Brand Description' }}</p>
+            <h4>{{ artistName || 'Artist Name' }}</h4>
+            <p>{{ description || 'Artist Description' }}</p>
             <small>{{ creationDate ? new Date(creationDate).toLocaleDateString() : 'Creation Date' }}</small>
           </div>
         </div>
 
-        <!-- Submitted Brands List -->
-        <div class="submitted-brands">
-          <h3>All Brands</h3>
+        <div class="submitted-artists">
+          <h3>All Artists</h3>
           <ul>
-            <li v-for="brand in submittedBrands" :key="brand.brandId">
-              <img :src="brand.imageUrl" alt="Brand" />
+            <li v-for="artist in submittedArtists" :key="artist.artistId">
+              <img :src="artist.imageUrl" alt="Artist" />
               <div>
-                <p>{{ brand.brandName }}</p>
-                <small>{{ new Date(brand.creationDate).toLocaleDateString() }}</small>
+                <p>{{ artist.artistName }}</p>
+                <small>{{ new Date(artist.creationDate).toLocaleDateString() }}</small>
               </div>
-              <button @click="startEdit(brand)">Edit</button>
-              <button @click="deleteBrand(brand.brandId)">Delete</button>
+              <button @click="startEdit(artist)">Edit</button>
+              <button @click="deleteArtist(artist.artistId)">Delete</button>
             </li>
-            <p v-if="submittedBrands.length === 0">No brands added yet.</p>
+            <p v-if="submittedArtists.length === 0">No artists added yet.</p>
           </ul>
         </div>
       </div>
@@ -70,77 +68,77 @@
 </template>
 
 <script>
-import artBrandService from "@/services/artBrandService";
+import artistService from "@/services/artistService";
 
 export default {
-  name: "ArtBrand",
+  name: "Artist",
   data() {
     return {
-      brandName: "",
+      artistName: "",
       description: "",
       creationDate: "",
       imageUrl: "",
-      submittedBrands: [],
+      submittedArtists: [],
       placeholderImage: "https://via.placeholder.com/150",
       isEditing: false,
       editingId: null,
     };
   },
   created() {
-    this.fetchBrands();
+    this.fetchArtists();
   },
   methods: {
     async handleSubmit() {
       try {
-        const brandData = {
-          brandId: this.editingId,
-          brandName: this.brandName,
+        const artistData = {
+          artistId: this.editingId,
+          artistName: this.artistName,
           description: this.description,
           creationDate: this.creationDate,
           imageUrl: this.imageUrl,
         };
 
         if (this.isEditing) {
-          await artBrandService.update(brandData);
+          await artistService.update(artistData);
         } else {
-          await artBrandService.create(brandData);
+          await artistService.create(artistData);
         }
 
-        await this.fetchBrands();
+        await this.fetchArtists();
         this.resetForm();
       } catch (error) {
-        console.error("Error saving brand:", error);
+        console.error("Error saving artist:", error);
         alert("Something went wrong! Check console for details.");
       }
     },
 
-    async fetchBrands() {
+    async fetchArtists() {
       try {
-        const response = await artBrandService.getAll();
-        this.submittedBrands = response.data;
+        const response = await artistService.getAll();
+        this.submittedArtists = response.data;
       } catch (error) {
-        console.error("Error fetching brands:", error);
+        console.error("Error fetching artists:", error);
       }
     },
 
-    async deleteBrand(brandId) {
+    async deleteArtist(artistId) {
       try {
-        if (confirm("Are you sure you want to delete this brand?")) {
-          await artBrandService.delete(brandId);
-          await this.fetchBrands();
+        if (confirm("Are you sure you want to delete this artist?")) {
+          await artistService.delete(artistId);
+          await this.fetchArtists();
         }
       } catch (error) {
-        console.error("Error deleting brand:", error);
+        console.error("Error deleting artist:", error);
       }
     },
 
-    startEdit(brand) {
+    startEdit(artist) {
       this.isEditing = true;
-      this.editingId = brand.brandId;
-      this.brandName = brand.brandName;
-      this.description = brand.description;
-      this.creationDate = brand.creationDate;
-      this.imageUrl = brand.imageUrl;
+      this.editingId = artist.artistId;
+      this.artistName = artist.artistName;
+      this.description = artist.description;
+      this.creationDate = artist.creationDate;
+      this.imageUrl = artist.imageUrl;
     },
 
     cancelEdit() {
@@ -150,7 +148,7 @@ export default {
     resetForm() {
       this.isEditing = false;
       this.editingId = null;
-      this.brandName = "";
+      this.artistName = "";
       this.description = "";
       this.creationDate = "";
       this.imageUrl = "";
@@ -249,12 +247,12 @@ button[type="button"] {
   border-radius: 6px;
 }
 
-.submitted-brands ul {
+.submitted-artists ul {
   list-style: none;
   padding: 0;
 }
 
-.submitted-brands li {
+.submitted-artists li {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
@@ -264,14 +262,14 @@ button[type="button"] {
   border-radius: 5px;
 }
 
-.submitted-brands li img {
+.submitted-artists li img {
   width: 50px;
   height: 50px;
   object-fit: cover;
   border-radius: 5px;
 }
 
-.submitted-brands button {
+.submitted-artists button {
   margin-left: 5px;
   border: none;
   padding: 5px 10px;
@@ -279,16 +277,16 @@ button[type="button"] {
   cursor: pointer;
 }
 
-.submitted-brands button:hover {
+.submitted-artists button:hover {
   opacity: 0.8;
 }
 
-.submitted-brands button:nth-child(2) {
+.submitted-artists button:nth-child(2) {
   background-color: #e53e3e; /* Delete */
   color: white;
 }
 
-.submitted-brands button:nth-child(1) {
+.submitted-artists button:nth-child(1) {
   background-color: #4f46e5; /* Edit */
   color: white;
 }
