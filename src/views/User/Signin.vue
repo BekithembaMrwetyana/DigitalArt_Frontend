@@ -43,7 +43,7 @@ export default {
           router.push("/admin/dashboard")
         } else {
           alert(`Login successful! Welcome ${user.firstName}`)
-          router.push("/dashboard")
+          router.push("/")
         }
       }
     }
