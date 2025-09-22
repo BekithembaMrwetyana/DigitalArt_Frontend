@@ -1,45 +1,54 @@
 <template>
   <div class="artists-page">
     <div class="artists-header">
-      <h1>Featured Artists</h1>
-      <p>Explore the art brands created by our talented artists.</p>
+      <h1>Meet Our Artists</h1>
+      <p>Discover the talented artists behind the amazing artworks.</p>
     </div>
 
-    <div class="artists-list" v-if="brands.length > 0">
-      <div class="artist-card" v-for="brand in brands" :key="brand.brandId">
-        <img :src="brand.imageUrl" :alt="brand.brandName" />
-        <h2>{{ brand.brandName }}</h2>
-        <p>{{ brand.description }}</p>
+    <!-- Artist List -->
+    <div class="artists-list" v-if="artists.length > 0">
+      <div class="artist-card" v-for="artist in artists" :key="artist.artistId || artist.id">
+        <img :src="artist.imageUrl || placeholderImage" :alt="artist.artistName || 'Artist'" />
+        <h2>{{ artist.artistName || 'Unnamed Artist' }}</h2>
+        <p>{{ artist.description || 'No description available.' }}</p>
+        <p class="creation-date">Created on: {{ formatDate(artist.creationDate) }}</p>
       </div>
     </div>
 
-    <div v-else class="no-brands">
-      
+    <div v-else class="no-artists">
+      <p>No artists available yet. Please check back soon!</p>
     </div>
   </div>
 </template>
 
 <script>
-import artBrandService from "@/services/artBrandService.js";
+import artistService from "@/services/artistService.js";
 
 export default {
   name: "Artists",
   data() {
     return {
-      brands: [],
+      artists: [],
+      placeholderImage: "https://via.placeholder.com/300x200?text=No+Image",
     };
   },
   mounted() {
-    this.fetchBrands();
+    this.fetchArtists();
   },
   methods: {
-    async fetchBrands() {
+    async fetchArtists() {
       try {
-        const response = await artBrandService.getAll();
-        this.brands = response.data;
+        const response = await artistService.getAll();
+        console.log("Backend response:", response.data); 
+        this.artists = response.data;
       } catch (error) {
-        console.error("Failed to fetch brands:", error);
+        console.error("Failed to fetch artists:", error);
       }
+    },
+    formatDate(dateStr) {
+      if (!dateStr) return "Unknown";
+      const date = new Date(dateStr);
+      return date.toLocaleDateString();
     },
   },
 };
@@ -76,7 +85,6 @@ export default {
   max-width: 1200px;
   margin: 0 auto;
 }
-
 
 @media (max-width: 1024px) {
   .artists-list {
@@ -120,7 +128,7 @@ export default {
   color: #f0f0f0;
 }
 
-.no-brands {
+.no-artists {
   text-align: center;
   font-size: 1.2rem;
   margin-top: 2rem;

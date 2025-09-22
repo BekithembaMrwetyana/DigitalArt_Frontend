@@ -21,6 +21,8 @@ import ArtBrand from '@/views/ArtBrand.vue'
 import Orders from '@/components/admin/Orders.vue'
 import Inventory from '@/components/admin/Inventory.vue'
 import User from '@/components/admin/User.vue'
+import Artist from '@/components/admin/Artist.vue'
+
 const routes = [
   // Public routes
   { path: '/', name: 'Home', component: Home },
@@ -60,7 +62,9 @@ const routes = [
       //{path: "notifications", name: "AdminNotifications",component: NotificationPage}
       {path: 'orders', name: 'Orders', component: Orders},
       {path: 'inventory', name: 'Inventory', component: Inventory},
-      {path: 'users', name:'User', componet: User }
+      {path: 'users', name:'User', component: User },
+       {path: 'artist', name: 'Artist', component: Artist}
+    
 
     ]
   }

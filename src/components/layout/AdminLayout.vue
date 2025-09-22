@@ -39,13 +39,17 @@
   <i class="fa fa-archive"></i> 
   <span v-if="!isCollapsed">Inventory</span>
 </router-link>
+
+    
+
       <router-link 
-        :to="'/admin/brands'" 
-        :class="['sidebar-button', { 'active': $route.path === '/admin/brands' }]"
-      >
-        <i class="fa fa-tags"></i> 
-        <span v-if="!isCollapsed">Art Brands</span>
-      </router-link>
+  :to="'/admin/artist'" 
+  :class="['sidebar-button', { 'active': $route.path === '/admin/artist' }]"
+>
+  <i class="fa fa-paint-brush"></i> 
+  <span v-if="!isCollapsed">Artist</span>
+</router-link>
+
 
       <router-link 
         :to="'/admin/products'" 
