@@ -1,21 +1,32 @@
-import api from './api'
+import axios from "axios";
 
-export const artistService = {
-  
-  getAll: () => api.get('/artists'),
-  
+const BASE_URL = "http://localhost:8080/digital_artDB/api/artist";
 
-  getById: (id) => api.get(`/artists/${id}`),
+
+export default {
+ 
+  getAll() {
+    return axios.get(`${BASE_URL}/getAll`);
+  },
+
   
+  create(artist) {
+    return axios.post(`${BASE_URL}/create`, artist);
+  },
+
+ 
+  update(artist) {
+    return axios.put(`${BASE_URL}/update`, artist);
+  },
+
   
-  getArtworks: (artistId) => api.get(`/artists/${artistId}/artworks`),
+  delete(artistId) {
+    return axios.delete(`${BASE_URL}/delete/${artistId}`);
+  },
+
   
-  
-  follow: (artistId) => api.post(`/artists/${artistId}/follow`),
-  
-  
-  unfollow: (artistId) => api.delete(`/artists/${artistId}/follow`),
-  
-  // Apply as artist
-  apply: (applicationData) => api.post('/artists/apply', applicationData)
-}
+  read(artistId) {
+    return axios.get(`${BASE_URL}/read/${artistId}`);
+  }
+};
+
