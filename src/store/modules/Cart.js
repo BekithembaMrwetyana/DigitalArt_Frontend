@@ -35,7 +35,8 @@ const actions = {
         product: {
           productID: it.product?.productID ?? it.product?.id,
           title: it.product?.title,
-          imageUrl: it.product?.imageUrl,
+          image: it.product.image || it.imageUrl || '/src/assets/images/project1.jpg',
+
         },
       }));
 
@@ -49,27 +50,25 @@ const actions = {
     }
   },
 
-  async addToCart({ state, dispatch }, { product }) {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (!user?.userId) throw new Error("Not logged in");
+  // Inside actions
+async addToCart({ state, dispatch }, { product }) {
+  const user = JSON.parse(localStorage.getItem("user"));
+  if (!user?.userId) throw new Error("Not logged in");
 
-    const exists = state.cartItems.some(
-      it => it.product?.productID === (product.productID ?? product.id)
-    );
-    if (exists) {
-      alert("This product is already in your cart.");
-      return;
-    }
+  const exists = state.cartItems.some(
+    it => it.product?.productID === (product.productID ?? product.id)
+  );
+  if (exists) return; // prevent duplicates
 
-    const payload = {
-      user: { userId: user.userId },
-      product: { productID: product.productID ?? product.id },
-      price: product.price ?? 0,
-    };
+  const payload = {
+    user: { userId: user.userId },
+    product: { productID: product.productID ?? product.id },
+    price: product.price ?? 0,
+  };
 
-    await saveCartItem(payload);
-    await dispatch("fetchUserCart");
-  },
+  await saveCartItem(payload);
+  await dispatch("fetchUserCart"); // updates state, triggers button update
+},
 
   async removeItem({ dispatch }, cartItemID) {
      if (!cartItemID) throw new Error("Missing cartItemID");

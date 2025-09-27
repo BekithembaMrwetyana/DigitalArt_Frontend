@@ -26,7 +26,7 @@
             
             <div class="wishlist-actions">
               <button 
-                @click="addToCart(item)" 
+                @click="addToCart(item)"  
                 class="add-to-cart-btn"
                 :disabled="isInCart(item.id)"
               >

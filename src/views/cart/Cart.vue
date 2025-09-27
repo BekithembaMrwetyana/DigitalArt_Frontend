@@ -13,7 +13,8 @@
           :key="item.cartItemID"
         >
           <!-- Image -->
-          <img :src="item.product.imageUrl" alt="art preview" class="thumb" />
+          <img :src="item.image || '/placeholder-art.jpg'" alt="art preview" class="thumb" />
+
 
           <!-- Info -->
           <div class="info">
@@ -197,4 +198,46 @@ export default {
 .continue-btn:hover {
   background: #e2e8f0;
 }
+
+/*Cart Empty*/
+
+.cart-empty {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #555;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.cart-empty .icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.cart-empty h3 {
+  font-size: 1.5rem;
+  margin: 0.5rem 0;
+}
+
+.cart-empty p {
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.cart-empty .browse-btn {
+  background: #2563eb;
+  color: #fff;
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.cart-empty .browse-btn:hover {
+  background: #1d4ed8;
+}
+
 </style>

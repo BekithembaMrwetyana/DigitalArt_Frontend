@@ -2,7 +2,7 @@
   <tr class="cart-row">
     <!-- Preview -->
     <td class="cart-cell">
-      <img :src="item.product.imageUrl" alt="art preview" class="thumb" />
+      <img :src="item.image || '/placeholder-art.jpg'" alt="art preview" class="thumb" />
     </td>
 
     <!-- Product Info -->
