@@ -7,22 +7,28 @@
 
     <div class="cart-container" v-if="!loading && cartItems.length">
       <div class="cart-list">
-        <table class="cart-table">
-          <thead>
-            <tr>
-              <th>Product</th>
-              <th>Price</th>
-              <th>Quantity</th>
-              <th>Total</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <CartItemRow v-for="item in cartItems" :key="item.cartItemID" :item="item" />
-          </tbody>
-        </table>
+        <div
+          class="cart-item"
+          v-for="item in cartItems"
+          :key="item.cartItemID"
+        >
+          <!-- Image -->
+          <img :src="item.product.imageUrl" alt="art preview" class="thumb" />
+
+          <!-- Info -->
+          <div class="info">
+            <h4>{{ item.product.title }}</h4>
+            <p class="price">R{{ item.price.toFixed(2) }}</p>
+          </div>
+
+          <!-- Remove Button -->
+          <button @click="removeItem(item.cartItemID)" class="remove-btn">
+            Remove
+          </button>
+        </div>
       </div>
 
+      <!-- Cart Summary -->
       <aside class="cart-summary">
         <div class="summary-card">
           <h3>Cart Summary</h3>
@@ -49,14 +55,11 @@
 </template>
 
 <script>
-import CartItemRow from "@/components/cart/CartItemRow.vue";
+import { mapGetters } from "vuex";
 
 export default {
-  components: { CartItemRow },
   computed: {
-    cartItems() { return this.$store.getters["Cart/cartItems"]; },
-    cartCount() { return this.$store.getters["Cart/cartCount"]; },
-    cartSubtotal() { return this.$store.getters["Cart/cartSubtotal"]; },
+    ...mapGetters("Cart", ["cartItems", "cartCount", "cartSubtotal"]),
     loading() { return this.$store.state.Cart.loading; },
   },
   mounted() {
@@ -69,6 +72,7 @@ export default {
       this.$router.push({ name: "Checkout" });
     },
     goToHome() { this.$router.go(-1); },
+    removeItem(id) { this.$store.dispatch("Cart/removeItem", id); }
   },
 };
 </script>
@@ -84,13 +88,6 @@ export default {
   text-align: center;
   margin-bottom: 2rem;
 }
-.cart-header h1 {
-  font-size: 2rem;
-  font-weight: bold;
-}
-.cart-header p {
-  color: #666;
-}
 
 .cart-container {
   display: flex;
@@ -100,29 +97,55 @@ export default {
 
 .cart-list {
   flex: 2;
-}
-.cart-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: white;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-.cart-table th, .cart-table td {
-  padding: 1rem;
-  text-align: center;
-  border-bottom: 1px solid #eee;
-}
-.cart-table th {
-  background: #f8f9fa;
-  font-weight: 600;
-  color: #333;
-}
-.cart-table tr:hover {
-  background: #fafafa;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
+/* Individual Cart Item Card */
+.cart-item {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  gap: 1rem;
+}
+
+.cart-item .thumb {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.cart-item .info {
+  flex: 1;
+}
+
+.cart-item .info h4 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.cart-item .price {
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.remove-btn {
+  background: #e74c3c;
+  border: none;
+  padding: 6px 12px;
+  color: #fff;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Cart Summary */
 .cart-summary {
   flex: 1;
 }
@@ -147,7 +170,6 @@ export default {
   border-top: 1px solid #ddd;
   padding-top: 0.5rem;
 }
-
 .checkout-btn {
   background: #2563eb;
   color: white;
@@ -174,33 +196,5 @@ export default {
 }
 .continue-btn:hover {
   background: #e2e8f0;
-}
-
-.cart-empty {
-  text-align: center;
-  padding: 3rem;
-}
-.cart-empty .icon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-}
-.browse-btn {
-  display: inline-block;
-  margin-top: 1rem;
-  padding: 0.7rem 1.5rem;
-  background: #2563eb;
-  color: white;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: 600;
-}
-.browse-btn:hover {
-  background: #1d4ed8;
-}
-
-.cart-loading {
-  text-align: center;
-  font-size: 1.2rem;
-  color: #555;
 }
 </style>

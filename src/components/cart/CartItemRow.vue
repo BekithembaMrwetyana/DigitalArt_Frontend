@@ -1,24 +1,24 @@
 <template>
   <tr class="cart-row">
-    <td class="cart-cell">{{ item.product.title }}</td>
-    <td class="cart-cell">{{ item.price.toFixed(2) }}</td>
-
+    <!-- Preview -->
     <td class="cart-cell">
-      <input
-        type="number"
-        min="1"
-        v-model.number="localQuantity"
-        @change="updateQuantity"
-        class="quantity-input"
-      />
+      <img :src="item.product.imageUrl" alt="art preview" class="thumb" />
     </td>
 
-    <td class="cart-cell">{{ (item.price * localQuantity).toFixed(2) }}</td>
-
+    <!-- Product Info -->
     <td class="cart-cell">
-      <button @click="removeItem" class="remove-btn">
-        Remove
-      </button>
+      <div class="info">
+        <h4>{{ item.product.title }}</h4>
+        <small class="category">{{ item.product.category || 'Digital Art' }}</small>
+      </div>
+    </td>
+
+    <!-- Price -->
+    <td class="cart-cell">R{{ item.price.toFixed(2) }}</td>
+
+    <!-- Remove -->
+    <td class="cart-cell">
+      <button @click="removeItem" class="remove-btn">Remove</button>
     </td>
   </tr>
 </template>
@@ -27,52 +27,41 @@
 export default {
   name: "CartItemRow",
   props: { item: { type: Object, required: true } },
-  data() {
-    return { localQuantity: this.item.quantity };
-  },
   methods: {
-    async updateQuantity() {
-      this.$store.dispatch("Cart/updateItemQuantity", {
-        item: this.item,
-        quantity: this.localQuantity,
-      });
-    },
     async removeItem() {
-      this.$store.dispatch("Cart/removeItem", this.item.cartItemID);
-    },
+      const id = this.item.cartItemID || this.item.id;
+      if (!id) {
+        console.error("No cart item ID found:", this.item);
+        return;
+      }
+      await this.$store.dispatch("Cart/removeItem", id);
+    }
+
   },
 };
 </script>
 
 <style scoped>
-.cart-row {
-  border-bottom: 1px solid #ddd;
+.thumb {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
 }
-
-.cart-cell {
-  padding: 10px;
-  text-align: center;
-  vertical-align: middle;
+.info h4 {
+  margin: 0;
 }
-
-.quantity-input {
-  width: 60px;
-  padding: 5px;
-  text-align: center;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+.category {
+  color: #777;
+  font-size: 0.85rem;
 }
-
 .remove-btn {
-  background-color: #e74c3c;
-  color: white;
+  background: #e74c3c;
   border: none;
   padding: 6px 12px;
-  border-radius: 4px;
+  color: #fff;
+  font-weight: bold;
+  border-radius: 6px;
   cursor: pointer;
-}
-
-.remove-btn:hover {
-  background-color: #c0392b;
 }
 </style>
