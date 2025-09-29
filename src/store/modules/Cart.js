@@ -1,4 +1,4 @@
-import { saveCartItem, updateCartItem, deleteCartItem, getCartItemsByUserId } from "@/services/CartItemService";
+import { saveCartItem, deleteCartItem, getCartItemsByUserId } from "@/services/CartItemService";
 
 const state = () => ({
   cartItems: [],
@@ -8,17 +8,17 @@ const state = () => ({
 
 const getters = {
   cartItems: (s) => s.cartItems,
-  cartCount: (s) => s.cartItems.length, // unique items only
+  cartCount: (s) => s.cartItems.length,
   cartSubtotal: (s) =>
-    s.cartItems.reduce((sum, it) => sum + (it.price ?? it.product?.price ?? 0), 0),
-};
-const mutations = {
-  SET_LOADING(state, val) { state.loading = val },
-  SET_ERROR(state, err) { state.error = err },
-  SET_ITEMS(state, items) { state.cartItems = items },
-  CLEAR(state) { state.cartItems = [] },
+    s.cartItems.reduce((sum, it) => sum + (it.price ?? 0), 0),
 };
 
+const mutations = {
+  SET_LOADING(state, val) { state.loading = val; },
+  SET_ERROR(state, err) { state.error = err; },
+  SET_ITEMS(state, items) { state.cartItems = items; },
+  CLEAR(state) { state.cartItems = []; },
+};
 
 const actions = {
   async fetchUserCart({ commit }) {
@@ -29,17 +29,13 @@ const actions = {
 
       const list = await getCartItemsByUserId(user.userId);
 
+      // Use full product object from backend
       const normalized = list.map(it => ({
         cartItemID: it.cartItemID,
-        price: it.price ?? it.product?.price ?? 0,
-        product: {
-          productID: it.product?.productID ?? it.product?.id,
-          title: it.product?.title,
-          image: it.product.image || it.imageUrl || '/src/assets/images/project1.jpg',
-
-        },
+        quantity: it.quantity,
+        price: it.price,
+        product: it.product
       }));
-
 
       commit("SET_ITEMS", normalized);
     } catch (err) {
@@ -50,36 +46,29 @@ const actions = {
     }
   },
 
-  // Inside actions
-async addToCart({ state, dispatch }, { product }) {
-  const user = JSON.parse(localStorage.getItem("user"));
-  if (!user?.userId) throw new Error("Not logged in");
+  async addToCart({ dispatch }, { product }) {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user?.userId) throw new Error("Not logged in");
 
-  const exists = state.cartItems.some(
-    it => it.product?.productID === (product.productID ?? product.id)
-  );
-  if (exists) return; // prevent duplicates
+    const payload = {
+      user: { userId: user.userId },
+      product: { productID: product.productID ?? product.id },
+      quantity: 1
+    };
 
-  const payload = {
-    user: { userId: user.userId },
-    product: { productID: product.productID ?? product.id },
-    price: product.price ?? 0,
-  };
-
-  await saveCartItem(payload);
-  await dispatch("fetchUserCart"); // updates state, triggers button update
-},
+    await saveCartItem(payload);
+    await dispatch("fetchUserCart");
+  },
 
   async removeItem({ dispatch }, cartItemID) {
-     if (!cartItemID) throw new Error("Missing cartItemID");
-     await deleteCartItem(cartItemID);
-     await dispatch("fetchUserCart");
-   },
+    if (!cartItemID) throw new Error("Missing cartItemID");
+    await deleteCartItem(cartItemID);
+    await dispatch("fetchUserCart");
+  },
 
-   clearCart({ commit }) {
-     commit("CLEAR");
-   },
-
+  clearCart({ commit }) {
+    commit("CLEAR");
+  },
 };
 
 export default {

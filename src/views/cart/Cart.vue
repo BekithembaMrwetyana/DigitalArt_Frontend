@@ -6,27 +6,13 @@
     </div>
 
     <div class="cart-container" v-if="!loading && cartItems.length">
+      <!-- Cart List -->
       <div class="cart-list">
-        <div
-          class="cart-item"
+        <CartItemRow
           v-for="item in cartItems"
-          :key="item.cartItemID"
-        >
-          <!-- Image -->
-          <img :src="item.image || '/placeholder-art.jpg'" alt="art preview" class="thumb" />
-
-
-          <!-- Info -->
-          <div class="info">
-            <h4>{{ item.product.title }}</h4>
-            <p class="price">R{{ item.price.toFixed(2) }}</p>
-          </div>
-
-          <!-- Remove Button -->
-          <button @click="removeItem(item.cartItemID)" class="remove-btn">
-            Remove
-          </button>
-        </div>
+          :key="item.cartItemID || item.id"
+          :item="item"
+        />
       </div>
 
       <!-- Cart Summary -->
@@ -42,6 +28,7 @@
       </aside>
     </div>
 
+    <!-- Empty Cart -->
     <div class="cart-empty" v-else-if="!loading && !cartItems.length">
       <div class="icon">🛒</div>
       <h3>Your cart is empty</h3>
@@ -49,6 +36,7 @@
       <router-link to="/gallery" class="browse-btn">Browse Gallery</router-link>
     </div>
 
+    <!-- Loading -->
     <div class="cart-loading" v-else>
       Loading your cart...
     </div>
@@ -57,8 +45,10 @@
 
 <script>
 import { mapGetters } from "vuex";
+import CartItemRow from "@/components/cart/CartItemRow.vue";
 
 export default {
+  components: { CartItemRow },
   computed: {
     ...mapGetters("Cart", ["cartItems", "cartCount", "cartSubtotal"]),
     loading() { return this.$store.state.Cart.loading; },
@@ -73,7 +63,6 @@ export default {
       this.$router.push({ name: "Checkout" });
     },
     goToHome() { this.$router.go(-1); },
-    removeItem(id) { this.$store.dispatch("Cart/removeItem", id); }
   },
 };
 </script>
@@ -96,6 +85,7 @@ export default {
   align-items: flex-start;
 }
 
+/* Cart List */
 .cart-list {
   flex: 2;
   display: flex;
@@ -103,48 +93,7 @@ export default {
   gap: 1rem;
 }
 
-/* Individual Cart Item Card */
-.cart-item {
-  display: flex;
-  align-items: center;
-  background: #fff;
-  padding: 1rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  gap: 1rem;
-}
-
-.cart-item .thumb {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-  border-radius: 8px;
-}
-
-.cart-item .info {
-  flex: 1;
-}
-
-.cart-item .info h4 {
-  margin: 0;
-  font-size: 1.1rem;
-  font-weight: bold;
-}
-
-.cart-item .price {
-  color: #2563eb;
-  font-weight: 600;
-}
-
-.remove-btn {
-  background: #e74c3c;
-  border: none;
-  padding: 6px 12px;
-  color: #fff;
-  font-weight: bold;
-  border-radius: 6px;
-  cursor: pointer;
-}
+/* Individual Cart Item is now handled by CartItemRow card style, so no need to duplicate */
 
 /* Cart Summary */
 .cart-summary {
@@ -199,8 +148,7 @@ export default {
   background: #e2e8f0;
 }
 
-/*Cart Empty*/
-
+/* Cart Empty */
 .cart-empty {
   text-align: center;
   padding: 4rem 2rem;
@@ -239,5 +187,4 @@ export default {
 .cart-empty .browse-btn:hover {
   background: #1d4ed8;
 }
-
 </style>

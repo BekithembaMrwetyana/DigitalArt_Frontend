@@ -1,26 +1,28 @@
 <template>
-  <tr class="cart-row">
+  <div class="cart-card">
     <!-- Preview -->
-    <td class="cart-cell">
-      <img :src="item.image || '/placeholder-art.jpg'" alt="art preview" class="thumb" />
-    </td>
+    <div class="cart-card-thumb">
+      <img 
+        :src="item.product.imageBase64 ? `data:image/jpeg;base64,${item.product.imageBase64}` : '/placeholder-art.jpg'" 
+        :alt="item.product.title" 
+        class="thumb" 
+      />
+    </div>
 
     <!-- Product Info -->
-    <td class="cart-cell">
-      <div class="info">
-        <h4>{{ item.product.title }}</h4>
-        <small class="category">{{ item.product.category || 'Digital Art' }}</small>
-      </div>
-    </td>
+    <div class="cart-card-info">
+      <h4>{{ item.product.title }}</h4>
+      <small class="category">{{ item.product.category?.name || 'Digital Art' }}</small>
+    </div>
 
     <!-- Price -->
-    <td class="cart-cell">R{{ item.price.toFixed(2) }}</td>
+    <div class="cart-card-price">R{{ item.price.toFixed(2) }}</div>
 
     <!-- Remove -->
-    <td class="cart-cell">
+    <div class="cart-card-action">
       <button @click="removeItem" class="remove-btn">Remove</button>
-    </td>
-  </tr>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -36,25 +38,48 @@ export default {
       }
       await this.$store.dispatch("Cart/removeItem", id);
     }
-
   },
 };
 </script>
 
 <style scoped>
-.thumb {
+.cart-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fff;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.cart-card-thumb img.thumb {
   width: 80px;
   height: 80px;
   object-fit: cover;
   border-radius: 8px;
 }
-.info h4 {
-  margin: 0;
+
+.cart-card-info {
+  flex: 1;
+  margin-left: 16px;
 }
+
+.cart-card-info h4 {
+  margin: 0 0 4px 0;
+}
+
 .category {
   color: #777;
   font-size: 0.85rem;
 }
+
+.cart-card-price {
+  font-weight: bold;
+  margin-right: 16px;
+}
+
 .remove-btn {
   background: #e74c3c;
   border: none;
