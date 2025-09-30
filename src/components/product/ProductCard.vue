@@ -73,7 +73,7 @@ export default {
       if (isInWishlist.value) {
         store.dispatch('wishlist/removeItem', props.product.id)
       } else {
-        store.dispatch('wishlist/addItem', props.product)
+        store.dispatch('wishlist/addItem', props.product.id)
       }
     }
 

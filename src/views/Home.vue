@@ -5,7 +5,7 @@
       <div class="hero-text">
         <h1>Explore Our Art Gallery</h1>
         <p>Discover unique contemporary artworks from around the world.</p>
-        <router-link to="/shop" class="explore-btn">Explore Art Gallery</router-link>
+        <router-link to="/gallery" class="explore-btn">Explore Art Gallery</router-link>
       </div>
 
       <div class="hero-slider">
@@ -13,8 +13,26 @@
       </div>
     </div>
 
-   
-    
+    <!-- Art For Life Section -->
+    <div class="art-for-life-section">
+      <div class="art-for-life-container">
+        <div class="art-for-life-content">
+          <h2>Art For Life</h2>
+          <p class="art-for-life-text">
+            Art is more than what you see — it’s what you feel. Find the piece that reflects your journey, your dreams, your life.
+          </p>
+        </div>
+        <div class="hexagon-gallery">
+          <div
+            v-for="(hex, index) in hexagonImages"
+            :key="index"
+            class="hexagon"
+            :style="{ backgroundImage: `url(${hex.image})` }"
+          ></div>
+        </div>
+      </div>
+    </div>
+
     <div class="latest-collection">
       <h3>OUR PICKS</h3>
       <p class="collection-subtitle">Recommended by us</p>
@@ -87,9 +105,17 @@ export default {
         { image: 'http://localhost:8080/digital_artDB/images/art21.jpeg' },
         { image: 'http://localhost:8080/digital_artDB/images/art23.jpeg' }
       ],
-      products: [], 
-      wishlist: [], 
-      cart: [] // 
+      hexagonImages: [
+        { image: 'http://localhost:8080/digital_artDB/images/art1.jpeg' },
+        { image: 'http://localhost:8080/digital_artDB/images/art2.jpeg' },
+        { image: 'http://localhost:8080/digital_artDB/images/art3.jpeg' },
+        { image: 'http://localhost:8080/digital_artDB/images/art4.jpeg' },
+        { image: 'http://localhost:8080/digital_artDB/images/art5.jpeg' },
+        { image: 'http://localhost:8080/digital_artDB/images/art6.jpeg' }
+      ],
+      products: [],
+      wishlist: [],
+      cart: [] //
     }
   },
   computed: {
@@ -370,7 +396,7 @@ export default {
 
 .hero-section {
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 0 auto 4rem auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 3rem;
@@ -732,6 +758,67 @@ export default {
   margin-top: 0.5rem;
 }
 
+/* Art For Life Section */
+.art-for-life-section {
+  background: #f8f9fa;
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.art-for-life-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.art-for-life-content {
+  text-align: left;
+}
+
+.art-for-life-content h2 {
+  font-size: 3rem;
+  color: #333;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.art-for-life-text {
+  font-size: 1.2rem;
+  color: #666;
+  line-height: 1.8;
+  margin: 0;
+  font-weight: 400;
+}
+
+.hexagon-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  justify-items: center;
+}
+
+.hexagon {
+  width: 200px;
+  height: 173px;
+  background-size: cover;
+  background-position: center;
+  clip-path: polygon(
+    25% 6.7%, 75% 6.7%,
+    100% 50%, 75% 93.3%,
+    25% 93.3%, 0% 50%
+  );
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.hexagon:hover {
+  transform: scale(1.05);
+}
+
 @media (max-width: 768px) {
   .hero-section {
     grid-template-columns: 1fr;
@@ -745,6 +832,37 @@ export default {
 
   .products-grid {
     grid-template-columns: 1fr;
+  }
+
+  .art-for-life-container {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    text-align: center;
+  }
+
+  .art-for-life-content {
+    text-align: center;
+  }
+
+  .hexagon-gallery {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .hexagon {
+    width: 150px;
+    height: 129.75px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hexagon-gallery {
+    grid-template-columns: 1fr;
+  }
+
+  .hexagon {
+    width: 200px;
+    height: 173px;
   }
 }
 </style>

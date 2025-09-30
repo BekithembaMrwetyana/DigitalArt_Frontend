@@ -1,23 +1,26 @@
 const state = {
-  items: []
+  items: [] // Now stores product IDs instead of full objects
 }
 
 const getters = {
-  items: (state) => state.items,
+  items: (state, getters, rootState, rootGetters) => {
+    const allProducts = rootGetters['products/allProducts'] || []
+    return state.items.map(id => allProducts.find(product => product.id === id)).filter(Boolean)
+  },
   itemCount: (state) => state.items.length,
   isInWishlist: (state) => (productId) => {
-    return state.items.some(item => item.id === productId)
+    return state.items.includes(productId)
   }
 }
 
 const mutations = {
-  ADD_ITEM(state, product) {
-    if (!state.items.some(item => item.id === product.id)) {
-      state.items.push(product)
+  ADD_ITEM(state, productId) {
+    if (!state.items.includes(productId)) {
+      state.items.push(productId)
     }
   },
   REMOVE_ITEM(state, productId) {
-    state.items = state.items.filter(item => item.id !== productId)
+    state.items = state.items.filter(id => id !== productId)
   },
   CLEAR_WISHLIST(state) {
     state.items = []
@@ -25,8 +28,8 @@ const mutations = {
 }
 
 const actions = {
-  addItem({ commit }, product) {
-    commit('ADD_ITEM', product)
+  addItem({ commit }, productId) {
+    commit('ADD_ITEM', productId)
   },
   removeItem({ commit }, productId) {
     commit('REMOVE_ITEM', productId)

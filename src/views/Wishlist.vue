@@ -1,75 +1,66 @@
 <template>
-  <div class="wishlist-page">
-    <div class="wishlist-header">
+  <div class="cart-page">
+    <div class="cart-header">
       <h1>Your Wishlist</h1>
       <p>Review your favourite items</p>
     </div>
 
-    <div class="wishlist-container" v-if="items.length">
-      <div class="wishlist-grid">
-        <div v-for="item in items" :key="item.id" class="wishlist-item">
-          <div class="wishlist-image-container">
-            <img :src="item.image || '/placeholder-art.jpg'" :alt="item.title" class="wishlist-image" />
-            <div class="image-overlay">
-              <button @click="viewProduct(item)" class="view-btn" title="View Details">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-                  <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
-                </svg>
-              </button>
+    <div class="cart-container" v-if="items.length">
+      <div class="cart-list">
+        <div class="wishlist-grid">
+          <div v-for="item in items" :key="item.id" class="wishlist-item">
+            <div class="wishlist-image-container">
+              <img :src="item.image || '/placeholder-art.jpg'" :alt="item.title" class="wishlist-image" />
             </div>
-          </div>
-          
-          <div class="wishlist-info">
-            <h3>{{ item.title }}</h3>
-            <p class="item-description">{{ item.description || 'Beautiful artwork' }}</p>
-            <p class="price">R{{ item.price }}</p>
-            
-            <div class="wishlist-actions">
-              <button 
-                @click="addToCart(item)" 
-                class="add-to-cart-btn"
-                :disabled="isInCart(item.id)"
-              >
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-                  <path d="M7 4V1C7 0.45 7.45 0 8 0H16C16.55 0 17 0.45 17 1V4H22C22.55 4 23 4.45 23 5C23 5.55 22.55 6 22 6H21L19.8 17.4C19.71 18.28 18.95 19 18.06 19H5.94C5.05 19 4.29 18.28 4.2 17.4L3 6H2C1.45 6 1 5.55 1 5C1 4.45 1.45 4 2 4H7ZM9 2V4H15V2H9ZM5.21 6L6.27 17H17.73L18.79 6H5.21Z"/>
-                  <circle cx="7" cy="21.5" r="1.5"/>
-                  <circle cx="17" cy="21.5" r="1.5"/>
-                </svg>
-                {{ isInCart(item.id) ? 'In Cart' : 'Add to Cart' }}
-              </button>
-              
-              <button @click="removeFromWishlist(item.id)" class="remove-btn" title="Remove from Wishlist">
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-                  <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-                </svg>
-                Remove
-              </button>
+
+            <div class="wishlist-info">
+              <h3>{{ item.title }}</h3>
+              <p class="item-description">{{ item.description || 'Beautiful artwork' }}</p>
+              <p class="price">R{{ item.price }}</p>
+
+              <div class="wishlist-actions">
+                <button @click="removeFromWishlist(item.id)" class="remove-btn" title="Remove from Wishlist">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                  </svg>
+                  Remove
+                </button>
+              </div>
+            </div>
+
+            <div class="add-to-cart-wrapper">
+              <AddToCartButton :product="item" />
             </div>
           </div>
         </div>
       </div>
-      
-      <!-- Bulk Actions -->
-      <div class="bulk-actions">
-        <button @click="addAllToCart" class="bulk-btn add-all-btn">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-            <path d="M7 4V1C7 0.45 7.45 0 8 0H16C16.55 0 17 0.45 17 1V4H22C22.55 4 23 4.45 23 5C23 5.55 22.55 6 22 6H21L19.8 17.4C19.71 18.28 18.95 19 18.06 19H5.94C5.05 19 4.29 18.28 4.2 17.4L3 6H2C1.45 6 1 5.55 1 5C1 4.45 1.45 4 2 4H7ZM9 2V4H15V2H9ZM5.21 6L6.27 17H17.73L18.79 6H5.21Z"/>
-            <circle cx="7" cy="21.5" r="1.5"/>
-            <circle cx="17" cy="21.5" r="1.5"/>
-          </svg>
-          Add All to Cart
-        </button>
-        
-        <button @click="clearWishlist" class="bulk-btn clear-btn">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-          </svg>
-          Clear Wishlist
-        </button>
-      </div>
+
+      <aside class="cart-summary">
+        <div class="summary-card">
+          <h3>Wishlist Summary</h3>
+          <div class="summary-row"><span>Items</span><span>{{ wishlistCount }}</span></div>
+          <div class="bulk-actions">
+            <button @click="addAllToCart" class="bulk-btn add-all-btn">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                <path d="M7 4V1C7 0.45 7.45 0 8 0H16C16.55 0 17 0.45 17 1V4H22C22.55 4 23 4.45 23 5C23 5.55 22.55 6 22 6H21L19.8 17.4C19.71 18.28 18.95 19 18.06 19H5.94C5.05 19 4.29 18.28 4.2 17.4L3 6H2C1.45 6 1 5.55 1 5C1 4.45 1.45 4 2 4H7ZM9 2V4H15V2H9ZM5.21 6L6.27 17H17.73L18.79 6H5.21Z"/>
+                <circle cx="7" cy="21.5" r="1.5"/>
+                <circle cx="17" cy="21.5" r="1.5"/>
+              </svg>
+              Add All to Cart
+            </button>
+            
+            <button @click="clearWishlist" class="bulk-btn clear-btn">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+              </svg>
+              Clear Wishlist
+            </button>
+          </div>
+        </div>
+      </aside>
     </div>
 
-    <div class="wishlist-empty" v-else>
+    <div class="cart-empty" v-else>
       <div class="icon">
         <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24">
           <path fill="currentColor" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
@@ -84,22 +75,29 @@
 
 <script>
 import { computed, onMounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
+import AddToCartButton from '../components/cart/AddToCartButton.vue'
 
 export default {
   name: 'Wishlist',
+  components: {
+    AddToCartButton
+  },
   setup() {
     const store = useStore()
-    const router = useRouter()
     const cartItems = ref([])
 
     const items = computed(() => store.getters['wishlist/items'] || [])
+    const wishlistCount = computed(() => items.value.length)
 
     // Load cart items to check what's already in cart
     onMounted(() => {
       loadCartItems()
+      // Fetch products to ensure wishlist has latest data
+      store.dispatch('products/fetchProducts')
     })
+
+    // Watch for changes in wishlist items and reload cart items if needed
 
     const loadCartItems = () => {
       try {
@@ -225,52 +223,52 @@ export default {
       return cartItems.value.some(cartItem => cartItem.id === itemId || cartItem.productID === itemId)
     }
 
-    const viewProduct = (item) => {
-      // Navigate to product details page
-      router.push(`/product/${item.id}`)
-    }
-
     return {
       items,
+      wishlistCount,
       removeFromWishlist,
       addToCart,
       addAllToCart,
       clearWishlist,
-      isInCart,
-      viewProduct
+      isInCart
     }
   }
 }
 </script>
 
 <style scoped>
-.wishlist-page {
-  max-width: 1200px;
-  margin: 0 auto;
+.cart-page {
   padding: 2rem;
+  max-width: 1200px;
+  margin: auto;
 }
 
-.wishlist-header {
+.cart-header {
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
 }
-
-.wishlist-header h1 {
-  font-size: 2.5rem;
-  color: #333;
-  margin-bottom: 0.5rem;
+.cart-header h1 {
+  font-size: 2rem;
+  font-weight: bold;
 }
-
-.wishlist-header p {
+.cart-header p {
   color: #666;
-  font-size: 1.1rem;
+}
+
+.cart-container {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.cart-list {
+  flex: 2;
 }
 
 .wishlist-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
-  margin-bottom: 3rem;
 }
 
 .wishlist-item {
@@ -279,6 +277,7 @@ export default {
   overflow: hidden;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
+  position: relative;
 }
 
 .wishlist-item:hover {
@@ -293,54 +292,12 @@ export default {
 
 .wishlist-image {
   width: 100%;
-  height: 250px;
+  height: 200px;
   object-fit: cover;
-  transition: transform 0.3s ease;
-}
-
-.image-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.wishlist-item:hover .image-overlay {
-  opacity: 1;
-}
-
-.wishlist-item:hover .wishlist-image {
-  transform: scale(1.05);
-}
-
-.view-btn {
-  width: 50px;
-  height: 50px;
-  border: none;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.95);
-  color: #333;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.view-btn:hover {
-  background: white;
-  transform: scale(1.1);
 }
 
 .wishlist-info {
-  padding: 1.5rem;
+  padding: 1rem;
 }
 
 .wishlist-info h3 {
@@ -351,17 +308,17 @@ export default {
 }
 
 .item-description {
-  color: #666;
+  color: #888;
   font-size: 0.9rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
   line-height: 1.4;
 }
 
 .price {
   font-size: 1.3rem;
   font-weight: bold;
-  color: #f9c846;
-  margin-bottom: 1.5rem;
+  color: #2c5aa0;
+  margin-bottom: 0.5rem;
 }
 
 .wishlist-actions {
@@ -369,33 +326,11 @@ export default {
   gap: 0.75rem;
 }
 
-.add-to-cart-btn {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1rem;
-  background: linear-gradient(135deg, #4facfe, #00f2fe);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.add-to-cart-btn:hover:not(:disabled) {
-  background: linear-gradient(135deg, #4093e0, #00d9e6);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
-}
-
-.add-to-cart-btn:disabled {
-  background: #ddd;
-  color: #999;
-  cursor: not-allowed;
-  transform: none;
+.add-to-cart-wrapper {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  z-index: 10;
 }
 
 .remove-btn {
@@ -403,7 +338,7 @@ export default {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.75rem 1rem;
+  padding: 0.5rem 0.75rem;
   background: #ff6b6b;
   color: white;
   border: none;
@@ -411,7 +346,8 @@ export default {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  min-width: 100px;
+  min-width: 80px;
+  font-size: 0.9rem;
 }
 
 .remove-btn:hover {
@@ -420,24 +356,43 @@ export default {
   box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
 }
 
+.cart-summary {
+  flex: 1;
+}
+.summary-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+.summary-card h3 {
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+}
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.5rem 0;
+}
+
 .bulk-actions {
   display: flex;
-  justify-content: center;
-  gap: 1rem;
-  padding: 2rem 0;
-  border-top: 2px solid #f0f0f0;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
 }
 
 .bulk-btn {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.8rem 1.5rem;
+  padding: 0.8rem 1rem;
   border: none;
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
+  justify-content: center;
 }
 
 .add-all-btn {
@@ -462,50 +417,35 @@ export default {
   box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
 }
 
-.wishlist-empty {
+.cart-empty {
   text-align: center;
-  padding: 4rem 2rem;
+  padding: 3rem;
 }
-
-.wishlist-empty .icon {
-  color: #ddd;
-  margin-bottom: 2rem;
-}
-
-.wishlist-empty h3 {
-  font-size: 1.5rem;
-  color: #333;
+.cart-empty .icon {
+  font-size: 3rem;
   margin-bottom: 1rem;
 }
-
-.wishlist-empty p {
-  color: #666;
-  margin-bottom: 2rem;
-  max-width: 400px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
 .browse-btn {
   display: inline-block;
-  padding: 0.8rem 2rem;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  margin-top: 1rem;
+  padding: 0.7rem 1.5rem;
+  background: #2563eb;
   color: white;
-  text-decoration: none;
   border-radius: 8px;
+  text-decoration: none;
   font-weight: 600;
-  transition: all 0.3s ease;
 }
-
 .browse-btn:hover {
-  background: linear-gradient(135deg, #5a6fd8, #6a4190);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  background: #1d4ed8;
 }
 
 @media (max-width: 768px) {
-  .wishlist-page {
+  .cart-page {
     padding: 1rem;
+  }
+  
+  .cart-container {
+    flex-direction: column;
   }
   
   .wishlist-grid {
