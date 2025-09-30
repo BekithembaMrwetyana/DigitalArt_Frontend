@@ -6,23 +6,16 @@
     </div>
 
     <div class="cart-container" v-if="!loading && cartItems.length">
+      <!-- Cart List -->
       <div class="cart-list">
-        <table class="cart-table">
-          <thead>
-            <tr>
-              <th>Product</th>
-              <th>Price</th>
-              <th>Quantity</th>
-              <th>Total</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <CartItemRow v-for="item in cartItems" :key="item.cartItemID" :item="item" />
-          </tbody>
-        </table>
+        <CartItemRow
+          v-for="item in cartItems"
+          :key="item.cartItemID || item.id"
+          :item="item"
+        />
       </div>
 
+      <!-- Cart Summary -->
       <aside class="cart-summary">
         <div class="summary-card">
           <h3>Cart Summary</h3>
@@ -35,6 +28,7 @@
       </aside>
     </div>
 
+    <!-- Empty Cart -->
     <div class="cart-empty" v-else-if="!loading && !cartItems.length">
       <div class="icon">🛒</div>
       <h3>Your cart is empty</h3>
@@ -42,6 +36,7 @@
       <router-link to="/gallery" class="browse-btn">Browse Gallery</router-link>
     </div>
 
+    <!-- Loading -->
     <div class="cart-loading" v-else>
       Loading your cart...
     </div>
@@ -49,14 +44,13 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import CartItemRow from "@/components/cart/CartItemRow.vue";
 
 export default {
   components: { CartItemRow },
   computed: {
-    cartItems() { return this.$store.getters["Cart/cartItems"]; },
-    cartCount() { return this.$store.getters["Cart/cartCount"]; },
-    cartSubtotal() { return this.$store.getters["Cart/cartSubtotal"]; },
+    ...mapGetters("Cart", ["cartItems", "cartCount", "cartSubtotal"]),
     loading() { return this.$store.state.Cart.loading; },
   },
   mounted() {
@@ -84,13 +78,6 @@ export default {
   text-align: center;
   margin-bottom: 2rem;
 }
-.cart-header h1 {
-  font-size: 2rem;
-  font-weight: bold;
-}
-.cart-header p {
-  color: #666;
-}
 
 .cart-container {
   display: flex;
@@ -98,31 +85,17 @@ export default {
   align-items: flex-start;
 }
 
+/* Cart List */
 .cart-list {
   flex: 2;
-}
-.cart-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: white;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-.cart-table th, .cart-table td {
-  padding: 1rem;
-  text-align: center;
-  border-bottom: 1px solid #eee;
-}
-.cart-table th {
-  background: #f8f9fa;
-  font-weight: 600;
-  color: #333;
-}
-.cart-table tr:hover {
-  background: #fafafa;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
+/* Individual Cart Item is now handled by CartItemRow card style, so no need to duplicate */
+
+/* Cart Summary */
 .cart-summary {
   flex: 1;
 }
@@ -147,7 +120,6 @@ export default {
   border-top: 1px solid #ddd;
   padding-top: 0.5rem;
 }
-
 .checkout-btn {
   background: #2563eb;
   color: white;
@@ -176,31 +148,43 @@ export default {
   background: #e2e8f0;
 }
 
+/* Cart Empty */
 .cart-empty {
   text-align: center;
-  padding: 3rem;
-}
-.cart-empty .icon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-}
-.browse-btn {
-  display: inline-block;
-  margin-top: 1rem;
-  padding: 0.7rem 1.5rem;
-  background: #2563eb;
-  color: white;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: 600;
-}
-.browse-btn:hover {
-  background: #1d4ed8;
+  padding: 4rem 2rem;
+  color: #555;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
 }
 
-.cart-loading {
-  text-align: center;
-  font-size: 1.2rem;
-  color: #555;
+.cart-empty .icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.cart-empty h3 {
+  font-size: 1.5rem;
+  margin: 0.5rem 0;
+}
+
+.cart-empty p {
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.cart-empty .browse-btn {
+  background: #2563eb;
+  color: #fff;
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.cart-empty .browse-btn:hover {
+  background: #1d4ed8;
 }
 </style>

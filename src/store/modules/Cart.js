@@ -1,4 +1,4 @@
-import { saveCartItem, updateCartItem, deleteCartItem, getCartItemsByUserId } from "@/services/CartItemService";
+import { saveCartItem, deleteCartItem, getCartItemsByUserId } from "@/services/CartItemService";
 
 const state = () => ({
   cartItems: [],
@@ -8,107 +8,57 @@ const state = () => ({
 
 const getters = {
   cartItems: (s) => s.cartItems,
-  cartCount: (s) => s.cartItems.reduce((sum, it) => sum + (it.quantity || 0), 0),
+  cartCount: (s) => s.cartItems.length,
   cartSubtotal: (s) =>
-    s.cartItems.reduce((sum, it) => {
-      const qty = it.quantity || 0;
-      const price = it.price ?? it.product?.price ?? 0;
-      return sum + qty * price;
-    }, 0),
+    s.cartItems.reduce((sum, it) => sum + (it.price ?? 0), 0),
 };
 
 const mutations = {
-  SET_LOADING(state, val) { state.loading = val },
-  SET_ERROR(state, err) { state.error = err },
-  SET_ITEMS(state, items) { state.cartItems = items },
-  CLEAR(state) { state.cartItems = [] },
+  SET_LOADING(state, val) { state.loading = val; },
+  SET_ERROR(state, err) { state.error = err; },
+  SET_ITEMS(state, items) { state.cartItems = items; },
+  CLEAR(state) { state.cartItems = []; },
 };
 
 const actions = {
   async fetchUserCart({ commit }) {
     commit("SET_LOADING", true);
-    commit("SET_ERROR", null);
-
     try {
-      const userRaw = localStorage.getItem("user");
-      if (!userRaw) {
-        commit("SET_ITEMS", []);
-        return;
-      }
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (!user?.userId) return commit("SET_ITEMS", []);
 
-      const user = JSON.parse(userRaw);
-      const userId = user?.userId || user?.id;   
+      const list = await getCartItemsByUserId(user.userId);
 
-      const list = await getCartItemsByUserId(userId);
-
-      console.log("Raw cart items from backend:", list);
-
+      // Use full product object from backend
       const normalized = list.map(it => ({
         cartItemID: it.cartItemID,
-        quantity: it.quantity ?? 1,
-        price: it.price ?? it.product?.price ?? 0,
-        product: {
-          productID: it.product?.productID ?? it.product?.id,
-          title: it.title || "Unnamed Product",
-        },
-
+        quantity: it.quantity,
+        price: it.price,
+        product: it.product
       }));
 
       commit("SET_ITEMS", normalized);
-    } catch (error) {
-      console.error("Error fetching cart:", error);
-      commit("SET_ERROR", "Failed to load cart");
+    } catch (err) {
+      console.error("Cart fetch error:", err);
       commit("SET_ITEMS", []);
     } finally {
       commit("SET_LOADING", false);
     }
   },
 
-  async addToCart({ dispatch }, { product, quantity = 1 }) {
-    const raw = localStorage.getItem("user");
-    const user = raw ? JSON.parse(raw) : {};
-    const userId = user?.userId || user?.id; 
-
-    if (!userId) throw new Error("Not logged in");
-
-    const price =
-      product.price ??
-      product.productPrice ??
-      product.cost ??
-      0;
+  async addToCart({ dispatch }, { product }) {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user?.userId) throw new Error("Not logged in");
 
     const payload = {
-      user: { userId },
+      user: { userId: user.userId },
       product: { productID: product.productID ?? product.id },
-      quantity,
-      price,
+      quantity: 1
     };
-
-    console.log("Sending payload to backend:", payload);
 
     await saveCartItem(payload);
     await dispatch("fetchUserCart");
   },
-
-  async updateItemQuantity({ commit, state, dispatch }, { item, quantity }) {
-      if (!item.cartItemID) throw new Error("Missing cartItemID");
-
-      const updatedItems = state.cartItems.map(it =>
-        it.cartItemID === item.cartItemID
-          ? { ...it, quantity }
-          : it
-      );
-      commit("SET_ITEMS", updatedItems);
-
-      await updateCartItem({
-        cartItemID: item.cartItemID,
-        quantity,
-        price: item.price,
-      });
-
-      await dispatch("fetchUserCart");
-  },
-
 
   async removeItem({ dispatch }, cartItemID) {
     if (!cartItemID) throw new Error("Missing cartItemID");

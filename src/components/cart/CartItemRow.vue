@@ -1,78 +1,92 @@
 <template>
-  <tr class="cart-row">
-    <td class="cart-cell">{{ item.product.title }}</td>
-    <td class="cart-cell">{{ item.price.toFixed(2) }}</td>
-
-    <td class="cart-cell">
-      <input
-        type="number"
-        min="1"
-        v-model.number="localQuantity"
-        @change="updateQuantity"
-        class="quantity-input"
+  <div class="cart-card">
+    <!-- Preview -->
+    <div class="cart-card-thumb">
+      <img 
+        :src="item.product.imageBase64 ? `data:image/jpeg;base64,${item.product.imageBase64}` : '/placeholder-art.jpg'" 
+        :alt="item.product.title" 
+        class="thumb" 
       />
-    </td>
+    </div>
 
-    <td class="cart-cell">{{ (item.price * localQuantity).toFixed(2) }}</td>
+    <!-- Product Info -->
+    <div class="cart-card-info">
+      <h4>{{ item.product.title }}</h4>
+      <small class="category">{{ item.product.category?.name || 'Digital Art' }}</small>
+    </div>
 
-    <td class="cart-cell">
-      <button @click="removeItem" class="remove-btn">
-        Remove
-      </button>
-    </td>
-  </tr>
+    <!-- Price -->
+    <div class="cart-card-price">R{{ item.price.toFixed(2) }}</div>
+
+    <!-- Remove -->
+    <div class="cart-card-action">
+      <button @click="removeItem" class="remove-btn">Remove</button>
+    </div>
+  </div>
 </template>
 
 <script>
 export default {
   name: "CartItemRow",
   props: { item: { type: Object, required: true } },
-  data() {
-    return { localQuantity: this.item.quantity };
-  },
   methods: {
-    async updateQuantity() {
-      this.$store.dispatch("Cart/updateItemQuantity", {
-        item: this.item,
-        quantity: this.localQuantity,
-      });
-    },
     async removeItem() {
-      this.$store.dispatch("Cart/removeItem", this.item.cartItemID);
-    },
+      const id = this.item.cartItemID || this.item.id;
+      if (!id) {
+        console.error("No cart item ID found:", this.item);
+        return;
+      }
+      await this.$store.dispatch("Cart/removeItem", id);
+    }
   },
 };
 </script>
 
 <style scoped>
-.cart-row {
-  border-bottom: 1px solid #ddd;
+.cart-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fff;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-.cart-cell {
-  padding: 10px;
-  text-align: center;
-  vertical-align: middle;
+.cart-card-thumb img.thumb {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
 }
 
-.quantity-input {
-  width: 60px;
-  padding: 5px;
-  text-align: center;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+.cart-card-info {
+  flex: 1;
+  margin-left: 16px;
+}
+
+.cart-card-info h4 {
+  margin: 0 0 4px 0;
+}
+
+.category {
+  color: #777;
+  font-size: 0.85rem;
+}
+
+.cart-card-price {
+  font-weight: bold;
+  margin-right: 16px;
 }
 
 .remove-btn {
-  background-color: #e74c3c;
-  color: white;
+  background: #e74c3c;
   border: none;
   padding: 6px 12px;
-  border-radius: 4px;
+  color: #fff;
+  font-weight: bold;
+  border-radius: 6px;
   cursor: pointer;
-}
-
-.remove-btn:hover {
-  background-color: #c0392b;
 }
 </style>

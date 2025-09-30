@@ -5,31 +5,45 @@
       <p>Review your favourite items</p>
     </div>
 
-    <div class="cart-container" v-if="items.length">
-      <div class="cart-list">
-        <div class="wishlist-grid">
-          <div v-for="item in items" :key="item.id" class="wishlist-item">
-            <div class="wishlist-image-container">
-              <img :src="item.image || '/placeholder-art.jpg'" :alt="item.title" class="wishlist-image" />
+    <div class="wishlist-container" v-if="items.length">
+      <div class="wishlist-grid">
+        <div v-for="item in items" :key="item.id" class="wishlist-item">
+          <div class="wishlist-image-container">
+            <img :src="item.image || '/placeholder-art.jpg'" :alt="item.title" class="wishlist-image" />
+            <div class="image-overlay">
+              <button @click="viewProduct(item)" class="view-btn" title="View Details">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                  <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                </svg>
+              </button>
             </div>
-
-            <div class="wishlist-info">
-              <h3>{{ item.title }}</h3>
-              <p class="item-description">{{ item.description || 'Beautiful artwork' }}</p>
-              <p class="price">R{{ item.price }}</p>
-
-              <div class="wishlist-actions">
-                <button @click="removeFromWishlist(item.id)" class="remove-btn" title="Remove from Wishlist">
-                  <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-                  </svg>
-                  Remove
-                </button>
-              </div>
-            </div>
-
-            <div class="add-to-cart-wrapper">
-              <AddToCartButton :product="item" />
+          </div>
+          
+          <div class="wishlist-info">
+            <h3>{{ item.title }}</h3>
+            <p class="item-description">{{ item.description || 'Beautiful artwork' }}</p>
+            <p class="price">R{{ item.price }}</p>
+            
+            <div class="wishlist-actions">
+              <button 
+                @click="addToCart(item)"  
+                class="add-to-cart-btn"
+                :disabled="isInCart(item.id)"
+              >
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                  <path d="M7 4V1C7 0.45 7.45 0 8 0H16C16.55 0 17 0.45 17 1V4H22C22.55 4 23 4.45 23 5C23 5.55 22.55 6 22 6H21L19.8 17.4C19.71 18.28 18.95 19 18.06 19H5.94C5.05 19 4.29 18.28 4.2 17.4L3 6H2C1.45 6 1 5.55 1 5C1 4.45 1.45 4 2 4H7ZM9 2V4H15V2H9ZM5.21 6L6.27 17H17.73L18.79 6H5.21Z"/>
+                  <circle cx="7" cy="21.5" r="1.5"/>
+                  <circle cx="17" cy="21.5" r="1.5"/>
+                </svg>
+                {{ isInCart(item.id) ? 'In Cart' : 'Add to Cart' }}
+              </button>
+              
+              <button @click="removeFromWishlist(item.id)" class="remove-btn" title="Remove from Wishlist">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                  <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                </svg>
+                Remove
+              </button>
             </div>
           </div>
         </div>
