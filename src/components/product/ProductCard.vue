@@ -2,23 +2,30 @@
   <div class="product-card" @click="$emit('view', product)">
     <div class="product-image">
       <img :src="product.image || '/placeholder-art.jpg'" :alt="product.title" />
-      
-      <!-- Wishlist heart -->
+
       <button
         class="wishlist-btn"
         @click.stop="toggleWishlist"
         :class="{ active: isInWishlist }"
+        v-if="!isWishlistPage"
       >
         <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
           <path
-            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 
-               2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 
-               3.41.81 4.5 2.09C13.09 3.81 
-               14.76 3 16.5 3 19.58 3 22 
-               5.42 22 8.5c0 3.78-3.4 6.86-8.55 
+            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28
+               2 8.5 2 5.42 4.42 3 7.5 3c1.74 0
+               3.41.81 4.5 2.09C13.09 3.81
+               14.76 3 16.5 3 19.58 3 22
+               5.42 22 8.5c0 3.78-3.4 6.86-8.55
                11.54L12 21.35z"
           />
         </svg>
+      </button>
+      <button
+        class="wishlist-remove-btn"
+        @click.stop="removeFromWishlist"
+        v-else
+      >
+        ❌
       </button>
     </div>
 
@@ -28,17 +35,17 @@
       <p class="category">{{ product.category }}</p>
     </div>
 
-  <!-- <button 
-    @click="$store.dispatch('Cart/addToCart', { 
-      productId: product.id, 
-      quantity: 1, 
+  <!-- <button
+    @click="$store.dispatch('Cart/addToCart', {
+      productId: product.id,
+      quantity: 1,
       userId: $store.state.auth.user.id
     })"class="add-to-cart-btn">
     Add to Cart
   </button> -->
 
   <div class="add-to-cart-wrapper">
-    <AddToCartButton :product="product" />
+    <AddToCartButton :product="product" @added="onAdded" />
   </div>
 
 
@@ -54,9 +61,13 @@ import AddToCartButton from '../cart/AddToCartButton.vue'; // path to your compo
 export default {
   name: 'ProductCard',
   components: { AddToCartButton },
-  props: { product: Object },
-  emits: ['click'],
-  setup(props) {
+  props: {
+    product: Object,
+    emitAddToCart: { type: Boolean, default: false },
+    isWishlistPage: { type: Boolean, default: false }
+  },
+  emits: ['click', 'add-to-cart', 'view'],
+  setup(props, { emit }) {
     const store = useStore()
 
     const isInWishlist = computed(() => {
@@ -69,11 +80,16 @@ export default {
       return cart.some(item => item.id === props.product.id)
     })
 
-    const toggleWishlist = () => {
-      if (isInWishlist.value) {
-        store.dispatch('wishlist/removeItem', props.product.id)
-      } else {
-        store.dispatch('wishlist/addItem', props.product.id)
+    const toggleWishlist = async () => {
+      try {
+        if (isInWishlist.value) {
+          await store.dispatch('wishlist/removeItem', props.product.id)
+        } else {
+          await store.dispatch('wishlist/addItem', props.product.id)
+        }
+      } catch (error) {
+        console.error('Error toggling wishlist:', error)
+        // You could show a user-friendly error message here
       }
     }
 
@@ -85,11 +101,27 @@ export default {
       }
     }
 
+    const removeFromWishlist = async () => {
+      try {
+        await store.dispatch('wishlist/removeItem', props.product.id)
+      } catch (error) {
+        console.error('Error removing from wishlist:', error)
+      }
+    }
+
+    const onAdded = (product) => {
+      if (props.emitAddToCart) {
+        emit('add-to-cart', product)
+      }
+    }
+
     return {
       isInWishlist,
       isInCart,
       toggleWishlist,
-      toggleCart
+      toggleCart,
+      removeFromWishlist,
+      onAdded
     }
   }
 }
@@ -160,12 +192,28 @@ export default {
   background: transparent;
   border: none;
   cursor: pointer;
-  color: black; 
+  color: black;
   transition: color 0.3s ease;
 }
 
 .wishlist-btn.active {
-  color: #e74c3c; 
+  color: #e74c3c;
+}
+
+.wishlist-remove-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  color: #666;
+  transition: color 0.3s ease;
+}
+
+.wishlist-remove-btn:hover {
+  color: #e74c3c;
 }
 
 

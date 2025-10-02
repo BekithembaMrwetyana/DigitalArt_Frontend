@@ -23,12 +23,29 @@
           </p>
         </div>
         <div class="hexagon-gallery">
-          <div
-            v-for="(hex, index) in hexagonImages"
-            :key="index"
-            class="hexagon"
-            :style="{ backgroundImage: `url(${hex.image})` }"
-          ></div>
+          <!-- Row 1: 2 hexagons spaced apart -->
+          <div class="hexagon-row row-1">
+            <div class="hexagon" style="background-image: url('http://localhost:8080/digital_artDB/images/art1.jpeg')"></div>
+            <div class="hexagon" style="background-image: url('http://localhost:8080/digital_artDB/images/art2.jpeg')"></div>
+          </div>
+          
+          <!-- Row 2: 2 hexagons shifted down and inward -->
+          <div class="hexagon-row row-2">
+            <div class="hexagon" style="background-image: url('http://localhost:8080/digital_artDB/images/art3.jpeg')"></div>
+            <div class="hexagon" style="background-image: url('http://localhost:8080/digital_artDB/images/art4.jpeg')"></div>
+          </div>
+          
+          <!-- Row 3: 3 hexagons forming a tighter cluster -->
+          <div class="hexagon-row row-3">
+            <div class="hexagon" style="background-image: url('http://localhost:8080/digital_artDB/images/art5.jpeg')"></div>
+            <div class="hexagon" style="background-image: url('http://localhost:8080/digital_artDB/images/art6.jpeg')"></div>
+            <div class="hexagon" style="background-image: url('http://localhost:8080/digital_artDB/images/art7.jpeg')"></div>
+          </div>
+          
+          <!-- Row 4: 1 hexagon slightly offset at bottom right -->
+          <div class="hexagon-row row-4">
+            <div class="hexagon" style="background-image: url('http://localhost:8080/digital_artDB/images/art8.jpeg')"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -105,17 +122,10 @@ export default {
         { image: 'http://localhost:8080/digital_artDB/images/art21.jpeg' },
         { image: 'http://localhost:8080/digital_artDB/images/art23.jpeg' }
       ],
-      hexagonImages: [
-        { image: 'http://localhost:8080/digital_artDB/images/art1.jpeg' },
-        { image: 'http://localhost:8080/digital_artDB/images/art2.jpeg' },
-        { image: 'http://localhost:8080/digital_artDB/images/art3.jpeg' },
-        { image: 'http://localhost:8080/digital_artDB/images/art4.jpeg' },
-        { image: 'http://localhost:8080/digital_artDB/images/art5.jpeg' },
-        { image: 'http://localhost:8080/digital_artDB/images/art6.jpeg' }
-      ],
+      
       products: [],
       wishlist: [],
-      cart: [] //
+      cart: [] 
     }
   },
   computed: {
@@ -494,8 +504,8 @@ export default {
   max-width: 1200px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 3rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
 }
 
 .collection-item {
@@ -768,14 +778,23 @@ export default {
 .art-for-life-container {
   max-width: 1200px;
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
   gap: 4rem;
   align-items: center;
+  justify-content: space-between;
 }
 
 .art-for-life-content {
+  flex: 1;
   text-align: left;
+}
+
+.hexagon-gallery {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
 }
 
 .art-for-life-content h2 {
@@ -794,16 +813,23 @@ export default {
   font-weight: 400;
 }
 
-.hexagon-gallery {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
-  justify-items: center;
+
+
+.hexagon-row {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: -17px; /* overlap by half hex height */
+}
+
+/* Specific row positioning to match ASCII art */
+.hexagon-row.row-1 {
+  justify-content: space-between;
+  width: 500px; /* two hexagons spaced far apart */
 }
 
 .hexagon {
   width: 200px;
-  height: 173px;
+  height: 173px; /* must match hex ratio */
   background-size: cover;
   background-position: center;
   clip-path: polygon(
@@ -811,21 +837,48 @@ export default {
     100% 50%, 75% 93.3%,
     25% 93.3%, 0% 50%
   );
-  transition: transform 0.3s ease;
+  margin: 0 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
+  position: relative;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .hexagon:hover {
   transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+}
+
+.hexagon::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.hexagon:hover::after {
+  opacity: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .hexagon {
+    width: 150px;
+    height: 130px;
+  }
+
+  .hexagon-row {
+    margin-bottom: -15px; /* adjust for smaller hex */
+  }
 }
 
 @media (max-width: 768px) {
-  .hero-section {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-    padding: 2rem 1rem;
-  }
-
   .collection-grid {
     grid-template-columns: 1fr;
   }
@@ -843,26 +896,18 @@ export default {
   .art-for-life-content {
     text-align: center;
   }
-
-  .hexagon-gallery {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-  }
-
-  .hexagon {
-    width: 150px;
-    height: 129.75px;
-  }
 }
 
 @media (max-width: 480px) {
-  .hexagon-gallery {
-    grid-template-columns: 1fr;
+  .hexagon {
+    width: 120px;
+    height: 104px;
   }
 
-  .hexagon {
-    width: 200px;
-    height: 173px;
+  .hexagon-row {
+    margin-bottom: -52px;
   }
 }
+
+ 
 </style>
