@@ -5,7 +5,7 @@
       <div class="hero-text">
         <h1>Explore Our Art Gallery</h1>
         <p>Discover unique contemporary artworks from around the world.</p>
-        <router-link to="/shop" class="explore-btn">Explore Art Gallery</router-link>
+        <router-link to="/gallery" class="explore-btn">Explore Art Gallery</router-link>
       </div>
 
       <div class="hero-slider">
@@ -13,8 +13,43 @@
       </div>
     </div>
 
-   
-    
+    <!-- Art For Life Section -->
+    <div class="art-for-life-section">
+      <div class="art-for-life-container">
+        <div class="art-for-life-content">
+          <h2>Art For Life</h2>
+          <p class="art-for-life-text">
+            Art is more than what you see — it’s what you feel. Find the piece that reflects your journey, your dreams, your life.
+          </p>
+        </div>
+        <div class="hexagon-gallery">
+          <!-- Row 1: 2 hexagons spaced apart -->
+          <div class="hexagon-row row-1">
+            <div class="hexagon" style="background-image: url('http://localhost:8080/digital_artDB/images/art1.jpeg')"></div>
+            <div class="hexagon" style="background-image: url('http://localhost:8080/digital_artDB/images/art2.jpeg')"></div>
+          </div>
+          
+          <!-- Row 2: 2 hexagons shifted down and inward -->
+          <div class="hexagon-row row-2">
+            <div class="hexagon" style="background-image: url('http://localhost:8080/digital_artDB/images/art3.jpeg')"></div>
+            <div class="hexagon" style="background-image: url('http://localhost:8080/digital_artDB/images/art4.jpeg')"></div>
+          </div>
+          
+          <!-- Row 3: 3 hexagons forming a tighter cluster -->
+          <div class="hexagon-row row-3">
+            <div class="hexagon" style="background-image: url('http://localhost:8080/digital_artDB/images/art5.jpeg')"></div>
+            <div class="hexagon" style="background-image: url('http://localhost:8080/digital_artDB/images/art6.jpeg')"></div>
+            <div class="hexagon" style="background-image: url('http://localhost:8080/digital_artDB/images/art7.jpeg')"></div>
+          </div>
+          
+          <!-- Row 4: 1 hexagon slightly offset at bottom right -->
+          <div class="hexagon-row row-4">
+            <div class="hexagon" style="background-image: url('http://localhost:8080/digital_artDB/images/art8.jpeg')"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="latest-collection">
       <h3>OUR PICKS</h3>
       <p class="collection-subtitle">Recommended by us</p>
@@ -87,9 +122,10 @@ export default {
         { image: 'http://localhost:8080/digital_artDB/images/art21.jpeg' },
         { image: 'http://localhost:8080/digital_artDB/images/art23.jpeg' }
       ],
-      products: [], 
-      wishlist: [], 
-      cart: [] // 
+      
+      products: [],
+      wishlist: [],
+      cart: [] 
     }
   },
   computed: {
@@ -370,7 +406,7 @@ export default {
 
 .hero-section {
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 0 auto 4rem auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 3rem;
@@ -468,8 +504,8 @@ export default {
   max-width: 1200px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 3rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
 }
 
 .collection-item {
@@ -732,13 +768,117 @@ export default {
   margin-top: 0.5rem;
 }
 
+/* Art For Life Section */
+.art-for-life-section {
+  background: #f8f9fa;
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.art-for-life-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  gap: 4rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.art-for-life-content {
+  flex: 1;
+  text-align: left;
+}
+
+.hexagon-gallery {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+}
+
+.art-for-life-content h2 {
+  font-size: 3rem;
+  color: #333;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.art-for-life-text {
+  font-size: 1.2rem;
+  color: #666;
+  line-height: 1.8;
+  margin: 0;
+  font-weight: 400;
+}
+
+
+
+.hexagon-row {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: -17px; /* overlap by half hex height */
+}
+
+/* Specific row positioning to match ASCII art */
+.hexagon-row.row-1 {
+  justify-content: space-between;
+  width: 500px; /* two hexagons spaced far apart */
+}
+
+.hexagon {
+  width: 200px;
+  height: 173px; /* must match hex ratio */
+  background-size: cover;
+  background-position: center;
+  clip-path: polygon(
+    25% 6.7%, 75% 6.7%,
+    100% 50%, 75% 93.3%,
+    25% 93.3%, 0% 50%
+  );
+  margin: 0 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.hexagon:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+}
+
+.hexagon::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.hexagon:hover::after {
+  opacity: 1;
+}
+
+/* Responsive adjustments */
 @media (max-width: 768px) {
-  .hero-section {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-    padding: 2rem 1rem;
+  .hexagon {
+    width: 150px;
+    height: 130px;
   }
 
+  .hexagon-row {
+    margin-bottom: -15px; /* adjust for smaller hex */
+  }
+}
+
+@media (max-width: 768px) {
   .collection-grid {
     grid-template-columns: 1fr;
   }
@@ -746,5 +886,28 @@ export default {
   .products-grid {
     grid-template-columns: 1fr;
   }
+
+  .art-for-life-container {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    text-align: center;
+  }
+
+  .art-for-life-content {
+    text-align: center;
+  }
 }
+
+@media (max-width: 480px) {
+  .hexagon {
+    width: 120px;
+    height: 104px;
+  }
+
+  .hexagon-row {
+    margin-bottom: -52px;
+  }
+}
+
+ 
 </style>

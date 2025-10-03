@@ -43,7 +43,7 @@
             <td><img :src="product.imageUrl" :alt="product.title" class="product-img" /></td>
             <td>{{ product.productID }}</td>
             <td>{{ product.title }}</td>
-            <td>{{ product.category.name }}</td>
+            <td>{{ product.categoryName }}</td>
             <td>{{ product.price }}</td>
             <td>
               <button class="action-btn edit-btn" @click="editProduct(product)" title="Edit">
@@ -194,9 +194,9 @@ export default {
   methods: {
     async fetchProducts() {
       try {
-        const data = await productService.getAllProducts()
-        // Also fetch categories to map category names
+        // Fetch categories first to map category names
         await this.fetchCategories()
+        const data = await productService.getAllProducts()
 
         this.products = data.map(product => {
           // Find category name by ID if category relationship is not populated
@@ -205,8 +205,8 @@ export default {
           if (product.category?.name) {
             categoryName = product.category.name
           } else if (product.categoryId) {
-            const category = this.categories.find(cat => cat.categoryID === product.categoryId)
-            
+            const category = this.categories.find(cat => cat.categoryID == product.categoryId)
+
             categoryName = category ? category.name : 'Unknown'
           }
 
@@ -326,7 +326,6 @@ export default {
   },
   mounted() {
     this.fetchProducts()
-    this.fetchCategories()
   }
 }
 </script>
