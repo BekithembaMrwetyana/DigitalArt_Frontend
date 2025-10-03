@@ -46,6 +46,7 @@
 <script>
 import { mapGetters } from "vuex";
 import CartItemRow from "@/components/cart/CartItemRow.vue";
+import OrderService from "@/services/OrderService";
 
 export default {
   components: { CartItemRow },
@@ -56,13 +57,40 @@ export default {
   mounted() {
     this.$store.dispatch("Cart/fetchUserCart");
   },
-  methods: {
-    proceedToCheckout() {
-      const user = localStorage.getItem("user");
-      if (!user) { alert("Please log in to proceed to checkout."); return; }
-      this.$router.push({ name: "Checkout" });
-    },
-    goToHome() { this.$router.go(-1); },
+  
+
+methods: {
+  async proceedToCheckout() {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user) {
+      alert("Please log in to proceed to checkout.");
+      return;
+    }
+
+    const orderDTO = {
+      userId: user.userId,
+      totalAmount: this.cartSubtotal,
+      orderAmount: this.cartSubtotal,
+      cartItems: this.cartItems.map(item => ({
+        productId: item.product.productID,
+        quantity: item.quantity,
+        price: item.price
+      }))
+    };
+
+    try {
+      const createdOrder = await OrderService.createOrder(orderDTO);
+      console.log("Order created:", createdOrder);
+      this.$router.push({ name: "MyOrders" }); // redirect to orders page
+    } catch (err) {
+      console.error("Checkout error:", err);
+      alert("Failed to create order. Please try again.");
+    }
+  }
+}
+ ,
+
+    goToHome() { this.$router.go(-1); 
   },
 };
 </script>
@@ -85,7 +113,6 @@ export default {
   align-items: flex-start;
 }
 
-/* Cart List */
 .cart-list {
   flex: 2;
   display: flex;
@@ -93,9 +120,6 @@ export default {
   gap: 1rem;
 }
 
-/* Individual Cart Item is now handled by CartItemRow card style, so no need to duplicate */
-
-/* Cart Summary */
 .cart-summary {
   flex: 1;
 }
@@ -148,7 +172,6 @@ export default {
   background: #e2e8f0;
 }
 
-/* Cart Empty */
 .cart-empty {
   text-align: center;
   padding: 4rem 2rem;

@@ -72,4 +72,3 @@ export const deleteCartItem = async (id) => {
     throw error;
   }
 };
-

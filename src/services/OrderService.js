@@ -37,7 +37,12 @@ updateOrder(orderId, paymentStatus) {
   },
 
   // Create a new order
-  createOrder(orderData) {
-    return axios.post(`${BASE_URL}/create`, orderData).then(res => res.data);
-  }
+  //createOrder(orderData) {
+   // return axios.post(`${BASE_URL}/create`, orderData).then(res => res.data);
+ // },
+  createOrder(orderDTO) {
+  return axios.post(`${BASE_URL}/create`, orderDTO)
+    .then(res => res.data);
+}
+
 };
