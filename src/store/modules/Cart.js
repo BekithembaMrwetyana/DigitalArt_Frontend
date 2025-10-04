@@ -50,11 +50,12 @@ const actions = {
     const user = JSON.parse(localStorage.getItem("user"));
     if (!user?.userId) throw new Error("Not logged in");
 
-    const payload = {
-      user: { userId: user.userId },
-      product: { productID: product.productID ?? product.id },
-      quantity: 1
-    };
+  const payload = {
+  userId: user.userId,
+  productId: product.productID ?? product.id,
+  quantity: 1,
+  price: product.price // make sure your product object has a price field
+};
 
     await saveCartItem(payload);
     await dispatch("fetchUserCart");

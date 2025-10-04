@@ -7,7 +7,8 @@ export const getAllCartItems = async () => {
   const token = localStorage.getItem('token');
   try {
     const response = await axios.get(`${BASE_URL}/getAll`, {
-      headers: { 'Authorization': `Bearer ${token}` }
+      headers: { 'Authorization': `Bearer ${token}`,
+    "Content-Type": "application/json", }
     });
     return response.data;
   } catch (error) {
@@ -22,7 +23,9 @@ export const saveCartItem = async (cartItem) => {
   try {
     console.log(" Sending cart item payload:", cartItem); 
     const response = await axios.post(`${BASE_URL}/create`, cartItem, {
-      headers: { 'Authorization': `Bearer ${token}` }
+      headers: { 'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+     }
     });
     return response.data;
   } catch (error) {
