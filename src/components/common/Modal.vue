@@ -214,6 +214,13 @@ export default {
   z-index: 1000;
   backdrop-filter: blur(4px);
   outline: none;
+  pointer-events: auto;
+}
+
+.modal-overlay[style*="display: none"],
+.modal-overlay.v-leave-to,
+.modal-overlay.v-leave-active {
+  pointer-events: none !important;
 }
 
 .modal-container {
