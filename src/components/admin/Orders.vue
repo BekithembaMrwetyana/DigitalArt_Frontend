@@ -30,7 +30,8 @@
       <tbody>
         <tr v-for="order in filteredOrders" :key="order.orderID">
           <td>#{{ order.orderID }}</td>
-          <td>{{ order.user?.firstName + ' ' + order.user?.lastName || 'Unknown' }}</td>
+          <td>{{ order.user?.userID || order.userID || 'Unknown' }}</td>
+
           <td>{{ formatDate(order.orderDate) }}</td>
           <td>R{{ order.totalAmount }}</td>
           <td>
