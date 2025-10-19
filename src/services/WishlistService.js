@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const BASE_URL = "http://localhost:8080/digital_artDB/api/wishlist"
+const BASE_URL = "http://localhost:8080/digital_artDB/api/wishlists"
 
 function handleError(action, err) {
   if (err.response) {
