@@ -1,4 +1,4 @@
-import wishlistService from '@/services/wishlistService.js'
+import wishlistService from '@/services/WishlistService.js'
 
 const state = {
   items: [], // Stores product IDs
