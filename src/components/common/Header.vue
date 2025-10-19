@@ -85,7 +85,10 @@
           GALLERY
         </router-link>
         <router-link to="/artists" class="nav-link" active-class="active">
-          Artists
+          ARTISTS
+        </router-link>
+        <router-link to="/reviews" class="nav-link" active-class="active">
+          REVIEWS
         </router-link>
         <router-link to="/contact" class="nav-link contact-btn" active-class="active">
           CONTACT US
@@ -123,19 +126,6 @@ export default {
       }
     }
     
-    // const showSignIn = () => {
-    //   store.dispatch('ui/openModal', {
-    //     type: 'auth',
-    //     mode: 'signin'
-    //   })
-    // }
-    
-    // const showRegister = () => {
-    //   store.dispatch('ui/openModal', {
-    //     type: 'auth',
-    //     mode: 'register'
-    //   })
-    // }
     const showSignIn = () => {
       router.push({ name: 'Signin' })
     }
