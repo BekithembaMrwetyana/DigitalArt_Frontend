@@ -18,7 +18,7 @@ import AdminProducts from '@/components/admin/AdminProducts.vue'
 import AdminLayout from '@/components/layout/AdminLayout.vue'
 import ArtBrand from '@/views/ArtBrand.vue'
 import Orders from '@/components/admin/Orders.vue'
-import Inventory from '@/components/admin/Inventory.vue'
+
 import User from '@/components/admin/User.vue'
 import Artist from '@/components/admin/Artist.vue'
 
@@ -60,6 +60,14 @@ const routes = [
       { path: 'inventory', name: 'Inventory', component: Inventory },
       { path: 'users', name: 'User', component: User },
       { path: 'artist', name: 'Artist', component: Artist }
+      { path: 'brands', name: 'ArtBrand', component: ArtBrand }, // <-- moved here
+      //{path: "notifications", name: "AdminNotifications",component: NotificationPage}
+      {path: 'orders', name: 'Orders', component: Orders},
+      
+      {path: 'users', name:'User', component: User },
+       {path: 'artist', name: 'Artist', component: Artist}
+    
+
     ]
   }
 ]
