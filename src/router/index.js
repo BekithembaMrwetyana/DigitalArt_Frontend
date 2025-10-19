@@ -61,10 +61,11 @@ const routes = [
       { path: 'brands', name: 'ArtBrand', component: ArtBrand }, // <-- moved here
       //{path: "notifications", name: "AdminNotifications",component: NotificationPage}
       {path: 'orders', name: 'Orders', component: Orders},
-      
+
       {path: 'users', name:'User', component: User },
-       {path: 'artist', name: 'Artist', component: Artist}
-    
+       {path: 'artist', name: 'Artist', component: Artist},
+       { path: 'register', name: 'AdminRegister', component: () => import('@/views/Admin/AdminRegister.vue') }
+
 
     ]
   }
@@ -73,6 +74,27 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes
+})
+
+// Navigation guard to protect admin routes
+router.beforeEach((to, from, next) => {
+  const isAdminRoute = to.path.startsWith('/admin')
+  const user = JSON.parse(localStorage.getItem('user'))
+
+  if (isAdminRoute) {
+    if (user && user.role === 'ADMIN') {
+      next()
+    } else {
+      // Redirect to admin register if not logged in as admin
+      if (to.path !== '/admin/register') {
+        next('/admin/register')
+      } else {
+        next()
+      }
+    }
+  } else {
+    next()
+  }
 })
 
 export default router
