@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const BASE_URL = "http://localhost:8080/digital_artDB/api/wishlists"
+const BASE_URL = "http://localhost:8080/digital_artDB/api/wishlist"
 
 function handleError(action, err) {
   if (err.response) {
@@ -16,19 +16,19 @@ function handleError(action, err) {
 
 const wishlistService = {
   getWishlistByUser(userId) {
-    return axios.get(`${BASE_URL}/user/${userId}`)
+    return axios.get(`${BASE_URL}/${userId}`)
       .then(res => res.data)
       .catch(err => handleError("Fetching wishlist", err))
   },
 
   addWishlistItem(userId, productId) {
-    return axios.post(`${BASE_URL}/add`, null, { params: { userId, productId } })
+    return axios.post(`${BASE_URL}/add`, { userId, productId })
       .then(res => res.data)
       .catch(err => handleError("Adding to wishlist", err))
   },
 
   removeWishlistItem(userId, productId) {
-    return axios.delete(`${BASE_URL}/remove`, { params: { userId, productId } })
+    return axios.delete(`${BASE_URL}/remove/${productId}`, { params: { userId } })
       .then(res => res.data)
       .catch(err => handleError("Removing from wishlist", err))
   }

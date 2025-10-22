@@ -22,11 +22,13 @@ export default {
     }
   },
   actions: {
-    async login({ commit }, { email, password, role }) {
+    async login({ commit, dispatch }, { email, password, role }) {
       try {
         const user = await userService.loginUser(email, password, role)
         if (user && user.userId) {
           commit("SET_USER", user)
+          // Refetch wishlist when user logs in
+          dispatch('wishlist/fetchWishlist', null, { root: true })
           return user
         } else {
           commit("SET_USER", null)
@@ -37,8 +39,10 @@ export default {
         return null
       }
     },
-    logout({ commit }) {
+    logout({ commit, dispatch }) {
       commit("SET_USER", null)
+      // Clear wishlist when user logs out
+      dispatch('wishlist/clearWishlist', null, { root: true })
     }
   }
 }

@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, watch } from 'vue'
 import { useStore } from 'vuex'
 import ProductCard from '../components/product/ProductCard.vue'
 
@@ -46,10 +46,19 @@ export default {
     const store = useStore()
 
     const items = computed(() => store.getters['wishlist/items'] || [])
+    const user = computed(() => store.getters['auth/user'])
 
     onMounted(() => {
       store.dispatch('products/fetchProducts')
       store.dispatch('wishlist/fetchWishlist')
+    })
+
+    // Watch for user login/logout and refetch wishlist
+    watch(user, (newUser, oldUser) => {
+      // If user logged in or changed, refetch wishlist
+      if ((newUser && newUser.userId) || (oldUser && oldUser.userId !== newUser?.userId)) {
+        store.dispatch('wishlist/fetchWishlist')
+      }
     })
 
     const viewProduct = (product) => {

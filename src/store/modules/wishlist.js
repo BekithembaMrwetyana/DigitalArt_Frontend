@@ -50,8 +50,7 @@ const actions = {
       commit('SET_LOADING', true)
       commit('SET_ERROR', null)
       try {
-        const wishlistItems = await wishlistService.getWishlistByUser(user.userId)
-        const productIds = wishlistItems.map(item => item.product.productID)
+        const productIds = await wishlistService.getWishlistByUser(user.userId)
         commit('SET_ITEMS', productIds)
       } catch (error) {
         commit('SET_ERROR', error.message)
@@ -66,8 +65,22 @@ const actions = {
     }
   },
 
-  async addItem({ commit, rootGetters }, productId) {
+  async addItem({ commit, rootGetters }, payload) {
     const user = rootGetters['auth/user']
+    let productId
+
+    // Handle both cases: payload can be a productId (number) or a product object
+    if (typeof payload === 'number') {
+      productId = payload
+    } else if (payload && payload.id) {
+      productId = payload.id
+    } else if (payload && payload.productID) {
+      productId = payload.productID
+    } else {
+      console.error('Invalid payload for addItem:', payload)
+      return
+    }
+
     if (user && user.userId) {
       // Authenticated user: add to backend
       commit('SET_LOADING', true)
@@ -92,8 +105,22 @@ const actions = {
     }
   },
 
-  async removeItem({ commit, rootGetters }, productId) {
+  async removeItem({ commit, rootGetters }, payload) {
     const user = rootGetters['auth/user']
+    let productId
+
+    // Handle both cases: payload can be a productId (number) or a product object
+    if (typeof payload === 'number') {
+      productId = payload
+    } else if (payload && payload.id) {
+      productId = payload.id
+    } else if (payload && payload.productID) {
+      productId = payload.productID
+    } else {
+      console.error('Invalid payload for removeItem:', payload)
+      return
+    }
+
     if (user && user.userId) {
       // Authenticated user: remove from backend
       commit('SET_LOADING', true)

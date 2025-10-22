@@ -289,7 +289,7 @@ body {
   color: #333;
 }
 
-/* NEW: password wrapper with toggle */
+
 
 .password-wrapper {
 
@@ -305,23 +305,21 @@ body {
 
   width: 100%;
 
-  padding-right: 1.5rem; /* leave space for eye icon */
+  padding-right: 1.5rem; 
 
 }
-
 .signup-link {
-  text-align: center;
-  font-size: 0.9rem;
+ text-align: center;
+ font-size: 0.9rem;
   color: #666;
 }
 
 .signup-link a {
-  color: #007BFF;
+ color: #007BFF;
   text-decoration: none;
 }
-
 .signup-link a:hover {
-  text-decoration: underline;
+ text-decoration: underline;
 }
 
 .toggle-eye {
