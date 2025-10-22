@@ -51,11 +51,11 @@ const actions = {
     if (!user?.userId) throw new Error("Not logged in");
 
   const payload = {
-  userId: user.userId,
-  productId: product.productID ?? product.id,
-  quantity: 1,
-  price: product.price // make sure your product object has a price field
-};
+    userId: user.userId,
+    productId: product.productID ?? product.id,
+    quantity: 1,
+    price: product.price // make sure your product object has a price field
+  };
 
     await saveCartItem(payload);
     await dispatch("fetchUserCart");

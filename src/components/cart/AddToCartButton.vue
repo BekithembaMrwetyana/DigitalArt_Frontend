@@ -68,23 +68,47 @@ export default {
   background: rgba(33, 150, 243, 0.9);
   color: #fff;
   border: none;
-  padding: 0.4rem 0.8rem;
-  border-radius: 18px;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
   cursor: pointer;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .add-btn svg {
   vertical-align: middle;
+  transition: transform 0.3s ease;
 }
 
+/* Hover Effect */
+.add-btn:hover {
+  background: rgba(33, 150, 243, 1);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+}
+
+.add-btn:hover svg {
+  transform: scale(1.1) translateX(2px);
+}
+
+/* Active Click Effect */
+.add-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+}
+
+/* Disabled State */
 .add-btn:disabled {
   background: #aaa;
   cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
 }
 </style>

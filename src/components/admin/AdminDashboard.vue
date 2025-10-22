@@ -36,7 +36,8 @@ export default {
         { id: 4, title: 'Products', color: 'yellow-card', icon: 'user', route: '/admin/products' },
         { id: 5, title: 'Orders', color: 'red-card', icon: 'orders', route: '/admin/orders' },
         { id: 6, title: 'Art Brands', color: 'orange-card', icon: 'palette', route: '/admin/brands' },
-        { id: 7, title: 'Artist', color: 'pink-card', icon: 'artist', route: '/admin/artist' } // New Artist card
+        { id: 7, title: 'Artist', color: 'pink-card', icon: 'artist', route: '/admin/artist' }, // New Artist card
+        { id: 8, title: 'Notifications', color: 'gray-card', icon: 'notifications', route: '/admin/notifications'}
       ]
     }
   },
@@ -51,7 +52,8 @@ export default {
         'chart': 'ChartIcon', 
         'user': 'UserIcon',
         'orders': 'OrdersIcon',
-        'artist': 'ArtistIcon' // New icon
+        'artist': 'ArtistIcon',
+         'notifications': 'NotificationsIcon'
       };
       return icons[iconName] || 'DefaultIcon';
     }
@@ -106,6 +108,7 @@ export default {
 .red-card { background: #fd79a8; }
 .orange-card { background: #f97316; }
 .pink-card { background: #f472b6; } /* Artist card color */
+.gray-card {background: gray;}
 
 .card-content { text-align: center; z-index: 2; position: relative; }
 .card-title { font-size: 20px; font-weight: 600; color: white; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); }
@@ -120,6 +123,6 @@ export default {
 @media (max-width: 640px) {
   .card-title { font-size: 18px; }
   .card-icon { width: 60px; height: 60px; }
-  .card-icon svg { width: 32px; height: 32px; }
+  .card-icon svg { width: 32px; height: 32px; }
 }
 </style>
