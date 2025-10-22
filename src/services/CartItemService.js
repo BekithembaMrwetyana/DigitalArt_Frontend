@@ -1,15 +1,11 @@
-import axios from "axios";
+import api from "@/services/api.js";
 
-const BASE_URL = "http://localhost:8080/digital_artDB/cart_item";
+const BASE_URL = "/digital_artDB/cart_item";
 
-// Get all cart items
+// ✅ Get all cart items
 export const getAllCartItems = async () => {
-  const token = localStorage.getItem('token');
   try {
-    const response = await axios.get(`${BASE_URL}/getAll`, {
-      headers: { 'Authorization': `Bearer ${token}`,
-    "Content-Type": "application/json", }
-    });
+    const response = await api.get(`${BASE_URL}/getAll`);
     return response.data;
   } catch (error) {
     console.error("Error fetching cart items:", error);
@@ -17,31 +13,24 @@ export const getAllCartItems = async () => {
   }
 };
 
-// Save a new cart item
+// ✅ Save a new cart item
 export const saveCartItem = async (cartItem) => {
-  const token = localStorage.getItem('token');
   try {
-    console.log(" Sending cart item payload:", cartItem); 
-    const response = await axios.post(`${BASE_URL}/create`, cartItem, {
-      headers: { 'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
-     }
+    console.log("Sending cart item payload:", cartItem);
+    const response = await api.post(`${BASE_URL}/create`, cartItem, {
+      headers: { "Content-Type": "application/json" }
     });
     return response.data;
   } catch (error) {
-    console.error(" Error saving cartItem:", error.response?.data || error.message);
+    console.error("Error saving cartItem:", error.response?.data || error.message);
     throw error;
   }
 };
 
-
-// Get cart items by user
+// ✅ Get cart items by user
 export const getCartItemsByUserId = async (userId) => {
-  const token = localStorage.getItem('token');
   try {
-    const response = await axios.get(`${BASE_URL}/findByUser/${userId}`, {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
+    const response = await api.get(`${BASE_URL}/findByUser/${userId}`);
     return response.data;
   } catch (error) {
     console.error("Error fetching user's cart items:", error);
@@ -49,13 +38,10 @@ export const getCartItemsByUserId = async (userId) => {
   }
 };
 
-// Update cart item
+// ✅ Update cart item
 export const updateCartItem = async (cartItem) => {
-  const token = localStorage.getItem('token');
   try {
-    const response = await axios.put(`${BASE_URL}/update`, cartItem, {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
+    const response = await api.put(`${BASE_URL}/update`, cartItem);
     return response.data;
   } catch (error) {
     console.error("Error updating cart item:", error);
@@ -63,13 +49,10 @@ export const updateCartItem = async (cartItem) => {
   }
 };
 
-// Delete cart item
+// ✅ Delete cart item
 export const deleteCartItem = async (id) => {
-  const token = localStorage.getItem('token');
   try {
-    await axios.delete(`${BASE_URL}/delete/${id}`, {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
+    await api.delete(`${BASE_URL}/delete/${id}`);
   } catch (error) {
     console.error(`Error deleting cart item with ID ${id}:`, error);
     throw error;

@@ -22,10 +22,16 @@ const userService = {
   },
 
   loginUser(email, password, role) {
-    return axios.post(`${BASE_URL}/login`, { email, password, role })
-      .then(res => res.data)
-      .catch(err => handleError("Login failed", err))
-  },
+  return axios.post(`${BASE_URL}/login`, { email, password, role })
+    .then(res => {
+      if (res.data.token) {
+        localStorage.setItem('token', res.data.token); // ✅ save token
+      }
+      return res.data;
+    })
+    .catch(err => handleError("Login failed", err));
+},
+
 
   getAllUsers() {
     return axios.get(`${BASE_URL}/getAll`)
