@@ -50,6 +50,10 @@ export default {
       try {
         busy.value = true;
         await store.dispatch('Cart/addToCart', { product: props.product });
+        // If this is from wishlist page, remove from wishlist after adding to cart
+        if (props.product && props.product.isWishlistPage) {
+          await store.dispatch('wishlist/removeItem', props.product.id);
+        }
       } catch (e) {
         alert('Failed to add to cart.');
         console.error(e);

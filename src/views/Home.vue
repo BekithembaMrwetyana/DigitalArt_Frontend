@@ -25,13 +25,13 @@
         <div class="hexagon-gallery">
           <!-- Row 1: 2 hexagons spaced apart -->
           <div class="hexagon-row row-1">
-            <div class="hexagon" style="background-image: url('http://localhost:8080/digital_artDB/images/art1.jpeg')"></div>
-            <div class="hexagon" style="background-image: url('http://localhost:8080/digital_artDB/images/art2.jpeg')"></div>
+            <div class="hexagon" style="background-image: url('http://localhost:8080/digital_artDB/images/art10.jpeg')"></div>
+            <div class="hexagon" style="background-image: url('http://localhost:8080/digital_artDB/images/art24.jpeg')"></div>
           </div>
           
           <!-- Row 2: 2 hexagons shifted down and inward -->
           <div class="hexagon-row row-2">
-            <div class="hexagon" style="background-image: url('http://localhost:8080/digital_artDB/images/art3.jpeg')"></div>
+            <div class="hexagon" style="background-image: url('http://localhost:8080/digital_artDB/images/art35.jpg')"></div>
             <div class="hexagon" style="background-image: url('http://localhost:8080/digital_artDB/images/art4.jpeg')"></div>
           </div>
           

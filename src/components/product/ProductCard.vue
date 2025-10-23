@@ -25,7 +25,7 @@
         @click.stop="removeFromWishlist"
         v-else
       >
-        ❌
+        ✕
       </button>
     </div>
 
@@ -45,7 +45,7 @@
   </button> -->
 
   <div class="add-to-cart-wrapper">
-    <AddToCartButton :product="product" @added="onAdded" />
+    <AddToCartButton :product="{ ...product, isWishlistPage }" @added="onAdded" />
   </div>
 
 
@@ -205,15 +205,23 @@ export default {
   top: 10px;
   right: 10px;
   background: transparent;
-  border: none;
+  border: 2px solid transparent;
+  border-radius: 4px;
   cursor: pointer;
   font-size: 20px;
   color: #666;
-  transition: color 0.3s ease;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
 }
 
 .wishlist-remove-btn:hover {
-  color: #e74c3c;
+  background: #e74c3c;
+  color: white;
+  border-color: #e74c3c;
 }
 
 
